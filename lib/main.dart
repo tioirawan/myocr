@@ -31,6 +31,7 @@ class MainApp extends StatelessWidget {
         colorScheme: darkColorScheme,
       ),
       themeMode: ThemeMode.light,
+      initialRoute: '/scan',
       routes: {
         '/': (_) => const SplashScreenPage(),
         '/login': (_) => const LoginPage(),
