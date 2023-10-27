@@ -325,7 +325,12 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
         const SizedBox(width: 24),
         actionButton(
           Icons.camera_alt,
-          () {},
+          () {
+            Navigator.push(
+              context,
+              Navigator.pushNamed(context, '/scan/result') as Route<Object?>,
+            );
+          },
           const Size(84, 84),
           Theme.of(context).colorScheme.primary,
           Theme.of(context).colorScheme.onPrimary,
