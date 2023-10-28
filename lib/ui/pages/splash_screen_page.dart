@@ -51,7 +51,7 @@ class SplashScreenPage extends StatelessWidget {
                   const Padding(
                     padding: EdgeInsets.only(bottom: 55.0),
                     child: Text(
-                      'Permudah proses memindai KTP Anda dengan myKTP yang mudah dan aman.',
+                      'Mempermudah Proses Pemindaian KTP Anda dengan Aman dan Mudah',
                       style: TextStyle(fontSize: 14, color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
