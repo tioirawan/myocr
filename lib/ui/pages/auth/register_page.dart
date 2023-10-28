@@ -47,6 +47,15 @@ class _RegisterPageState extends State<RegisterPage> {
                     fillColor: const Color(0xFFE2E2E5).withOpacity(0.4),
                     hintText: 'Masukkan Nama Lengkap',
                     hintStyle: textTheme.bodySmall,
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .primary, // Warna outline saat difokuskan
+                        width: 2.0, // Lebar outline saat difokuskan
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: BorderSide.none)),
@@ -67,6 +76,15 @@ class _RegisterPageState extends State<RegisterPage> {
                     fillColor: const Color(0xFFE2E2E5).withOpacity(0.4),
                     hintText: 'Masukkan Alamat Email',
                     hintStyle: textTheme.bodySmall,
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .primary, // Warna outline saat difokuskan
+                        width: 2.0, // Lebar outline saat difokuskan
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: BorderSide.none)),
@@ -97,6 +115,15 @@ class _RegisterPageState extends State<RegisterPage> {
                         icon: isShowPassword
                             ? const Icon(Icons.visibility_off)
                             : const Icon(Icons.visibility)),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .primary, // Warna outline saat difokuskan
+                        width: 2.0, // Lebar outline saat difokuskan
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: BorderSide.none)),
