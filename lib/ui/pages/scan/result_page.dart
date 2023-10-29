@@ -26,19 +26,22 @@ class ResultPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomScaffold(
       body: Container(
-        padding: const EdgeInsets.all(24.0),
         child: Center(
           child: Form(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  'Hasil Pindai KTP',
-                  style: Theme.of(context).textTheme.headlineMedium,
+                Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Text(
+                    'Hasil Pindai KTP',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
                 ),
-                const SizedBox(height: 20),
+                const Divider(height: 0),
                 Expanded(
                   child: ListView.builder(
+                    padding: const EdgeInsets.all(24.0),
                     itemCount: ktp.length + 2,
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
@@ -56,17 +59,20 @@ class ResultPage extends StatelessWidget {
                     },
                   ),
                 ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 48),
-                    foregroundColor: Theme.of(context).colorScheme.onSecondary,
-                    backgroundColor: Theme.of(context).colorScheme.primary,
+                Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 48),
+                      foregroundColor:
+                          Theme.of(context).colorScheme.onSecondary,
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/detail');
+                    },
+                    child: const Text('Simpan'),
                   ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/detail');
-                  },
-                  child: const Text('Simpan'),
                 ),
               ],
             ),
@@ -95,7 +101,12 @@ class ResultPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Foto'),
+          Text(
+            'Foto',
+            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
           const SizedBox(height: 8),
           SizedBox(
             width: 100,
@@ -147,7 +158,12 @@ class _ResultFormFieldState extends State<ResultFormField> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(widget.title),
+          Text(
+            widget.title,
+            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
           const SizedBox(height: 8),
           TextFormField(
             controller: _controller,
