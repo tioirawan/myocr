@@ -10,8 +10,7 @@ class AboutPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(
-                context); // This will navigate back to the previous screen
+            Navigator.pop(context);
           },
         ),
         title: const Text('Tentang Kami'),
@@ -22,7 +21,7 @@ class AboutPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset('Assets/images/logo.png',
+            Image.asset('assets/images/logo.png',
                 width: 120, height: 120), // Add this line to display the image
             const SizedBox(height: 20),
             const Text(

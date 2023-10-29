@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../widgets/custom_scaffold.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -14,7 +16,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return Scaffold(
+    return CustomScaffold(
         body: SafeArea(
       child: SingleChildScrollView(
         child: Padding(
@@ -22,6 +24,7 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 64),
               Text(
                 'Masuk',
                 style: textTheme.headlineLarge!.apply(fontWeightDelta: 2),
@@ -72,31 +75,33 @@ class _LoginPageState extends State<LoginPage> {
               TextFormField(
                 obscureText: isShowPassword,
                 decoration: InputDecoration(
-                    filled: true,
-                    fillColor: const Color(0xFFE2E2E5).withOpacity(0.4),
-                    hintText: 'Masukkan Kata Sandi',
-                    hintStyle: textTheme.bodySmall,
-                    suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            isShowPassword = !isShowPassword;
-                          });
-                        },
-                        icon: isShowPassword
-                            ? const Icon(Icons.visibility_off)
-                            : const Icon(Icons.visibility)),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .primary, // Warna outline saat difokuskan
-                        width: 2.0, // Lebar outline saat difokuskan
-                      ),
-                      borderRadius: BorderRadius.circular(12),
+                  filled: true,
+                  fillColor: const Color(0xFFE2E2E5).withOpacity(0.4),
+                  hintText: 'Masukkan Kata Sandi',
+                  hintStyle: textTheme.bodySmall,
+                  suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          isShowPassword = !isShowPassword;
+                        });
+                      },
+                      icon: isShowPassword
+                          ? const Icon(Icons.visibility_off)
+                          : const Icon(Icons.visibility)),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary, // Warna outline saat difokuskan
+                      width: 2.0, // Lebar outline saat difokuskan
                     ),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none)),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
               ),
               const SizedBox(
                 height: 40,
@@ -109,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                       backgroundColor: Theme.of(context).colorScheme.primary,
                     ),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/scan');
+                      Navigator.popAndPushNamed(context, '/dashboard');
                     },
                     child: Text(
                       'Masuk',

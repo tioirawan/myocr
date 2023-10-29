@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/custom_scaffold.dart';
+
 final ktp = {
   'NIK': '1234567890123456',
   'Nama': 'John Doe',
@@ -22,7 +24,7 @@ class DetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return CustomScaffold(
       body: Container(
         padding: const EdgeInsets.all(24.0),
         child: Center(

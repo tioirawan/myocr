@@ -1,97 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 import '../themes/color_schemes.g.dart';
 
-class DiagonalSplitButton extends StatelessWidget {
-  final String textTop;
-  final String textBottom;
-  final VoidCallback onPressedTop;
-  final VoidCallback onPressedBottom;
-
-  DiagonalSplitButton({
-    required this.textTop,
-    required this.textBottom,
-    required this.onPressedTop,
-    required this.onPressedBottom,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: GestureDetector(
-            onTap: onPressedTop,
-            child: ClipPath(
-              clipper: TopClipper(),
-              child: Container(
-                color: Colors.blue, // Adjust as desired
-                height: 200, // Adjust as needed
-                alignment: Alignment.center,
-                child: Text(
-                  textTop,
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
-          ),
-        ),
-        Expanded(
-          child: GestureDetector(
-            onTap: onPressedBottom,
-            child: ClipPath(
-              clipper: BottomClipper(),
-              child: Container(
-                color: Colors.green, // Adjust as desired
-                height: 200, // Adjust as needed
-                alignment: Alignment.center,
-                child: Text(
-                  textBottom,
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class TopClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    Path path = Path();
-    path.lineTo(0, size.height); // Mengubah titik awal ke kiri bawah
-    path.lineTo(size.width, 0); // Mengubah titik akhir ke kanan atas
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
-}
-
-class BottomClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    Path path = Path();
-    path.moveTo(size.width, 0); // titik awal di kanan atas
-    path.lineTo(0, size.height); // mengarah ke kiri bawah
-    path.lineTo(size.width, size.height); // mengarah ke kanan bawah
-    path.close();
-    return path;
-  }
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
-}
-
 class DashboardPage extends StatelessWidget {
-  final Map<String, String> userData = const{
+  final Map<String, String> userData = const {
     'name': 'John',
-    'profileImage': 'Assets/images/profile.png',
+    'profileImage': 'assets/images/profile.png',
   };
 
-  final List<Map<String, dynamic>> transactionHistory = const [
+  final List<Map<String, dynamic>> documents = const [
     {
       'id': '1',
       'name': 'John Doe',
@@ -146,183 +64,289 @@ class DashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 20, left: 20, right: 20, bottom: 20),
-            child: Row(
-              children: <Widget>[
-                const Text(
-                  'Selamat Datang, ',
-                  style: TextStyle(fontSize: 20),
-                ),
-                Text(
-                  '${userData['name']}!',
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                const Spacer(),
-                CircleAvatar(
-                  radius: 30,
-                  backgroundColor: Colors.white,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.grey,
-                          blurRadius: 4,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 3,
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      // transparent status bar
+      value: const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
+      ),
+      child: Scaffold(
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            ColoredBox(
+              color: colorScheme.primary,
+              child: SafeArea(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 24),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20, right: 20),
+                      child: Row(
+                        children: <Widget>[
+                          Text(
+                            'Selamat Datang, ',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: colorScheme.onPrimary,
+                            ),
+                          ),
+                          Text(
+                            '${userData['name']}!',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: colorScheme.onPrimary,
+                            ),
+                          ),
+                          const Spacer(),
+                          CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Colors.white,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Colors.grey,
+                                      blurRadius: 4,
+                                      offset: Offset(0, 2),
+                                    ),
+                                  ],
+                                  border: Border.all(
+                                    color: Colors.white,
+                                    width: 3,
+                                  ),
+                                ),
+                                child: CircleAvatar(
+                                  radius: 28,
+                                  backgroundColor: Colors.transparent,
+                                  backgroundImage:
+                                      AssetImage(userData['profileImage']!),
+                                  foregroundColor: Colors.white,
+                                ),
+                              )),
+                        ],
                       ),
                     ),
-                    child: CircleAvatar(
-                      radius: 28,
-                      backgroundColor: Colors.transparent,
-                      backgroundImage: AssetImage(userData['profileImage']!),
-                      foregroundColor: Colors.white,
+                    const SizedBox(height: 24 + 32),
+                  ],
+                ),
+              ),
+            ),
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Container(
+                  height: 20,
+                  decoration: BoxDecoration(
+                    color: colorScheme.primary,
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
                     ),
-                  )
+                  ),
+                ),
+                Positioned(
+                  top: -(98 / 2) + 18,
+                  left: 16,
+                  right: 16,
+                  child: Container(
+                    height: 98,
+                    decoration: BoxDecoration(
+                      color: colorScheme.background,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 20,
+                          spreadRadius: 5,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        InkWell(
+                          onTap: () {},
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.upload_file,
+                                color: colorScheme.primary,
+                                size: 30,
+                              ),
+                              const SizedBox(height: 8),
+                              const Text('Unggah KTP'),
+                            ],
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(context, '/scan');
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.camera_alt,
+                                color: colorScheme.primary,
+                                size: 32,
+                              ),
+                              const SizedBox(height: 8),
+                              const Text('Scan Kamera'),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
-          ),
-          DiagonalSplitButton(
-            textTop: 'Unggah KTP',
-            textBottom: 'Scan Kamera',
-            onPressedTop: () {
-              // Tambahkan fungsionalitas untuk Unggah KTP
-            },
-            onPressedBottom: () {
-              // Tambahkan fungsionalitas untuk Scan Kamera
-            },
-          ),
-          const Padding(
-            padding: EdgeInsets.only(left: 30.0, top: 35.0, bottom: 8.0),
-            child: Text(
-              'Riwayat',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 92 / 2),
+                child: ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                    itemCount: documents.length + 1,
+                    itemBuilder: (context, index) {
+                      if (index == 0) {
+                        return const Padding(
+                          padding: EdgeInsets.only(
+                            left: 30.0,
+                            top: 24,
+                            bottom: 8.0,
+                          ),
+                          child: Text(
+                            'Riwayat',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                        );
+                      }
+
+                      index -= 1;
+
+                      final document = documents[index];
+
+                      return _buildKTPCard(
+                        document['id'] as String,
+                        document['name'] as String,
+                        document['nik'] as String,
+                        document['gender'] as String,
+                        document['isValid'] as bool,
+                        document['lastAccessed'] as String,
+                      );
+                    }),
+              ),
             ),
-          ),
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 5.0),
-              children: transactionHistory.map((transaction) {
-                return _buildKTPCard(
-                  transaction['id'] as String,
-                  transaction['name'] as String,
-                  transaction['nik'] as String,
-                  transaction['gender'] as String,
-                  transaction['isValid'] as bool,
-                  transaction['lastAccessed'] as String,
-                );
-              }).toList(),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildKTPCard(
-      String transactionID,
-      String name,
-      String nik,
-      String gender,
-      bool isValid,
-      String lastAccessed,
-      ) {
+    String transactionID,
+    String name,
+    String nik,
+    String gender,
+    bool isValid,
+    String lastAccessed,
+  ) {
     return Container(
       margin: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(8),
+        color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
+            color: Colors.grey.withOpacity(0.1),
             spreadRadius: 2,
-            blurRadius: 5,
-            offset: const Offset(0, 3),
+            blurRadius: 20,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
-      child: Material(
-        elevation: 0,
-        borderRadius: BorderRadius.circular(6),
-        child: ListTile(
-          contentPadding: const EdgeInsets.only(left: 2, right: 16),
-          leading: ClipRRect(
-            child: Image.asset(
-              'Assets/images/dummyktp.png',
-              width: 110,
-              fit: BoxFit.fitWidth,
+      child: ListTile(
+        contentPadding: const EdgeInsets.only(
+          bottom: 8,
+          left: 8,
+          right: 16,
+        ),
+        leading: ClipRRect(
+          child: Image.asset(
+            'assets/images/dummyktp.png',
+            fit: BoxFit.contain,
+          ),
+        ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  '$nik - $gender',
+                  style: const TextStyle(fontSize: 10),
+                ),
+                const SizedBox(height: 5),
+              ],
             ),
-          ),
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    name,
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    '$nik-$gender',
-                    style: const TextStyle(fontSize: 10),
-                  ),
-                ],
+            ElevatedButton(
+              onPressed: () {
+                // Action for the 'Unduh' button
+                print('Unduh button tapped for $nik');
+              },
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: lightColorScheme.primary,
+                minimumSize: const Size(20, 25),
+                padding: const EdgeInsets.symmetric(horizontal: 14),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  // Action for the 'Unduh' button
-                  print('Unduh button tapped for $nik');
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: lightColorScheme.primary,
-                  onPrimary: Colors.white,
-                  minimumSize: const Size(20, 25),
-                  padding: const EdgeInsets.symmetric(horizontal: 14),
+              child: const Text('Unduh', style: TextStyle(fontSize: 10)),
+            ),
+          ],
+        ),
+        subtitle: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              width: 60,
+              height: 18,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: isValid ? Colors.green : Colors.red,
+                  width: 1,
                 ),
-                child: const Text('Unduh', style: TextStyle(fontSize: 10)),
               ),
-            ],
-          ),
-          subtitle: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                width: 60,
-                height: 15,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
+              child: Center(
+                child: Text(
+                  isValid ? 'Valid' : 'Tidak Valid',
+                  style: TextStyle(
                     color: isValid ? Colors.green : Colors.red,
-                    width: 1,
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    isValid ? 'Valid' : 'Tidak Valid',
-                    style: TextStyle(
-                      color: isValid ? Colors.green : Colors.red,
-                      fontSize: 8,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    fontSize: 8,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-              Text(
-                lastAccessed,
-                style: const TextStyle(fontSize: 8),
-              ),
-            ],
-          ),
+            ),
+            Text(
+              lastAccessed,
+              style: const TextStyle(fontSize: 8),
+            ),
+          ],
         ),
       ),
     );

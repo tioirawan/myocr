@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../widgets/custom_scaffold.dart';
+
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
@@ -14,7 +16,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return Scaffold(
+    return CustomScaffold(
         body: SafeArea(
       child: SingleChildScrollView(
         child: Padding(
@@ -22,6 +24,7 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 64),
               Text(
                 'Daftar Sekarang',
                 style: textTheme.headlineLarge!.apply(fontWeightDelta: 2),
@@ -72,22 +75,24 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               TextFormField(
                 decoration: InputDecoration(
-                    filled: true,
-                    fillColor: const Color(0xFFE2E2E5).withOpacity(0.4),
-                    hintText: 'Masukkan Alamat Email',
-                    hintStyle: textTheme.bodySmall,
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .primary, // Warna outline saat difokuskan
-                        width: 2.0, // Lebar outline saat difokuskan
-                      ),
-                      borderRadius: BorderRadius.circular(12),
+                  filled: true,
+                  fillColor: const Color(0xFFE2E2E5).withOpacity(0.4),
+                  hintText: 'Masukkan Alamat Email',
+                  hintStyle: textTheme.bodySmall,
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary, // Warna outline saat difokuskan
+                      width: 2.0, // Lebar outline saat difokuskan
                     ),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none)),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
               ),
               const SizedBox(
                 height: 24,
@@ -156,7 +161,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       backgroundColor: Theme.of(context).colorScheme.primary,
                     ),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/scan');
+                      Navigator.popAndPushNamed(context, '/login');
                     },
                     child: Text(
                       'Daftar',

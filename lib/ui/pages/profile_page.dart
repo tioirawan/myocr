@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'about_page.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -24,7 +25,7 @@ class ProfilePage extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 40, // Adjust the size as needed
-                  backgroundImage: AssetImage('Assets/images/profile.png'),
+                  backgroundImage: AssetImage('assets/images/profile.png'),
                 ),
                 SizedBox(
                   width: 20,
@@ -72,7 +73,8 @@ class ProfilePage extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const AboutPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const AboutPage()),
                     );
                   },
                   child: const Row(
