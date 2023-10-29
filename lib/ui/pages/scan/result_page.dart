@@ -69,7 +69,7 @@ class ResultPage extends StatelessWidget {
                       backgroundColor: Theme.of(context).colorScheme.primary,
                     ),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/detail');
+                      Navigator.pushNamed(context, '/scan/success');
                     },
                     child: const Text('Simpan'),
                   ),
