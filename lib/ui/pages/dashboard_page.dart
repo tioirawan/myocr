@@ -3,8 +3,8 @@ import '../themes/color_schemes.g.dart';
 
 class DashboardPage extends StatelessWidget {
   final Map<String, String> userData = const{
-    'name': 'John Doe',
-    'profileImage': 'assets/profile_pic.jpg',
+    'name': 'John',
+    'profileImage': 'Assets/images/profile.png',
   };
 
   final List<Map<String, dynamic>> transactionHistory = const [
@@ -14,7 +14,7 @@ class DashboardPage extends StatelessWidget {
       'nik': '1234567890',
       'gender': 'Laki-laki',
       'isValid': true,
-      'lastAccessed': '20 Aug 2023, 08.00 PM', // Replace this with the actual last accessed date and time
+      'lastAccessed': '20 Aug 2023, 08.00 PM',
     },
     {
       'id': '2',
@@ -24,7 +24,38 @@ class DashboardPage extends StatelessWidget {
       'isValid': false,
       'lastAccessed': '20 Jan 2023, 09.00 AM',
     },
-    // ... Add more transaction data here as needed
+    {
+      'id': '3',
+      'name': 'David Doe',
+      'nik': '1245690784',
+      'gender': 'Laki-laki',
+      'isValid': true,
+      'lastAccessed': '19 Jan 2023, 05.00 PM',
+    },
+    {
+      'id': '4',
+      'name': 'Salimah Hoe',
+      'nik': '0987456445',
+      'gender': 'Perempuan',
+      'isValid': false,
+      'lastAccessed': '22 Dec 2022, 10.00 AM',
+    },
+    {
+      'id': '5',
+      'name': 'Rusdi Smith',
+      'nik': '1348675964',
+      'gender': 'Laki-laki',
+      'isValid': false,
+      'lastAccessed': '22 Dec 2022, 08.00 AM',
+    },
+    {
+      'id': '6',
+      'name': 'Shanti Hwang',
+      'nik': '0758999634',
+      'gender': 'Perempuan',
+      'isValid': true,
+      'lastAccessed': '01 Dec 2022, 06.00 AM',
+    },
   ];
 
   const DashboardPage({Key? key}) : super(key: key);
@@ -52,15 +83,19 @@ class DashboardPage extends StatelessWidget {
                   radius: 30,
                   backgroundColor: Colors.white,
                   child: Container(
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                           color: Colors.grey,
                           blurRadius: 4,
                           offset: Offset(0, 2),
                         ),
                       ],
+                      border: Border.all(
+                        color: Colors.white,
+                        width: 3,
+                      ),
                     ),
                     child: CircleAvatar(
                       radius: 28,
@@ -68,13 +103,13 @@ class DashboardPage extends StatelessWidget {
                       backgroundImage: AssetImage(userData['profileImage']!),
                       foregroundColor: Colors.white,
                     ),
-                  ),
+                  )
                 ),
               ],
             ),
           ),
           const Padding(
-            padding: EdgeInsets.only(left: 20.0, bottom: 8.0),
+            padding: EdgeInsets.only(left: 30.0, bottom: 8.0),
             child: Text(
               'Riwayat',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -108,80 +143,92 @@ class DashboardPage extends StatelessWidget {
       bool isValid,
       String lastAccessed,
       ) {
-    return Card(
-      margin: const EdgeInsets.all(6),
-      child: ListTile(
-        contentPadding: const EdgeInsets.only(top: 0, bottom: 0, left: 12, right: 12),
-        leading: ClipRRect(
-          borderRadius: BorderRadius.circular(4),
-          child: SizedBox(
-            width: 100,
-            child: Image.network(
-              'https://www.bloranews.com/wp-content/uploads/2018/08/PERSIAPAN-PEMILU-2019-DINDUKCAPIL-BLORA-BUTUH-30-RIBU-KEPING-BLANKO-E-KTP.jpg',
-              fit: BoxFit.fill,
+    return Container(
+      margin: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(6),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Material(
+        elevation: 0,
+        borderRadius: BorderRadius.circular(6),
+        child: ListTile(
+          contentPadding: const EdgeInsets.only(left: 2, right: 16),
+          leading: ClipRRect(
+            child: Image.asset(
+              'Assets/images/dummyktp.png',
+              width: 110,
+              fit: BoxFit.fitWidth,
             ),
           ),
-        ),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  name,
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  '$nik-$gender',
-                  style: const TextStyle(fontSize: 10),
-                ),
-              ],
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // Action for the 'Unduh' button
-                print('Unduh button tapped for $transactionID');
-              },
-              style: ElevatedButton.styleFrom(
-                primary: lightColorScheme.primary,
-                onPrimary: Colors.white,
-                minimumSize: const Size(20, 25),
-                padding: const EdgeInsets.symmetric(horizontal: 14),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    '$nik-$gender',
+                    style: const TextStyle(fontSize: 10),
+                  ),
+                ],
               ),
-              child: const Text('Unduh', style: TextStyle(fontSize: 10)),
-            ),
-          ],
-        ),
-        subtitle: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              width: 60,
-              height: 15,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: isValid ? Colors.green : Colors.red,
-                  width: 1,
+              ElevatedButton(
+                onPressed: () {
+                  // Action for the 'Unduh' button
+                  print('Unduh button tapped for $nik');
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: lightColorScheme.primary,
+                  onPrimary: Colors.white,
+                  minimumSize: const Size(20, 25),
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
                 ),
+                child: const Text('Unduh', style: TextStyle(fontSize: 10)),
               ),
-              child: Center(
-                child: Text(
-                  isValid ? 'Valid' : 'Tidak Valid',
-                  style: TextStyle(
+            ],
+          ),
+          subtitle: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                width: 60,
+                height: 15,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
                     color: isValid ? Colors.green : Colors.red,
-                    fontSize: 8,
-                    fontWeight: FontWeight.bold,
+                    width: 1,
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    isValid ? 'Valid' : 'Tidak Valid',
+                    style: TextStyle(
+                      color: isValid ? Colors.green : Colors.red,
+                      fontSize: 8,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
-            ),
-            Text(
-              lastAccessed,
-              style: const TextStyle(fontSize: 8),
-            ),
-          ],
+              Text(
+                lastAccessed,
+                style: const TextStyle(fontSize: 8),
+              ),
+            ],
+          ),
         ),
       ),
     );
