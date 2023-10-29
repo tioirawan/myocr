@@ -239,13 +239,22 @@ class DashboardPage extends StatelessWidget {
 
                       final document = documents[index];
 
-                      return _buildKTPCard(
-                        document['id'] as String,
-                        document['name'] as String,
-                        document['nik'] as String,
-                        document['gender'] as String,
-                        document['isValid'] as bool,
-                        document['lastAccessed'] as String,
+                      return InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            '/detail',
+                            arguments: document,
+                          );
+                        },
+                        child: _buildKTPCard(
+                          document['id'] as String,
+                          document['name'] as String,
+                          document['nik'] as String,
+                          document['gender'] as String,
+                          document['isValid'] as bool,
+                          document['lastAccessed'] as String,
+                        ),
                       );
                     }),
               ),
