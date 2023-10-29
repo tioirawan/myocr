@@ -21,8 +21,11 @@ class AboutPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset('assets/images/logo.png',
-                width: 120, height: 120), // Add this line to display the image
+            Image.asset(
+              'assets/images/logo.png',
+              width: 180,
+              height: 180,
+            ),
             const SizedBox(height: 20),
             const Text(
                 'Selamat datang di myKTP, solusi unggul dalam pengenalan objek data Kartu Tanda Penduduk (KTP) secara cepat, akurat, dan aman. Kami berkomitmen untuk menyediakan alat yang inovatif untuk membantu Anda mengoptimalkan proses pengenalan dan pengambilan data dari KTP dengan mudah.',
