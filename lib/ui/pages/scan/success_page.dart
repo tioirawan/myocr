@@ -17,7 +17,7 @@ class _SuccessPageState extends State<SuccessPage> {
   void initState() {
     super.initState();
     _timer = Timer(const Duration(seconds: 3), () {
-      Navigator.popAndPushNamed(context, '/detail');
+      Navigator.pop(context);
     });
   }
 
