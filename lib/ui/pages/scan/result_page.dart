@@ -34,20 +34,29 @@ class ResultPage extends StatelessWidget {
               children: [
                 Text(
                   'Hasil Pindai KTP',
-                  style: Theme.of(context).textTheme.headlineLarge,
+                  style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 const SizedBox(height: 20),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: ktp.length,
+                    itemCount: ktp.length + 2,
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
+                      if (index == 0) {
+                        return _buildKtpImage(context);
+                      } else if (index == 1) {
+                        return _buildScannedPicture(context);
+                      }
+
+                      index -= 2;
                       return ResultFormField(
-                          title: ktp.keys.elementAt(index),
-                          value: ktp.values.elementAt(index));
+                        title: ktp.keys.elementAt(index),
+                        value: ktp.values.elementAt(index),
+                      );
                     },
                   ),
                 ),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 48),
@@ -63,6 +72,46 @@ class ResultPage extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildKtpImage(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 24.0),
+      child: AspectRatio(
+        aspectRatio: 1.6,
+        child: Image.asset(
+          'assets/images/dummyktp.png',
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildScannedPicture(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('Foto'),
+          const SizedBox(height: 8),
+          SizedBox(
+            width: 100,
+            child: AspectRatio(
+              aspectRatio: 3 / 4,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.asset(
+                  'assets/images/profile.png',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+        ],
       ),
     );
   }
@@ -102,10 +151,13 @@ class _ResultFormFieldState extends State<ResultFormField> {
           const SizedBox(height: 8),
           TextFormField(
             controller: _controller,
-            decoration: InputDecoration(
-              border: const OutlineInputBorder(),
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(12)),
+                borderSide: BorderSide.none,
+              ),
               filled: true,
-              fillColor: Colors.grey[300],
+              fillColor: Color(0xFFE2E2E5),
             ),
             onChanged: (value) {
               setState(() {

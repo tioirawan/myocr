@@ -274,11 +274,7 @@ class DashboardPage extends StatelessWidget {
         ],
       ),
       child: ListTile(
-        contentPadding: const EdgeInsets.only(
-          bottom: 8,
-          left: 8,
-          right: 16,
-        ),
+        contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         leading: ClipRRect(
           child: Image.asset(
             'assets/images/dummyktp.png',
