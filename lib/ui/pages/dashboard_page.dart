@@ -1,6 +1,90 @@
 import 'package:flutter/material.dart';
 import '../themes/color_schemes.g.dart';
 
+class DiagonalSplitButton extends StatelessWidget {
+  final String textTop;
+  final String textBottom;
+  final VoidCallback onPressedTop;
+  final VoidCallback onPressedBottom;
+
+  DiagonalSplitButton({
+    required this.textTop,
+    required this.textBottom,
+    required this.onPressedTop,
+    required this.onPressedBottom,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: GestureDetector(
+            onTap: onPressedTop,
+            child: ClipPath(
+              clipper: TopClipper(),
+              child: Container(
+                color: Colors.blue, // Adjust as desired
+                height: 200, // Adjust as needed
+                alignment: Alignment.center,
+                child: Text(
+                  textTop,
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: GestureDetector(
+            onTap: onPressedBottom,
+            child: ClipPath(
+              clipper: BottomClipper(),
+              child: Container(
+                color: Colors.green, // Adjust as desired
+                height: 200, // Adjust as needed
+                alignment: Alignment.center,
+                child: Text(
+                  textBottom,
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class TopClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    path.lineTo(0, size.height); // Mengubah titik awal ke kiri bawah
+    path.lineTo(size.width, 0); // Mengubah titik akhir ke kanan atas
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
+}
+
+class BottomClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    path.moveTo(size.width, 0); // titik awal di kanan atas
+    path.lineTo(0, size.height); // mengarah ke kiri bawah
+    path.lineTo(size.width, size.height); // mengarah ke kanan bawah
+    path.close();
+    return path;
+  }
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
+}
+
 class DashboardPage extends StatelessWidget {
   final Map<String, String> userData = const{
     'name': 'John',
@@ -108,8 +192,18 @@ class DashboardPage extends StatelessWidget {
               ],
             ),
           ),
+          DiagonalSplitButton(
+            textTop: 'Unggah KTP',
+            textBottom: 'Scan Kamera',
+            onPressedTop: () {
+              // Tambahkan fungsionalitas untuk Unggah KTP
+            },
+            onPressedBottom: () {
+              // Tambahkan fungsionalitas untuk Scan Kamera
+            },
+          ),
           const Padding(
-            padding: EdgeInsets.only(left: 30.0, bottom: 8.0),
+            padding: EdgeInsets.only(left: 30.0, top: 35.0, bottom: 8.0),
             child: Text(
               'Riwayat',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
