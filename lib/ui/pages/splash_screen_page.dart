@@ -12,10 +12,10 @@ class SplashScreenPage extends StatelessWidget {
         body: Column(
           children: [
             const Spacer(),
-            Image.network(
-              'https://disdukcapil.kamparkab.go.id/wp-content/uploads/2019/05/ktp.png',
-              width: 200,
-              height: 200,
+            Image.asset(
+              'Assets/images/logo.png',
+              width: 225,
+              height: 225,
             ),
             const Spacer(),
             Container(
@@ -52,7 +52,7 @@ class SplashScreenPage extends StatelessWidget {
                     padding: EdgeInsets.only(bottom: 55.0),
                     child: Text(
                       'Mempermudah Proses Pemindaian KTP Anda dengan Aman dan Mudah',
-                      style: TextStyle(fontSize: 14, color: Colors.white),
+                      style: TextStyle(fontSize: 15, color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
                   ),
