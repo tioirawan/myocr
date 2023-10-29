@@ -13,15 +13,14 @@ class AboutPage extends StatelessWidget {
             Navigator.pop(context); // This will navigate back to the previous screen
           },
         ),
+        title: const Text('Tentang Kami'),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text('Tentang Kami',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 20),
             Image.asset('Assets/images/logo.png', width: 120, height: 120), // Add this line to display the image
             const SizedBox(height: 20),
             const Text(
