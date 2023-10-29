@@ -48,19 +48,24 @@ class ProfilePage extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 20),
+                const SizedBox(height: 40),
                 const Text('Pengaturan',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.left),
                 const SizedBox(height: 20),
                 TextButton(
                   onPressed: () {
                     // Navigate to the Edit Profile page
                   },
+                  style: TextButton.styleFrom(
+                    foregroundColor: Theme.of(context).colorScheme.onBackground,
+                    textStyle: Theme.of(context).textTheme.bodySmall,
+                    padding: const EdgeInsets.all(0.0),
+                  ),
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Icon(Icons.edit),
+                      Icon(Icons.edit_rounded),
                       SizedBox(width: 10),
                       Text('Edit Profil', style: TextStyle(fontSize: 18)),
                       Spacer(),
@@ -68,7 +73,7 @@ class ProfilePage extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 16),
                 TextButton(
                   onPressed: () {
                     Navigator.push(
@@ -77,10 +82,15 @@ class ProfilePage extends StatelessWidget {
                           builder: (context) => const AboutPage()),
                     );
                   },
+                  style: TextButton.styleFrom(
+                    foregroundColor: Theme.of(context).colorScheme.onBackground,
+                    textStyle: Theme.of(context).textTheme.bodySmall,
+                    padding: const EdgeInsets.all(0.0),
+                  ),
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Icon(Icons.info),
+                      Icon(Icons.info_outline_rounded),
                       SizedBox(width: 10),
                       Text(
                         'Tentang Kami',
@@ -91,20 +101,24 @@ class ProfilePage extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 16),
                 TextButton(
                   onPressed: () {
                     // Navigate to the Log Out page
                   },
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.red,
+                    textStyle: Theme.of(context).textTheme.bodySmall,
+                    padding: const EdgeInsets.all(0.0),
+                  ),
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Icon(Icons.logout, color: Colors.red),
+                      Icon(Icons.logout),
                       SizedBox(width: 10),
-                      Text('Log Out',
-                          style: TextStyle(fontSize: 18, color: Colors.red)),
+                      Text('Log Out', style: TextStyle(fontSize: 18)),
                       Spacer(),
-                      Icon(Icons.arrow_forward_ios, color: Colors.red),
+                      Icon(Icons.arrow_forward_ios),
                     ],
                   ),
                 ),

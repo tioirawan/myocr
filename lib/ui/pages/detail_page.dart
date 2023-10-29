@@ -78,7 +78,7 @@ class DetailPage extends StatelessWidget {
                   backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/scan');
+                  Navigator.pushNamed(context, '/scan/result');
                 },
                 child: const Text('Ubah'),
               ),

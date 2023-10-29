@@ -102,32 +102,37 @@ class DashboardPage extends StatelessWidget {
                             ),
                           ),
                           const Spacer(),
-                          CircleAvatar(
-                              radius: 30,
-                              backgroundColor: Colors.white,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Colors.grey,
-                                      blurRadius: 4,
-                                      offset: Offset(0, 2),
+                          InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/profile');
+                            },
+                            child: CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Colors.white,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.grey,
+                                        blurRadius: 4,
+                                        offset: Offset(0, 2),
+                                      ),
+                                    ],
+                                    border: Border.all(
+                                      color: Colors.white,
+                                      width: 3,
                                     ),
-                                  ],
-                                  border: Border.all(
-                                    color: Colors.white,
-                                    width: 3,
                                   ),
-                                ),
-                                child: CircleAvatar(
-                                  radius: 28,
-                                  backgroundColor: Colors.transparent,
-                                  backgroundImage:
-                                      AssetImage(userData['profileImage']!),
-                                  foregroundColor: Colors.white,
-                                ),
-                              )),
+                                  child: CircleAvatar(
+                                    radius: 28,
+                                    backgroundColor: Colors.transparent,
+                                    backgroundImage:
+                                        AssetImage(userData['profileImage']!),
+                                    foregroundColor: Colors.white,
+                                  ),
+                                )),
+                          ),
                         ],
                       ),
                     ),
