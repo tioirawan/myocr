@@ -13,8 +13,12 @@ class AboutPage extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-        title: const Text('Tentang Kami'),
         centerTitle: true,
+        title: const Text('Tentang Kami', style: TextStyle(
+          color: Colors.black,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,)
+        )
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),

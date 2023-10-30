@@ -27,7 +27,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 18,
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.bold,
               ),
             ),
             leading: IconButton(
