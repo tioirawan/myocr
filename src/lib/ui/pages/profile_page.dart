@@ -78,7 +78,7 @@ class ProfilePage extends StatelessWidget {
               children: [
                 const SizedBox(height: 30),
                 const Text('Pengaturan',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.left),
                 const SizedBox(height: 10),
                 TextButton(
