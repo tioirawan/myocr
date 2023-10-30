@@ -16,20 +16,110 @@ Projek **myKTP** ini dibuat oleh kelompok 1 kelas TI-3H untuk menyelesaikan tuga
 Selamat datang di **myKTP**, solusi unggul dalam pengenalan objek data Kartu Tanda Penduduk (KTP) secara cepat, akurat, dan aman. Kami berkomitmen untuk menyediakan alat yang inovatif untuk membantu Anda mengoptimalkan proses pengenalan dan pengambilan data dari KTP dengan mudah.
 
 ### **Screen dan PIC**
-
-| No. | Nama Screen | Fitur                                                    | Tampilan                                   |PIC| 
-| --- | ----------- | ---------------------------------------------------------|--------------------------------------------|---|
-| 1   | Splash      | -                                                        |![Screenshot](./docs/splash_screen.png)     |Bima
-| 2   | Register    | Buat Akun                                                |![Screenshot](./docs/register_screen.png)   |Lailatul|
-| 3   | Login       | Masuk ke Akun                                            |![Screenshot](./docs/login_screen.png)      |Lailatul|
-| 4   | Dashboard   | Unggah KTP <br/> Scan KTP <br/> Riwayat <br/> Unduh Data |![Screenshot](./docs/home_screen.png)       |Bima|
-| 5   | Camera      | Ambil Gambar KTP                                         |![Screenshot](./docs/scan_screen.png)       |Tio|
-| 6   | Scan        | Ambil Data KTP                                           |![Screenshot](./docs/scan_result_screen.png)|Adam|
-| 7   | Success     | -                                                        |![Screenshot](./docs/success_screen.png)    |Tio|
-| 8   | Detail      | Lihat Data Hasil Scan                                    |![Screenshot](./docs/detail_screen.png)     |Adam|
-| 9   | Profile     | Lihat Informasi Akun                                     |![Screenshot](./docs/profile_screen.png)    |Andi|
-| 10  | Edit Profile       | Edit Informasi Profile                            |![Screenshot](./docs/edit_profile_page.png) |Lailatul|
-| 10  | About       | Infromasi Seputar Aplikasi dan Copyright                 |![Screenshot](./docs/about_screen.png)      |Andi|
+<table>
+  <thead>
+    <tr>
+      <th>No.</th>
+      <th>Nama Screen</th>
+      <th>Fitur</th>
+      <th>Tampilan (Figma)</th>
+      <th>Tampilan (Actual)</th>
+      <th>PIC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Splash</td>
+      <td>-</td>
+      <td><img src="./docs/splash_screen_figma.png" alt="Screenshot" width="200"></td>
+      <td><img src="./docs/splash_screen.png" alt="Screenshot" width="200"></td>
+      <td>Bima</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Register</td>
+      <td>Buat Akun</td>
+      <td><img src="./docs/register_screen_figma.png" alt="Screenshot" width="200"></td>
+      <td><img src="./docs/register_screen.png" alt="Screenshot" width="200"></td>
+      <td>Lailatul</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Login</td>
+      <td>Masuk ke Akun</td>
+      <td><img src="./docs/login_screen_figma.png" alt="Screenshot" width="200"></td>
+      <td><img src="./docs/login_screen.png" alt="Screenshot" width="200"></td>
+      <td>Lailatul</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Dashboard</td>
+      <td>
+        Unggah KTP <br/> Scan KTP <br/> Riwayat <br/> Unduh Data
+      </td>
+      <td><img src="./docs/home_screen_figma.png" alt="Screenshot" width="200"></td>
+      <td><img src="./docs/home_screen.png" alt="Screenshot" width="200"></td>
+      <td>Bima</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Camera</td>
+      <td>Ambil Gambar KTP</td>
+      <td><img src="./docs/scan_screen_figma.png" alt="Screenshot" width="200"></td>
+      <td><img src="./docs/scan_screen.png" alt="Screenshot" width="200"></td>
+      <td>Tio</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Scan</td>
+      <td>Ambil Data KTP</td>
+      <td><img src="./docs/scan_result_screen_figma.png" alt="Screenshot" width="200"></td>
+      <td><img src="./docs/scan_result_screen.png" alt="Screenshot" width="200"></td>
+      <td>Adam</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>Success</td>
+      <td>-</td>
+      <td><img src="./docs/success_screen_figma.png" alt="Screenshot" width="200"></td>
+      <td><img src="./docs/success_screen.png" alt="Screenshot" width="200"></td>
+      <td>Tio</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>Detail</td>
+      <td>Lihat Data Hasil Scan</td>
+      <td><img src="./docs/detail_screen_figma.png" alt="Screenshot" width="200"></td>
+      <td><img src="./docs/detail_screen.png" alt="Screenshot" width="200"></td>
+      <td>Adam</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>Profile</td>
+      <td>Lihat Informasi Akun</td>
+      <td><img src="./docs/profile_screen_figma.png" alt="Screenshot" width="200"></td>
+      <td><img src="./docs/profile_screen.png" alt="Screenshot" width="200"></td>
+      <td>Andi</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>Edit Profile</td>
+      <td>Edit Informasi Profile</td>
+      <td><img src="./docs/edit_profile_screen_figma.png" alt="Screenshot" width="200"></td>
+      <td><img src="./docs/edit_profile_screen.png" alt="Screenshot" width="200"></td>
+      <td>Lailatul</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>About</td>
+      <td>Informasi Seputar Aplikasi dan Copyright</td>
+      <td><img src="./docs/about_screen_figma.png" alt="Screenshot" width="200"></td>
+      <td><img src="./docs/about_screen.png" alt="Screenshot" width="200"></td>
+      <td>Andi</td>
+    </tr>
+  </tbody>
+</table>
 
 ### **Link Figma**
 
