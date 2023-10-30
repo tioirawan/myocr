@@ -1,3 +1,4 @@
+
 # myKTP
 
 **Anggota Kelompok**
@@ -16,8 +17,8 @@ Selamat datang di **myKTP**, solusi unggul dalam pengenalan objek data Kartu Tan
 
 **Screen dan PIC**
 
-| No. | Nama Screen | Fitur | PIC      
-|-----|-------------|-------|----------|
+| No. | Nama Screen | Fitur | PIC      |
+| --- | ----------- | ----- | -------- |
 | 1   | Splash      | -     | Bima     |
 | 2   | Register    | -     | Lailatul |
 | 3   | Login       | -     | Lailatul |
