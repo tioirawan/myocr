@@ -5,6 +5,7 @@ import 'ui/pages/auth/login_page.dart';
 import 'ui/pages/auth/register_page.dart';
 import 'ui/pages/dashboard_page.dart';
 import 'ui/pages/detail_page.dart';
+import 'ui/pages/edit_profile_page.dart';
 import 'ui/pages/profile_page.dart';
 import 'ui/pages/scan/camera_page.dart';
 import 'ui/pages/scan/result_page.dart';
@@ -43,6 +44,7 @@ class MainApp extends StatelessWidget {
         '/scan/success': (_) => const SuccessPage(),
         '/profile': (_) => const ProfilePage(),
         '/about': (_) => const AboutPage(),
+        '/profile/edit': (_) => const EditProfilePage(),
       },
     );
   }
