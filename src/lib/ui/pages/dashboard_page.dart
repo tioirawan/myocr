@@ -5,7 +5,7 @@ import '../themes/color_schemes.g.dart';
 
 class DashboardPage extends StatelessWidget {
   final Map<String, String> userData = const {
-    'name': 'John',
+    'name': 'Putin',
     'profileImage': 'assets/images/profile.png',
   };
 

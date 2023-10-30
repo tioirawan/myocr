@@ -32,7 +32,7 @@ class MainApp extends StatelessWidget {
         colorScheme: darkColorScheme,
       ),
       themeMode: ThemeMode.light,
-      initialRoute: '/profile',
+      initialRoute: '/dashboard',
       routes: {
         '/': (_) => const SplashScreenPage(),
         '/login': (_) => const LoginPage(),
