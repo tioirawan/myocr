@@ -22,12 +22,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
           AppBar(
             backgroundColor: const Color.fromARGB(255, 255, 255, 255),
             centerTitle: true,
+            scrolledUnderElevation: 0,
             title: const Text(
               'Edit Profil',
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 18,
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.bold,
               ),
             ),
             leading: IconButton(

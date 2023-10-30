@@ -34,6 +34,7 @@ class ResultPage extends StatelessWidget {
                 AppBar(
                   backgroundColor: const Color.fromARGB(255, 255, 255, 255),
                   centerTitle: true,
+                  scrolledUnderElevation: 0,
                   title: const Text(
                     'Hasil Pindai KTP',
                     style: TextStyle(

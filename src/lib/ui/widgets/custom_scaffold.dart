@@ -14,6 +14,7 @@ class CustomScaffold extends StatelessWidget {
     return Scaffold(
       // transparent status bar
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         toolbarHeight: 0,
         systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,

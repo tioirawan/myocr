@@ -32,8 +32,9 @@ class DetailPage extends StatelessWidget {
             AppBar(
               backgroundColor: const Color.fromARGB(255, 255, 255, 255),
               centerTitle: true,
+              scrolledUnderElevation: 0,
               title: const Text(
-                'Edit Profil',
+                'KTP Anda',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 18,
