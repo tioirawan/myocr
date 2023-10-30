@@ -7,19 +7,19 @@ class AboutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        centerTitle: true,
-        title: const Text('Tentang Kami', style: TextStyle(
-          color: Colors.black,
-          fontSize: 18,
-          fontWeight: FontWeight.bold,)
-        )
-      ),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          centerTitle: true,
+          title: const Text('Tentang Kami',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ))),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -36,42 +36,63 @@ class AboutPage extends StatelessWidget {
                 style: TextStyle(fontSize: 16),
                 textAlign: TextAlign.justify),
             const SizedBox(height: 20),
-            const Text('Misi Kami',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.left),
+            const Row(
+              children: [
+                Text('Misi Kami',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.left),
+              ],
+            ),
             const SizedBox(height: 20),
             const Text(
                 'Misi utama myKTP adalah menyederhanakan dan mempercepat pengenalan data KTP, memberikan solusi yang efisien dan dapat diandalkan bagi individu, bisnis, serta lembaga pemerintah. Kami bertujuan untuk mengurangi beban pekerjaan manual, menghindari kesalahan manusia, dan meningkatkan efisiensi dalam proses identifikasi dan verifikasi identitas.',
                 style: TextStyle(fontSize: 16),
                 textAlign: TextAlign.justify),
             const SizedBox(height: 20),
-            const Text('Tim Kami',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.left),
+            const Row(
+              children: [
+                Text('Tim Kami',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.left),
+              ],
+            ),
             const SizedBox(height: 20),
-            const Text(
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
                 'Di balik myKTP, ada tim berpengalaman dan berkomitmen yang bekerja keras untuk menjadikan pengenalan objek data KTP lebih baik. Berikut tim kami:',
                 style: TextStyle(fontSize: 16),
-                textAlign: TextAlign.justify),
+                textAlign: TextAlign.justify,
+              ),
+            ),
             const SizedBox(height: 20),
-            const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            const Row(
               children: [
-                Text('1. Adam Rafi Rezandi',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.left),
-                Text('2. Andi Dwi Prastyo',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.left),
-                Text('3. Bima Bayu Saputra',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.left),
-                Text('4. Lailatul Badriyah',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.left),
-                Text('5. Tio Misbaqul Irawan',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.left),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('1. Adam Rafi Rezandi',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.normal),
+                        textAlign: TextAlign.left),
+                    Text('2. Andi Dwi Prastyo',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.normal),
+                        textAlign: TextAlign.left),
+                    Text('3. Bima Bayu Saputra',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.normal),
+                        textAlign: TextAlign.left),
+                    Text('4. Lailatul Badriyah',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.normal),
+                        textAlign: TextAlign.left),
+                    Text('5. Tio Misbaqul Irawan',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.normal),
+                        textAlign: TextAlign.left),
+                  ],
+                ),
               ],
             )
           ],
