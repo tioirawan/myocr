@@ -9,7 +9,10 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Akun Saya',
-            style: TextStyle(fontWeight: FontWeight.bold)),
+            style: TextStyle(
+                color: Colors.black,
+                fontSize: 18,
+                fontWeight: FontWeight.bold)),
         centerTitle: true,
         bottom: const PreferredSize(
           preferredSize: Size.fromHeight(1.0),
