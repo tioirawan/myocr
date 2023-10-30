@@ -29,10 +29,17 @@ class DetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Text('KTP Anda',
-                  style: Theme.of(context).textTheme.headlineSmall),
+            AppBar(
+              backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+              centerTitle: true,
+              title: const Text(
+                'Edit Profil',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
             ),
             const Divider(height: 0),
             Expanded(

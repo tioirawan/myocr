@@ -31,11 +31,16 @@ class ResultPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Text(
+                AppBar(
+                  backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                  centerTitle: true,
+                  title: const Text(
                     'Hasil Pindai KTP',
-                    style: Theme.of(context).textTheme.headlineSmall,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
                 const Divider(height: 0),
