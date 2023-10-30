@@ -17,18 +17,19 @@ Selamat datang di **myKTP**, solusi unggul dalam pengenalan objek data Kartu Tan
 
 **Screen dan PIC**
 
-| No. | Nama Screen | Fitur | PIC      |
-| --- | ----------- | ----- | -------- |
-| 1   | Splash      | -     | Bima     |
-| 2   | Register    | -     | Lailatul |
-| 3   | Login       | -     | Lailatul |
-| 4   | Dashboard   | -     | Bima     |
-| 5   | Camera      | -     | Tio      |
-| 6   | Scan        | -     | Adam     |
-| 7   | Success     | -     | Tio      |
-| 8   | Detail      | -     | Adam     |
-| 9   | Profile     | -     | Andi     |
-| 10  | About       | -     | Andi     |
+| No. | Nama Screen | Fitur                                                    | Tampilan                                   |PIC| 
+| --- | ----------- | ---------------------------------------------------------|--------------------------------------------|---|
+| 1   | Splash      | -                                                        |![Screenshot](./docs/splash_screen.png)     |Bima
+| 2   | Register    | Buat Akun                                                |![Screenshot](./docs/register_screen.png)   |Lailatul|
+| 3   | Login       | Masuk ke Akun                                            |![Screenshot](./docs/login_screen.png)      |Lailatul|
+| 4   | Dashboard   | Unggah KTP <br/> Scan KTP <br/> Riwayat <br/> Unduh Data |![Screenshot](./docs/home_screen.png)       |Bima|
+| 5   | Camera      | Ambil Gambar KTP                                         |![Screenshot](./docs/scan_screen.png)       |Tio|
+| 6   | Scan        | Ambil Data KTP                                           |![Screenshot](./docs/scan_result_screen.png)|Adam|
+| 7   | Success     | -                                                        |![Screenshot](./docs/success_screen.png)    |Tio|
+| 8   | Detail      | Lihat Data Hasil Scan                                    |![Screenshot](./docs/detail_screen.png)     |Adam|
+| 9   | Profile     | Lihat Informasi Akun                                     |![Screenshot](./docs/profile_screen.png)    |Andi|
+| 10  | Edit Profile       | Edit Informasi Profile                            |![Screenshot](./docs/edit_profile_page.png) |Lailatul|
+| 10  | About       | Infromasi Seputar Aplikasi dan Copyright                 |![Screenshot](./docs/about_screen.png)      |Andi|
 
 **Link Figma**
 
