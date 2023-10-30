@@ -17,19 +17,34 @@ class ProfilePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20),
-            const Row(
-              mainAxisAlignment:
-                  MainAxisAlignment.start, // Align everything to the left
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                CircleAvatar(
-                  radius: 40, // Adjust the size as needed
-                  backgroundImage: AssetImage('assets/images/profile.png'),
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.white,
+                      width: 4.0,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        spreadRadius: 3,
+                        blurRadius: 5,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: const CircleAvatar(
+                    radius: 40,
+                    backgroundImage: AssetImage('assets/images/profile.png'),
+                  ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 20,
                 ), // Add spacing between the CircleAvatar and Text
-                Column(
+                const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('Vladimir Putin',
