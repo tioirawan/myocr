@@ -5,19 +5,12 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
-        scrolledUnderElevation: 0,
         title: const Text('Akun Saya',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
-        bottom: const PreferredSize(
-          preferredSize: Size.fromHeight(1.0),
-          child: Divider(
-            height: 1,
-            thickness: 1,
-          ),
-        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
@@ -44,9 +37,23 @@ class ProfilePage extends StatelessWidget {
                             fontSize: 16, fontWeight: FontWeight.bold),
                         textAlign: TextAlign.left),
                     SizedBox(height: 5),
-                    Text('vladimirputin@gmail.com'),
+                    Text(
+                      'vladimirputin@gmail.com',
+                      style: TextStyle(
+                        color: Colors
+                            .grey, // Ganti dengan warna yang Anda inginkan
+                        fontSize: 14, // Atur ukuran teks sesuai keinginan Anda
+                      ),
+                    ),
                     SizedBox(height: 5),
-                    Text('083848492377')
+                    Text(
+                      '083848492377',
+                      style: TextStyle(
+                        color: Colors
+                            .grey, // Ganti dengan warna yang Anda inginkan
+                        fontSize: 14, // Atur ukuran teks sesuai keinginan Anda
+                      ),
+                    )
                   ],
                 )
               ],
@@ -54,11 +61,11 @@ class ProfilePage extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 40),
+                const SizedBox(height: 30),
                 const Text('Pengaturan',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.left),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 TextButton(
                   onPressed: () {
                     Navigator.pushNamed(
@@ -68,21 +75,26 @@ class ProfilePage extends StatelessWidget {
                   },
                   style: TextButton.styleFrom(
                     foregroundColor: Theme.of(context).colorScheme.onBackground,
-                    textStyle: Theme.of(context).textTheme.bodySmall,
+                    textStyle: textTheme.bodyLarge,
                     padding: const EdgeInsets.all(0.0),
                   ),
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Icon(Icons.edit_rounded),
+                      Icon(
+                        Icons.edit_rounded,
+                        size: 20,
+                      ),
                       SizedBox(width: 10),
-                      Text('Edit Profil', style: TextStyle(fontSize: 18)),
+                      Text('Edit Profil'),
                       Spacer(),
-                      Icon(Icons.arrow_forward_ios),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: 20,
+                      ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 16),
                 TextButton(
                   onPressed: () {
                     Navigator.pushNamed(
@@ -92,24 +104,28 @@ class ProfilePage extends StatelessWidget {
                   },
                   style: TextButton.styleFrom(
                     foregroundColor: Theme.of(context).colorScheme.onBackground,
-                    textStyle: Theme.of(context).textTheme.bodySmall,
+                    textStyle: textTheme.bodyLarge,
                     padding: const EdgeInsets.all(0.0),
                   ),
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Icon(Icons.info_outline_rounded),
+                      Icon(
+                        Icons.info_outline_rounded,
+                        size: 20,
+                      ),
                       SizedBox(width: 10),
                       Text(
                         'Tentang Kami',
-                        style: TextStyle(fontSize: 18),
                       ),
                       Spacer(),
-                      Icon(Icons.arrow_forward_ios),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: 20,
+                      ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 16),
                 TextButton(
                   onPressed: () {
                     Navigator.pushNamed(
@@ -119,17 +135,23 @@ class ProfilePage extends StatelessWidget {
                   },
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.red,
-                    textStyle: Theme.of(context).textTheme.bodySmall,
+                    textStyle: textTheme.bodyLarge,
                     padding: const EdgeInsets.all(0.0),
                   ),
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Icon(Icons.logout),
+                      Icon(
+                        Icons.logout,
+                        size: 20,
+                      ),
                       SizedBox(width: 10),
-                      Text('Log Out', style: TextStyle(fontSize: 18)),
+                      Text('Log Out'),
                       Spacer(),
-                      Icon(Icons.arrow_forward_ios),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: 20,
+                      ),
                     ],
                   ),
                 ),
