@@ -25,57 +25,47 @@ class ResultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      body: Container(
-        child: Center(
-          child: Form(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
+      body: Center(
+        child: Form(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: ListView.builder(
                   padding: const EdgeInsets.all(24.0),
-                  child: Text(
-                    'Hasil Pindai KTP',
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                ),
-                const Divider(height: 0),
-                Expanded(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.all(24.0),
-                    itemCount: ktp.length + 2,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      if (index == 0) {
-                        return _buildKtpImage(context);
-                      } else if (index == 1) {
-                        return _buildScannedPicture(context);
-                      }
+                  itemCount: ktp.length + 2,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    if (index == 0) {
+                      return _buildKtpImage(context);
+                    } else if (index == 1) {
+                      return _buildScannedPicture(context);
+                    }
 
-                      index -= 2;
-                      return ResultFormField(
-                        title: ktp.keys.elementAt(index),
-                        value: ktp.values.elementAt(index),
-                      );
-                    },
-                  ),
+                    index -= 2;
+                    return ResultFormField(
+                      title: ktp.keys.elementAt(index),
+                      value: ktp.values.elementAt(index),
+                    );
+                  },
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 48),
-                      foregroundColor:
-                          Theme.of(context).colorScheme.onSecondary,
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                    ),
-                    onPressed: () {
-                      Navigator.popAndPushNamed(context, '/scan/success');
-                    },
-                    child: const Text('Simpan'),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 48),
+                    foregroundColor:
+                        Theme.of(context).colorScheme.onSecondary,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
                   ),
+                  onPressed: () {
+                    Navigator.popAndPushNamed(context, '/scan/success');
+                  },
+                  child: const Text('Simpan'),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
