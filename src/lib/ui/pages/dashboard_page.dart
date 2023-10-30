@@ -203,7 +203,7 @@ class DashboardPage extends StatelessWidget {
                                 size: 32,
                               ),
                               const SizedBox(height: 8),
-                              const Text('Scan Kamera'),
+                              const Text('Scan KTP'),
                             ],
                           ),
                         ),
