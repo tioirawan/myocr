@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+
 import '../widgets/custom_scaffold.dart';
 
 class EditProfilePage extends StatefulWidget {
-  const EditProfilePage({Key? key});
+  const EditProfilePage({super.key});
 
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
@@ -15,36 +16,36 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return CustomScaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            AppBar(
-              backgroundColor: Color.fromARGB(255, 255, 255, 255),
-              centerTitle: true,
-              title: const Text(
-                'Edit Profil',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          AppBar(
+            backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+            centerTitle: true,
+            title: const Text(
+              'Edit Profil',
+              style: TextStyle(
                 color: Colors.black,
-                onPressed: () {
-                  Navigator.pop(context);
-                },
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
               ),
-              toolbarHeight: 60.0,
             ),
-            const Divider(
-              // Tambahkan Divider di sini
-              height: 1,
-              thickness: 1,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              color: Colors.black,
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
-            Padding(
+            toolbarHeight: 60.0,
+          ),
+          const Divider(
+            // Tambahkan Divider di sini
+            height: 1,
+            thickness: 1,
+          ),
+          Expanded(
+            child: SingleChildScrollView(
               padding: const EdgeInsets.all(24),
               child: Column(
                 children: [
@@ -229,8 +230,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'about_page.dart';
-
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
@@ -55,7 +53,10 @@ class ProfilePage extends StatelessWidget {
                 const SizedBox(height: 20),
                 TextButton(
                   onPressed: () {
-                    // Navigate to the Edit Profile page
+                    Navigator.pushNamed(
+                      context,
+                      '/profile/edit',
+                    );
                   },
                   style: TextButton.styleFrom(
                     foregroundColor: Theme.of(context).colorScheme.onBackground,
@@ -76,10 +77,9 @@ class ProfilePage extends StatelessWidget {
                 const SizedBox(height: 16),
                 TextButton(
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushNamed(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const AboutPage()),
+                      '/about',
                     );
                   },
                   style: TextButton.styleFrom(
@@ -104,7 +104,10 @@ class ProfilePage extends StatelessWidget {
                 const SizedBox(height: 16),
                 TextButton(
                   onPressed: () {
-                    // Navigate to the Log Out page
+                    Navigator.pushNamed(
+                      context,
+                      '/login',
+                    );
                   },
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.red,
