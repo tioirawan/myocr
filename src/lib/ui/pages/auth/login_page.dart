@@ -10,8 +10,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool isShowPassword = false;
-  bool isAgree = false;
+  bool isShowPassword = true;
 
   @override
   Widget build(BuildContext context) {
