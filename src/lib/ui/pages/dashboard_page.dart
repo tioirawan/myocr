@@ -107,7 +107,7 @@ class DashboardPage extends StatelessWidget {
                               Navigator.pushNamed(context, '/profile');
                             },
                             child: CircleAvatar(
-                                radius: 30,
+                                radius: 28,
                                 backgroundColor: Colors.white,
                                 child: Container(
                                   decoration: BoxDecoration(

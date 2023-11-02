@@ -73,7 +73,7 @@ class DetailPage extends StatelessWidget {
                         )),
                         Expanded(
                           child: Text(
-                              ' : ${ktp.values.elementAt(index).toUpperCase()}'),
+                              ': ${ktp.values.elementAt(index).toUpperCase()}'),
                         ),
                       ],
                     ),
@@ -128,7 +128,7 @@ class DetailPage extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           SizedBox(
-            width: 100,
+            width: 125,
             child: AspectRatio(
               aspectRatio: 3 / 4,
               child: ClipRRect(
