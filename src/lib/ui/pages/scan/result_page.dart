@@ -3,20 +3,22 @@ import 'package:flutter/material.dart';
 import '../../widgets/custom_scaffold.dart';
 
 Map<String, String> ktp = {
-  'NIK': '1234567890123456',
-  'Nama': 'John Doe',
+  'NIK': '0034132142123',
+  'Nama': 'Vladimir Putin',
   'Tempat Lahir': 'Jakarta',
-  'Tanggal Lahir': '01-01-1990',
+  'Tanggal Lahir': '20-04-1981',
   'Jenis Kelamin': 'Laki-laki',
+  'Golongan Darah': 'O',
   'Alamat': 'Jl. Sudirman No. 123',
-  'RT': '001',
-  'RW': '002',
-  'Kelurahan': 'Kebayoran Baru',
-  'Kecamatan': 'Jakarta Selatan',
+  'RT': '007',
+  'RW': '008',
+  'Kelurahan': 'Gulag',
+  'Kecamatan': 'Sukajan',
   'Agama': 'Islam',
   'Status Perkawinan': 'Belum Kawin',
-  'Pekerjaan': 'PNS',
+  'Pekerjaan': 'Wiraswasta',
   'Kewarganegaraan': 'WNI',
+  'Berlaku Hingga': 'Seumur Hidup',
 };
 
 class ResultPage extends StatelessWidget {
@@ -148,7 +150,7 @@ class _ResultFormFieldState extends State<ResultFormField> {
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: widget.value);
+    _controller = TextEditingController(text: widget.value.toUpperCase());
   }
 
   @override
