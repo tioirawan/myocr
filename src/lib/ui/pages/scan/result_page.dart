@@ -22,68 +22,66 @@ Map<String, String> ktp = {
 };
 
 class ResultPage extends StatelessWidget {
-  const ResultPage({super.key});
+  const ResultPage({super.key, required this.pageTitle});
+  final String pageTitle;
 
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      body: Container(
-        child: Center(
-          child: Form(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                AppBar(
-                  backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-                  centerTitle: true,
-                  scrolledUnderElevation: 0,
-                  title: const Text(
-                    'Hasil Pindai KTP',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                    ),
+      body: Center(
+        child: Form(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              AppBar(
+                backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                centerTitle: true,
+                scrolledUnderElevation: 0,
+                title: Text(
+                  pageTitle,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
-                const Divider(height: 0),
-                Expanded(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.all(24.0),
-                    itemCount: ktp.length + 2,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      if (index == 0) {
-                        return _buildKtpImage(context);
-                      } else if (index == 1) {
-                        return _buildScannedPicture(context);
-                      }
-
-                      index -= 2;
-                      return ResultFormField(
-                        title: ktp.keys.elementAt(index),
-                        value: ktp.values.elementAt(index),
-                      );
-                    },
-                  ),
-                ),
-                Padding(
+              ),
+              const Divider(height: 0),
+              Expanded(
+                child: ListView.builder(
                   padding: const EdgeInsets.all(24.0),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 48),
-                      foregroundColor:
-                          Theme.of(context).colorScheme.onSecondary,
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                    ),
-                    onPressed: () {
-                      Navigator.popAndPushNamed(context, '/scan/success');
-                    },
-                    child: const Text('Simpan'),
-                  ),
+                  itemCount: ktp.length + 2,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    if (index == 0) {
+                      return _buildKtpImage(context);
+                    } else if (index == 1) {
+                      return _buildScannedPicture(context);
+                    }
+
+                    index -= 2;
+                    return ResultFormField(
+                      title: ktp.keys.elementAt(index),
+                      value: ktp.values.elementAt(index),
+                    );
+                  },
                 ),
-              ],
-            ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 48),
+                    foregroundColor: Theme.of(context).colorScheme.onSecondary,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                  ),
+                  onPressed: () {
+                    Navigator.popAndPushNamed(context, '/scan/success');
+                  },
+                  child: const Text('Simpan'),
+                ),
+              ),
+            ],
           ),
         ),
       ),

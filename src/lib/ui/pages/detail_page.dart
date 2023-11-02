@@ -90,7 +90,7 @@ class DetailPage extends StatelessWidget {
                   backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/scan/result');
+                  Navigator.pushNamed(context, '/detail/edit');
                 },
                 child: const Text('Ubah'),
               ),
