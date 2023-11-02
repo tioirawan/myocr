@@ -12,7 +12,7 @@ final ktp = {
   'Alamat': 'Jl. Sudirman No. 123',
   'RT': '007',
   'RW': '008',
-  'Kelurahan': 'Gulag',
+  'Kel/Desa': 'Gulag',
   'Kecamatan': 'Sukajan',
   'Agama': 'Islam',
   'Status Perkawinan': 'Belum Kawin',
