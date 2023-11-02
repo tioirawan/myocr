@@ -117,7 +117,7 @@ class ResultPage extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           SizedBox(
-            width: 100,
+            width: 125,
             child: AspectRatio(
               aspectRatio: 3 / 4,
               child: ClipRRect(
