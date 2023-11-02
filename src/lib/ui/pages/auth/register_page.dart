@@ -10,7 +10,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  bool isShowPassword = false;
+  bool isShowPassword = true;
   bool isAgree = false;
 
   @override
