@@ -72,7 +72,9 @@ class DetailPage extends StatelessWidget {
                                   ),
                         )),
                         Expanded(
-                            child: Text(' : ${ktp.values.elementAt(index)}')),
+                          child: Text(
+                              ' : ${ktp.values.elementAt(index).toUpperCase()}'),
+                        ),
                       ],
                     ),
                   );
