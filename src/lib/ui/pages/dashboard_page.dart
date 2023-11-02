@@ -12,8 +12,8 @@ class DashboardPage extends StatelessWidget {
   final List<Map<String, dynamic>> documents = const [
     {
       'id': '1',
-      'name': 'John Doe',
-      'nik': '1234567890',
+      'name': 'Vladimir Putin',
+      'nik': '0034132142123',
       'gender': 'Laki-laki',
       'isValid': true,
       'lastAccessed': '20 Aug 2023, 08.00 PM',
