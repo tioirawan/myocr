@@ -161,6 +161,7 @@ class _ResultFormFieldState extends State<ResultFormField> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -175,14 +176,24 @@ class _ResultFormFieldState extends State<ResultFormField> {
           const SizedBox(height: 8),
           TextFormField(
             controller: _controller,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(12)),
-                borderSide: BorderSide.none,
-              ),
-              filled: true,
-              fillColor: Color(0xFFE2E2E5),
-            ),
+            style: textTheme.bodyMedium,
+            decoration: InputDecoration(
+                filled: true,
+                fillColor: const Color(0xFFE2E2E5).withOpacity(0.4),
+                hintText: widget.title,
+                hintStyle: textTheme.bodySmall,
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .primary, // Warna outline saat difokuskan
+                    width: 2.0, // Lebar outline saat difokuskan
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none)),
             onChanged: (value) {
               setState(() {
                 _controller.text = value;
