@@ -10,7 +10,18 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  bool isShowPassword = false;
+  late TextEditingController fullName, email, password, phone;
+  bool isShowPassword = true;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fullName = TextEditingController(text: "Vladimir Putin");
+    email = TextEditingController(text: "vladimirputin@gmail.com");
+    password = TextEditingController(text: "putinganteng123");
+    phone = TextEditingController(text: "083848492377");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,10 +96,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     height: 8,
                   ),
                   TextFormField(
+                    controller: fullName,
+                    style: textTheme.bodyMedium,
                     decoration: InputDecoration(
                         filled: true,
                         fillColor: const Color(0xFFE2E2E5).withOpacity(0.4),
-                        hintText: 'Vladimir Putin',
+                        hintText: 'Masukkan Nama Lengkap',
                         hintStyle: textTheme.bodySmall,
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
@@ -117,10 +130,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     height: 8,
                   ),
                   TextFormField(
+                    controller: email,
+                    style: textTheme.bodyMedium,
                     decoration: InputDecoration(
                         filled: true,
                         fillColor: const Color(0xFFE2E2E5).withOpacity(0.4),
-                        hintText: 'vladimirputin@gmail.com',
+                        hintText: 'Masukkan Alamat Email',
                         hintStyle: textTheme.bodySmall,
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
@@ -149,11 +164,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     height: 8,
                   ),
                   TextFormField(
+                    controller: password,
+                    style: textTheme.bodyMedium,
                     obscureText: isShowPassword,
                     decoration: InputDecoration(
                         filled: true,
                         fillColor: const Color(0xFFE2E2E5).withOpacity(0.4),
-                        hintText: 'putin123ituputin456',
+                        hintText: 'Masukkan Kata Sandi',
                         hintStyle: textTheme.bodySmall,
                         suffixIcon: IconButton(
                             onPressed: () {
@@ -191,6 +208,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     height: 8,
                   ),
                   TextFormField(
+                    controller: phone,
+                    style: textTheme.bodyMedium,
                     decoration: InputDecoration(
                         filled: true,
                         fillColor: const Color(0xFFE2E2E5).withOpacity(0.4),
