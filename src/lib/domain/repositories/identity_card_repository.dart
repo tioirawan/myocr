@@ -1,0 +1,3 @@
+class IdentityCardRepository {
+  // TODO: Implement
+}
