@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'ui/pages/about_page.dart';
 import 'ui/pages/auth/login_page.dart';
@@ -14,7 +15,9 @@ import 'ui/pages/splash_screen_page.dart';
 import 'ui/themes/color_schemes.g.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(
+    const ProviderScope(child: MainApp()),
+  );
 }
 
 class MainApp extends StatelessWidget {
