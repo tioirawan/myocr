@@ -1,39 +1,22 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../domain/models/identity_card_model.dart';
-import '../../domain/repositories/identity_card_repository.dart';
+import '../../domain/models/user_model.dart';
+import '../../domain/repositories/user_repository.dart';
 
-part 'identity_card_provider.g.dart';
+part 'user_provider.g.dart';
 
 @riverpod
-class IdentityCardNotifier extends _$IdentityCardNotifier {
+class UserNotifier extends _$UserNotifier {
   @override
-  List<IdentityCardModel> build() => [];
+  UserModel? build() => null;
 
-  IdentityCardRepository get _repository =>
-      ref.read(identityCardRepositoryProvider);
+  UserRepository get _repository => ref.read(userRepositoryProvider);
 
-  Future<void> save(IdentityCardModel card) async {
-    if (card.id == null) {
-      await _repository.create(card);
-
-      state = [...state, card];
-    } else {
-      await _repository.update(card);
-
-      state = [
-        for (final item in state)
-          if (item.id == card.id) card else item
-      ];
-    }
+  Future<void> register(String username, String email, String password) async {
+    state = await _repository.register(username, email, password);
   }
 
-  Future<void> delete(IdentityCardModel card) async {
-    await _repository.delete(card);
-
-    state = [
-      for (final item in state)
-        if (item.id != card.id) item
-    ];
+  Future<void> login(String username, String password) async {
+    state = await _repository.login(username, password);
   }
 }
