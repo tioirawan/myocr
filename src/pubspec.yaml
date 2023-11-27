@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   camera: ^0.10.5+5
+  firebase_core: ^2.23.0
   flutter:
     sdk: flutter
   flutter_animate: ^4.2.0+1

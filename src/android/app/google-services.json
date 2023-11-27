@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "694421567950",
+    "project_id": "myktp-ti3h",
+    "storage_bucket": "myktp-ti3h.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:694421567950:android:6489276f0874df4026d39f",
+        "android_client_info": {
+          "package_name": "id.bismillah.myocr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "694421567950-lt5l0eribmm7b3p2bj89pauv61b2vaql.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtWUs3DOT1hO_yXrcYJ3TtVyg6cDQWGdE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "694421567950-lt5l0eribmm7b3p2bj89pauv61b2vaql.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
