@@ -8,15 +8,20 @@ part 'user_provider.g.dart';
 @riverpod
 class UserNotifier extends _$UserNotifier {
   @override
-  UserModel? build() => null;
+  FutureOr<UserModel?> build() async =>
+      await ref.read(userRepositoryProvider).currentUser();
 
   UserRepository get _repository => ref.read(userRepositoryProvider);
 
   Future<void> register(String username, String email, String password) async {
-    state = await _repository.register(username, email, password);
+    final user = await _repository.register(username, email, password);
+
+    state = AsyncData(user);
   }
 
   Future<void> login(String username, String password) async {
-    state = await _repository.login(username, password);
+    final user = await _repository.login(username, password);
+
+    state = AsyncData(user);
   }
 }

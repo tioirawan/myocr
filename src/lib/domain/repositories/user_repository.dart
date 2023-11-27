@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../data/repositories/user_repository_impl.dart';
 import '../models/user_model.dart';
+import '../services/firebase_services.dart';
 
 part 'user_repository.g.dart';
 
@@ -14,5 +15,7 @@ abstract class UserRepository {
 
 @riverpod
 UserRepository userRepository(UserRepositoryRef ref) {
-  return UserRepositoryImpl();
+  final auth = ref.watch(firebaseAuthProvider);
+
+  return UserRepositoryImpl(auth);
 }

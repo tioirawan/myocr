@@ -1,31 +1,58 @@
+import 'package:firebase_auth/firebase_auth.dart';
+
 import '../../domain/models/user_model.dart';
 import '../../domain/repositories/user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
+  final FirebaseAuth _auth;
+
+  UserRepositoryImpl(this._auth);
+
   @override
   Future<UserModel?> register(
-      String username,
-      String email,
-      String password,
-      ) async {
-    return UserModel();
+    String username,
+    String email,
+    String password,
+  ) async {
+    final credential = await _auth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+    return UserModel.fromCredential(credential);
   }
 
   @override
   Future<UserModel?> login(
-      String username,
-      String password,
-      ) async {
-    return UserModel();
+    String username,
+    String password,
+  ) async {
+    final credential = await _auth.signInWithEmailAndPassword(
+      email: username,
+      password: password,
+    );
+
+    return UserModel.fromCredential(credential);
   }
 
   @override
   Future<bool> logout() async {
-    return true;
+    try {
+      await _auth.signOut();
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   @override
   Future<UserModel?> currentUser() async {
-    return UserModel();
+    return _auth.currentUser != null
+        ? UserModel(
+            id: _auth.currentUser!.uid,
+            name: _auth.currentUser!.displayName,
+            email: _auth.currentUser!.email,
+          )
+        : null;
   }
 }
