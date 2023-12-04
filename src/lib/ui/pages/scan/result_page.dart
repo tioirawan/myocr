@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../data/repositories/identity_card_repository_impl.dart';
+import '../../../domain/models/identity_card_model.dart';
+import '../../providers/identity_card_provider.dart';
 import '../../widgets/custom_scaffold.dart';
 
 Map<String, String> ktp = {
@@ -27,6 +30,7 @@ class ResultPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    IdentityCardRepositoryImpl repo = IdentityCardRepositoryImpl();
     return CustomScaffold(
       body: Center(
         child: Form(
@@ -76,7 +80,12 @@ class ResultPage extends StatelessWidget {
                     backgroundColor: Theme.of(context).colorScheme.primary,
                   ),
                   onPressed: () {
-                    Navigator.popAndPushNamed(context, '/scan/success');
+                    try {
+                      repo.create(IdentityCardModel.fromJson(ktp));
+                      Navigator.popAndPushNamed(context, '/scan/success');
+                    } catch (e) {
+                      print('Error result page insert data: $e');
+                    }
                   },
                   child: const Text('Simpan'),
                 ),
