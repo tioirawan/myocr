@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProfilePage extends StatelessWidget {
+import '../providers/user_provider.dart';
+
+class ProfilePage extends ConsumerWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
@@ -92,11 +95,12 @@ class ProfilePage extends StatelessWidget {
                     textAlign: TextAlign.left),
                 const SizedBox(height: 10),
                 TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      '/profile/edit',
-                    );
+                  onPressed: () async {
+                    await ref.read(userNotifierProvider.notifier).logout();
+
+                    if (context.mounted) {
+                      Navigator.pushNamed(context, '/');
+                    }
                   },
                   style: TextButton.styleFrom(
                     foregroundColor: Theme.of(context).colorScheme.onBackground,
@@ -152,11 +156,12 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
                 TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      '/login',
-                    );
+                  onPressed: () async {
+                    await ref.read(userNotifierProvider.notifier).logout();
+
+                    if (context.mounted) {
+                      Navigator.pushNamed(context, '/');
+                    }
                   },
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.red,

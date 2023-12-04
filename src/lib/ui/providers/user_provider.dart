@@ -14,14 +14,26 @@ class UserNotifier extends _$UserNotifier {
   UserRepository get _repository => ref.read(userRepositoryProvider);
 
   Future<void> register(String username, String email, String password) async {
-    final user = await _repository.register(username, email, password);
-
-    state = AsyncData(user);
+    state = await AsyncValue.guard(
+      () => _repository.register(username, email, password),
+    );
   }
 
   Future<void> login(String username, String password) async {
     final user = await _repository.login(username, password);
 
     state = AsyncData(user);
+  }
+
+  Future<void> logout() async {
+    final user = state.value;
+
+    state = const AsyncValue.data(null);
+
+    final success = await _repository.logout();
+
+    if (!success) {
+      state = AsyncValue.data(user);
+    }
   }
 }
