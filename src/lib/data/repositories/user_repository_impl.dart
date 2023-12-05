@@ -18,17 +18,17 @@ class UserRepositoryImpl implements UserRepository {
       email: email,
       password: password,
     );
-
+    await credential.user?.updateDisplayName(username);
     return UserModel.fromCredential(credential);
   }
 
   @override
   Future<UserModel?> login(
-    String username,
+    String email,
     String password,
   ) async {
     final credential = await _auth.signInWithEmailAndPassword(
-      email: username,
+      email: email,
       password: password,
     );
 

@@ -1,13 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../domain/models/user_model.dart';
+import '../providers/user_provider.dart';
 import '../themes/color_schemes.g.dart';
 import '../widgets/custom_scaffold.dart';
 
-class SplashScreenPage extends StatelessWidget {
+class SplashScreenPage extends ConsumerStatefulWidget {
   const SplashScreenPage({Key? key}) : super(key: key);
 
   @override
+  ConsumerState<SplashScreenPage> createState() => _SplashScreenPageState();
+}
+
+class _SplashScreenPageState extends ConsumerState<SplashScreenPage> {
+  void _listenUser(_, AsyncValue<UserModel?> state) {
+    state.maybeWhen(
+      data: (user) {
+        if (user != null) {
+          Navigator.of(context).pushReplacementNamed('/dashboard');
+        }
+      },
+      error: (e, st) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.toString()),
+          ),
+        );
+      },
+      orElse: () {},
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
+    ref.listen(userNotifierProvider, _listenUser);
     return CustomScaffold(
       body: Column(
         children: [

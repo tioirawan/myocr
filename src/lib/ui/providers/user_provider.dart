@@ -19,10 +19,10 @@ class UserNotifier extends _$UserNotifier {
     );
   }
 
-  Future<void> login(String username, String password) async {
-    final user = await _repository.login(username, password);
-
-    state = AsyncData(user);
+  Future<void> login(String email, String password) async {
+    state = await AsyncValue.guard(
+      () => _repository.login(email, password),
+    );
   }
 
   Future<void> logout() async {
