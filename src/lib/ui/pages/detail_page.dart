@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../data/repositories/identity_card_repository_impl.dart';
 import '../widgets/custom_scaffold.dart';
 
 final ktp = {
@@ -26,6 +27,9 @@ class DetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final data =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    IdentityCardRepositoryImpl repo = IdentityCardRepositoryImpl();
     return CustomScaffold(
       body: Center(
         child: Column(
@@ -46,41 +50,55 @@ class DetailPage extends StatelessWidget {
             ),
             const Divider(height: 0),
             Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.all(24.0),
-                itemCount: ktp.length + 2,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  if (index == 0) {
-                    return _buildKtpImage(context);
-                  } else if (index == 1) {
-                    return _buildScannedPicture(context);
-                  }
+                child: FutureBuilder(
+                    future: repo.get(data['id'] as String),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return ListView.builder(
+                          padding: const EdgeInsets.all(24.0),
+                          itemCount: snapshot.data!.toJson().length + 2,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            if (index == 0) {
+                              return _buildKtpImage(context);
+                            } else if (index == 1) {
+                              return _buildScannedPicture(context);
+                            }
 
-                  index -= 2;
+                            index -= 2;
 
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                            child: Text(
-                          ktp.keys.elementAt(index),
-                          style:
-                              Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    fontWeight: FontWeight.bold,
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 4.0),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                      child: Text(
+                                    snapshot.data!
+                                        .toJson()
+                                        .keys
+                                        .elementAt(index),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
+                                        .copyWith(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                  )),
+                                  Expanded(
+                                    child: Text(
+                                        ': ${snapshot.data!.toJson().values.elementAt(index).toUpperCase()}'),
                                   ),
-                        )),
-                        Expanded(
-                          child: Text(
-                              ': ${ktp.values.elementAt(index).toUpperCase()}'),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text("${snapshot.error}");
+                      }
+                      return const CircularProgressIndicator();
+                    })),
             Padding(
               padding: const EdgeInsets.all(24.0),
               child: ElevatedButton(
