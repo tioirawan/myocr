@@ -1,5 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import '../themes/color_schemes.g.dart';
 
@@ -59,6 +64,28 @@ class DashboardPage extends StatelessWidget {
       'lastAccessed': '01 Dec 2022, 06.00 AM',
     },
   ];
+
+  Future getImage() async {
+    final ImagePicker picker = ImagePicker();
+
+    // Meminta izin penyimpanan sebelum mengambil gambar
+    var status = await Permission.storage.request();
+    if (status != PermissionStatus.granted) {
+      print('Izin tidak diberikan untuk mengakses penyimpanan.');
+      return;
+    }
+
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image == null) return;
+
+    // Menggunakan permision_handler untuk memeriksa izin penyimpanan
+    final bool hasStoragePermission = await Permission.storage.isGranted;
+    if (hasStoragePermission) {
+      // Lanjutkan dengan operasi pengambilan gambar dan pemrosesan lainnya
+    } else {
+      print('Izin tidak diberikan untuk mengakses penyimpanan.');
+    }
+  }
 
   const DashboardPage({Key? key}) : super(key: key);
 
@@ -176,19 +203,21 @@ class DashboardPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         InkWell(
-                          onTap: () {},
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.upload_file,
-                                color: colorScheme.primary,
-                                size: 30,
-                              ),
-                              const SizedBox(height: 8),
-                              const Text('Unggah KTP'),
-                            ],
-                          ),
+                        onTap: () {
+                          getImage();
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.upload_file,
+                              color: colorScheme.primary,
+                              size: 30,
+                            ),
+                            const SizedBox(height: 8),
+                            const Text('Unggah KTP'),
+                          ],
+                        ),
                         ),
                         InkWell(
                           onTap: () {
