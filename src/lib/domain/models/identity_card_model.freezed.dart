@@ -26,6 +26,7 @@ mixin _$IdentityCardModel {
   String? get nik => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get birthPlace => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: IdentityCardModel._birthDateFromJson)
   DateTime? get birthDate => throw _privateConstructorUsedError;
   String? get gender => throw _privateConstructorUsedError;
   String? get bloodType => throw _privateConstructorUsedError;
@@ -61,6 +62,7 @@ abstract class $IdentityCardModelCopyWith<$Res> {
       String? nik,
       String? name,
       String? birthPlace,
+      @JsonKey(fromJson: IdentityCardModel._birthDateFromJson)
       DateTime? birthDate,
       String? gender,
       String? bloodType,
@@ -211,6 +213,7 @@ abstract class _$$IdentityCardModelImplCopyWith<$Res>
       String? nik,
       String? name,
       String? birthPlace,
+      @JsonKey(fromJson: IdentityCardModel._birthDateFromJson)
       DateTime? birthDate,
       String? gender,
       String? bloodType,
@@ -354,7 +357,7 @@ class _$IdentityCardModelImpl implements _IdentityCardModel {
       this.nik,
       this.name,
       this.birthPlace,
-      this.birthDate,
+      @JsonKey(fromJson: IdentityCardModel._birthDateFromJson) this.birthDate,
       this.gender,
       this.bloodType,
       this.streetAdress,
@@ -385,6 +388,7 @@ class _$IdentityCardModelImpl implements _IdentityCardModel {
   @override
   final String? birthPlace;
   @override
+  @JsonKey(fromJson: IdentityCardModel._birthDateFromJson)
   final DateTime? birthDate;
   @override
   final String? gender;
@@ -511,6 +515,7 @@ abstract class _IdentityCardModel implements IdentityCardModel {
       final String? nik,
       final String? name,
       final String? birthPlace,
+      @JsonKey(fromJson: IdentityCardModel._birthDateFromJson)
       final DateTime? birthDate,
       final String? gender,
       final String? bloodType,
@@ -542,6 +547,7 @@ abstract class _IdentityCardModel implements IdentityCardModel {
   @override
   String? get birthPlace;
   @override
+  @JsonKey(fromJson: IdentityCardModel._birthDateFromJson)
   DateTime? get birthDate;
   @override
   String? get gender;

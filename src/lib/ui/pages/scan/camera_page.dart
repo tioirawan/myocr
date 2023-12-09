@@ -1,19 +1,33 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image/image.dart' as imglib;
+import 'package:path_provider/path_provider.dart';
 
-class CameraPage extends StatefulWidget {
+import '../../providers/scanner/scanner_controller_provider.dart';
+import '../../providers/scanner/scanner_state.dart';
+
+class CameraPage extends ConsumerStatefulWidget {
   const CameraPage({super.key});
 
   @override
-  State<CameraPage> createState() => _CameraPageState();
+  ConsumerState<CameraPage> createState() => _CameraPageState();
 }
 
-class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
+class _CameraPageState extends ConsumerState<CameraPage>
+    with WidgetsBindingObserver {
   CameraController? controller;
   List<CameraDescription> cameras = [];
+  Size? screenSize;
 
   FlashMode flashMode = FlashMode.off;
   CameraDescription? currentCamera;
+
+  bool _isTakingPicture = false;
+
+  File? croppedImage;
 
   @override
   void initState() {
@@ -48,7 +62,7 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
   ) async {
     final CameraController cameraController = CameraController(
       cameraDescription,
-      ResolutionPreset.high,
+      ResolutionPreset.ultraHigh,
     );
 
     controller = cameraController;
@@ -64,14 +78,53 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
     }
   }
 
+  Widget cameraWidget(context, Size screenSize) {
+    if (controller == null || !controller!.value.isInitialized) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    var camera = controller!.value;
+
+    // calculate scale depending on screen and camera ratios
+    // this is actually size.aspectRatio / (1 / camera.aspectRatio)
+    // because camera preview size is received as landscape
+    // but we're calculating for portrait orientation
+    var scale = screenSize.aspectRatio * camera.aspectRatio;
+
+    // to prevent scaling down, invert the value
+    if (scale < 1) scale = 1 / scale;
+
+    return Transform.scale(
+      scale: scale,
+      child: Center(
+        child: CameraPreview(controller!),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    ref.listen(scannerControllerProvider, (_, ScannerState state) {
+      if (state is ScannerStateScanning) {
+        Navigator.popAndPushNamed(context, '/scan/result');
+      }
+    });
+
     return Scaffold(
       body: Stack(
         children: [
           Positioned.fill(
             child: controller != null && controller!.value.isInitialized
-                ? CameraPreview(controller!)
+                ? LayoutBuilder(builder: (context, constraints) {
+                    screenSize ??= Size(
+                      constraints.maxWidth,
+                      constraints.maxHeight,
+                    );
+
+                    return cameraWidget(context, screenSize!);
+                  })
                 : const Center(
                     child: CircularProgressIndicator(),
                   ),
@@ -85,7 +138,7 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
             right: 0,
             bottom: 82,
             child: _buildActionButtons(),
-          )
+          ),
         ],
       ),
     );
@@ -274,8 +327,8 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
   }
 
   Widget actionButton(
-    IconData icon,
-    VoidCallback onPressed,
+    Widget icon,
+    VoidCallback? onPressed,
     Size size,
     Color bgColor,
     Color fgColor,
@@ -289,7 +342,7 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
       ),
       child: IconButton(
         onPressed: onPressed,
-        icon: Icon(icon),
+        icon: icon,
         color: fgColor,
       ),
     );
@@ -301,8 +354,8 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
       children: [
         actionButton(
           flashMode == FlashMode.off
-              ? Icons.flashlight_off
-              : Icons.flashlight_on,
+              ? const Icon(Icons.flashlight_off)
+              : const Icon(Icons.flashlight_on),
           () {
             setState(() {
               if (flashMode == FlashMode.off) {
@@ -324,17 +377,22 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
         ),
         const SizedBox(width: 24),
         actionButton(
-          Icons.camera_alt,
-          () {
-            Navigator.popAndPushNamed(context, '/scan/result');
-          },
+          _isTakingPicture
+              ? Center(
+                  child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Theme.of(context).colorScheme.onPrimary,
+                  ),
+                ))
+              : const Icon(Icons.camera_alt),
+          _isTakingPicture ? null : _takePicture,
           const Size(84, 84),
           Theme.of(context).colorScheme.primary,
           Theme.of(context).colorScheme.onPrimary,
         ),
         const SizedBox(width: 24),
         actionButton(
-          Icons.flip_camera_ios,
+          const Icon(Icons.flip_camera_ios),
           () {
             setState(() {
               if (currentCamera == cameras.first) {
@@ -351,5 +409,82 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
         ),
       ],
     );
+  }
+
+  Future<void> _takePicture() async {
+    if (controller == null || !controller!.value.isInitialized) {
+      return;
+    }
+
+    setState(() {
+      _isTakingPicture = true;
+    });
+
+    try {
+      final XFile picture = await controller!.takePicture();
+
+      final decode = imglib.Command()..decodeImage(await picture.readAsBytes());
+
+      await decode.executeThread();
+
+      imglib.Image? image = decode.outputImage;
+
+      if (image == null) {
+        return;
+      }
+
+      const double aspectRatio = 85.6 / 53.98;
+      const double padding = 16;
+
+      double horizontalPadding;
+      double verticalPadding;
+
+      if (image.width / image.height < aspectRatio) {
+        horizontalPadding = padding;
+        verticalPadding =
+            (image.height - ((image.width - 2 * padding) / aspectRatio)) / 2;
+      } else {
+        verticalPadding = padding;
+        horizontalPadding =
+            (image.width - ((image.height - 2 * padding) * aspectRatio)) / 2;
+      }
+
+      final crop = imglib.Command()
+        ..image(image)
+        ..copyCrop(
+          x: horizontalPadding.toInt(),
+          y: verticalPadding.toInt(),
+          width: (image.width - 2 * horizontalPadding).toInt(),
+          height: (image.height - 2 * verticalPadding).toInt(),
+        )
+        ..getBytes();
+
+      await crop.executeThread();
+
+      // save to temp dir
+      final tempDir = await getTemporaryDirectory();
+
+      final tempPath = '${tempDir.path}/scanned_and_cropped_image.jpg';
+
+      final file = File(tempPath);
+
+      await file.writeAsBytes(imglib.encodeJpg(crop.outputImage!));
+
+      croppedImage = file;
+
+      _scanResult(file);
+
+      setState(() {});
+    } on CameraException {
+      // pass
+    } finally {
+      setState(() {
+        _isTakingPicture = false;
+      });
+    }
+  }
+
+  Future<void> _scanResult(File image) async {
+    await ref.read(scannerControllerProvider.notifier).scan(image);
   }
 }

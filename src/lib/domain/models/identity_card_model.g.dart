@@ -15,9 +15,8 @@ _$IdentityCardModelImpl _$$IdentityCardModelImplFromJson(
       nik: json['nik'] as String?,
       name: json['name'] as String?,
       birthPlace: json['birthPlace'] as String?,
-      birthDate: json['birthDate'] == null
-          ? null
-          : DateTime.parse(json['birthDate'] as String),
+      birthDate:
+          IdentityCardModel._birthDateFromJson(json['birthDate'] as String?),
       gender: json['gender'] as String?,
       bloodType: json['bloodType'] as String?,
       streetAdress: json['streetAdress'] as String?,

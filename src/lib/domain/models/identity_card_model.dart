@@ -12,6 +12,7 @@ class IdentityCardModel with _$IdentityCardModel {
     final String? nik,
     final String? name,
     final String? birthPlace,
+    @JsonKey(fromJson: IdentityCardModel._birthDateFromJson)
     final DateTime? birthDate,
     final String? gender,
     final String? bloodType,
@@ -33,4 +34,10 @@ class IdentityCardModel with _$IdentityCardModel {
 
   factory IdentityCardModel.fromJson(Map<String, dynamic> json) =>
       _$IdentityCardModelFromJson(json);
+
+  static DateTime? _birthDateFromJson(String? birthDate) {
+    if (birthDate == null) return null;
+    final date = birthDate.split('-');
+    return DateTime(int.parse(date[2]), int.parse(date[1]), int.parse(date[0]));
+  }
 }

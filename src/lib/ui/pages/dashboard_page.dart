@@ -1,96 +1,132 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:firebase_core/firebase_core.dart';
 
+import '../providers/scanner/scanner_controller_provider.dart';
+import '../providers/scanner/scanner_state.dart';
 import '../themes/color_schemes.g.dart';
 
-class DashboardPage extends StatelessWidget {
-  final Map<String, String> userData = const {
-    'name': 'Putin',
-    'profileImage': 'assets/images/profile.png',
-  };
+const Map<String, String> userData = {
+  'name': 'Putin',
+  'profileImage': 'assets/images/profile.png',
+};
 
-  final List<Map<String, dynamic>> documents = const [
-    {
-      'id': '1',
-      'name': 'Vladimir Putin',
-      'nik': '0034132142123',
-      'gender': 'Laki-laki',
-      'isValid': true,
-      'lastAccessed': '20 Aug 2023, 08.00 PM',
-    },
-    {
-      'id': '2',
-      'name': 'Jane Smith',
-      'nik': '0987654321',
-      'gender': 'Perempuan',
-      'isValid': false,
-      'lastAccessed': '20 Jan 2023, 09.00 AM',
-    },
-    {
-      'id': '3',
-      'name': 'David Doe',
-      'nik': '1245690784',
-      'gender': 'Laki-laki',
-      'isValid': true,
-      'lastAccessed': '19 Jan 2023, 05.00 PM',
-    },
-    {
-      'id': '4',
-      'name': 'Salimah Hoe',
-      'nik': '0987456445',
-      'gender': 'Perempuan',
-      'isValid': false,
-      'lastAccessed': '22 Dec 2022, 10.00 AM',
-    },
-    {
-      'id': '5',
-      'name': 'Rusdi Smith',
-      'nik': '1348675964',
-      'gender': 'Laki-laki',
-      'isValid': false,
-      'lastAccessed': '22 Dec 2022, 08.00 AM',
-    },
-    {
-      'id': '6',
-      'name': 'Shanti Hwang',
-      'nik': '0758999634',
-      'gender': 'Perempuan',
-      'isValid': true,
-      'lastAccessed': '01 Dec 2022, 06.00 AM',
-    },
-  ];
+const List<Map<String, dynamic>> documents = [
+  {
+    'id': '1',
+    'name': 'Vladimir Putin',
+    'nik': '0034132142123',
+    'gender': 'Laki-laki',
+    'isValid': true,
+    'lastAccessed': '20 Aug 2023, 08.00 PM',
+  },
+  {
+    'id': '2',
+    'name': 'Jane Smith',
+    'nik': '0987654321',
+    'gender': 'Perempuan',
+    'isValid': false,
+    'lastAccessed': '20 Jan 2023, 09.00 AM',
+  },
+  {
+    'id': '3',
+    'name': 'David Doe',
+    'nik': '1245690784',
+    'gender': 'Laki-laki',
+    'isValid': true,
+    'lastAccessed': '19 Jan 2023, 05.00 PM',
+  },
+  {
+    'id': '4',
+    'name': 'Salimah Hoe',
+    'nik': '0987456445',
+    'gender': 'Perempuan',
+    'isValid': false,
+    'lastAccessed': '22 Dec 2022, 10.00 AM',
+  },
+  {
+    'id': '5',
+    'name': 'Rusdi Smith',
+    'nik': '1348675964',
+    'gender': 'Laki-laki',
+    'isValid': false,
+    'lastAccessed': '22 Dec 2022, 08.00 AM',
+  },
+  {
+    'id': '6',
+    'name': 'Shanti Hwang',
+    'nik': '0758999634',
+    'gender': 'Perempuan',
+    'isValid': true,
+    'lastAccessed': '01 Dec 2022, 06.00 AM',
+  },
+];
 
-  Future getImage() async {
+class DashboardPage extends ConsumerStatefulWidget {
+  const DashboardPage({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<DashboardPage> createState() => _DashboardPageState();
+}
+
+class _DashboardPageState extends ConsumerState<DashboardPage> {
+  Future getImage(BuildContext context) async {
+    final colorScheme = Theme.of(context).colorScheme;
+
     final ImagePicker picker = ImagePicker();
+    final ImageCropper cropper = ImageCropper();
 
     // Meminta izin penyimpanan sebelum mengambil gambar
-    var status = await Permission.storage.request();
-    if (status != PermissionStatus.granted) {
-      print('Izin tidak diberikan untuk mengakses penyimpanan.');
-      return;
-    }
+    // var status = await Permission.storage.request();
+    // if (status != PermissionStatus.granted) {
+    //   print('Izin tidak diberikan untuk mengakses penyimpanan.');
+    //   return;
+    // }
 
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     if (image == null) return;
 
-    // Menggunakan permision_handler untuk memeriksa izin penyimpanan
-    final bool hasStoragePermission = await Permission.storage.isGranted;
-    if (hasStoragePermission) {
-      // Lanjutkan dengan operasi pengambilan gambar dan pemrosesan lainnya
-    } else {
-      print('Izin tidak diberikan untuk mengakses penyimpanan.');
-    }
+    // crop image
+    final CroppedFile? croppedImage = await cropper.cropImage(
+      sourcePath: image.path,
+      aspectRatio: const CropAspectRatio(ratioX: 85.6, ratioY: 53.98),
+      compressQuality: 100,
+      maxWidth: 700,
+      maxHeight: 700,
+      compressFormat: ImageCompressFormat.jpg,
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarTitle: 'Sesuaikan KTP',
+          toolbarColor: colorScheme.primary,
+          toolbarWidgetColor: colorScheme.onPrimary,
+          initAspectRatio: CropAspectRatioPreset.original,
+          lockAspectRatio: true,
+          statusBarColor: colorScheme.primary,
+          activeControlsWidgetColor: colorScheme.primary,
+          hideBottomControls: true,
+        ),
+      ],
+    );
+
+    _scanResult(File(croppedImage!.path));
   }
 
-  const DashboardPage({Key? key}) : super(key: key);
+  Future<void> _scanResult(File image) async {
+    await ref.read(scannerControllerProvider.notifier).scan(image);
+  }
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(scannerControllerProvider, (_, ScannerState state) {
+      if (state is ScannerStateScanning) {
+        Navigator.pushNamed(context, '/scan/result');
+      }
+    });
+
     final colorScheme = Theme.of(context).colorScheme;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -200,40 +236,63 @@ class DashboardPage extends StatelessWidget {
                       ],
                     ),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        InkWell(
-                        onTap: () {
-                          getImage();
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.upload_file,
-                              color: colorScheme.primary,
-                              size: 30,
+                        Expanded(
+                          child: Material(
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              bottomLeft: Radius.circular(20),
                             ),
-                            const SizedBox(height: 8),
-                            const Text('Unggah KTP'),
-                          ],
-                        ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(context, '/scan');
-                          },
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.camera_alt,
-                                color: colorScheme.primary,
-                                size: 32,
+                            child: InkWell(
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                bottomLeft: Radius.circular(20),
                               ),
-                              const SizedBox(height: 8),
-                              const Text('Scan KTP'),
-                            ],
+                              onTap: () {
+                                getImage(context);
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.upload_file,
+                                    color: colorScheme.primary,
+                                    size: 30,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  const Text('Unggah KTP'),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Material(
+                            borderRadius: const BorderRadius.only(
+                              topRight: Radius.circular(20),
+                              bottomRight: Radius.circular(20),
+                            ),
+                            child: InkWell(
+                              borderRadius: const BorderRadius.only(
+                                topRight: Radius.circular(20),
+                                bottomRight: Radius.circular(20),
+                              ),
+                              onTap: () {
+                                Navigator.pushNamed(context, '/scan');
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.camera_alt,
+                                    color: colorScheme.primary,
+                                    size: 32,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  const Text('Scan KTP'),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ],
