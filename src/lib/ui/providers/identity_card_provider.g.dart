@@ -7,11 +7,11 @@ part of 'identity_card_provider.dart';
 // **************************************************************************
 
 String _$identityCardNotifierHash() =>
-    r'8d228aab7cb40bf1ac25b20922e02bfa064514ee';
+    r'508926e701a7d2c1daccc7e4bd26e9a646dae57e';
 
 /// See also [IdentityCardNotifier].
 @ProviderFor(IdentityCardNotifier)
-final identityCardNotifierProvider = AutoDisposeNotifierProvider<
+final identityCardNotifierProvider = AutoDisposeAsyncNotifierProvider<
     IdentityCardNotifier, List<IdentityCardModel>>.internal(
   IdentityCardNotifier.new,
   name: r'identityCardNotifierProvider',
@@ -22,6 +22,7 @@ final identityCardNotifierProvider = AutoDisposeNotifierProvider<
   allTransitiveDependencies: null,
 );
 
-typedef _$IdentityCardNotifier = AutoDisposeNotifier<List<IdentityCardModel>>;
+typedef _$IdentityCardNotifier
+    = AutoDisposeAsyncNotifier<List<IdentityCardModel>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

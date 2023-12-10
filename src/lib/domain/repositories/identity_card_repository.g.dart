@@ -7,7 +7,7 @@ part of 'identity_card_repository.dart';
 // **************************************************************************
 
 String _$identityCardRepositoryHash() =>
-    r'715bc49fb3362ab98621d0e809bf0d783dad0eae';
+    r'212c97a58f4f8ac7d91225cb27ddf5ce934d2053';
 
 /// See also [identityCardRepository].
 @ProviderFor(identityCardRepository)

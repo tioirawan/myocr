@@ -6,6 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../domain/models/identity_card_model.dart';
+import '../providers/identity_card_provider.dart';
 import '../providers/scanner/scanner_controller_provider.dart';
 import '../providers/scanner/scanner_state.dart';
 import '../themes/color_schemes.g.dart';
@@ -14,57 +16,6 @@ const Map<String, String> userData = {
   'name': 'Putin',
   'profileImage': 'assets/images/profile.png',
 };
-
-const List<Map<String, dynamic>> documents = [
-  {
-    'id': '1',
-    'name': 'Vladimir Putin',
-    'nik': '0034132142123',
-    'gender': 'Laki-laki',
-    'isValid': true,
-    'lastAccessed': '20 Aug 2023, 08.00 PM',
-  },
-  {
-    'id': '2',
-    'name': 'Jane Smith',
-    'nik': '0987654321',
-    'gender': 'Perempuan',
-    'isValid': false,
-    'lastAccessed': '20 Jan 2023, 09.00 AM',
-  },
-  {
-    'id': '3',
-    'name': 'David Doe',
-    'nik': '1245690784',
-    'gender': 'Laki-laki',
-    'isValid': true,
-    'lastAccessed': '19 Jan 2023, 05.00 PM',
-  },
-  {
-    'id': '4',
-    'name': 'Salimah Hoe',
-    'nik': '0987456445',
-    'gender': 'Perempuan',
-    'isValid': false,
-    'lastAccessed': '22 Dec 2022, 10.00 AM',
-  },
-  {
-    'id': '5',
-    'name': 'Rusdi Smith',
-    'nik': '1348675964',
-    'gender': 'Laki-laki',
-    'isValid': false,
-    'lastAccessed': '22 Dec 2022, 08.00 AM',
-  },
-  {
-    'id': '6',
-    'name': 'Shanti Hwang',
-    'nik': '0758999634',
-    'gender': 'Perempuan',
-    'isValid': true,
-    'lastAccessed': '01 Dec 2022, 06.00 AM',
-  },
-];
 
 class DashboardPage extends ConsumerStatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -126,6 +77,8 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
         Navigator.pushNamed(context, '/scan/result');
       }
     });
+
+    final identityCards = ref.watch(identityCardNotifierProvider);
 
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -304,47 +257,17 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(top: 92 / 2),
-                child: ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                    itemCount: documents.length + 1,
-                    itemBuilder: (context, index) {
-                      if (index == 0) {
-                        return const Padding(
-                          padding: EdgeInsets.only(
-                            left: 30.0,
-                            top: 24,
-                            bottom: 8.0,
-                          ),
-                          child: Text(
-                            'Riwayat',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                        );
-                      }
-
-                      index -= 1;
-
-                      final document = documents[index];
-
-                      return InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            '/detail',
-                            arguments: document,
-                          );
-                        },
-                        child: _buildKTPCard(
-                          document['id'] as String,
-                          document['name'] as String,
-                          document['nik'] as String,
-                          document['gender'] as String,
-                          document['isValid'] as bool,
-                          document['lastAccessed'] as String,
-                        ),
-                      );
-                    }),
+                child: identityCards.when(
+                  data: (documents) => documents.isEmpty
+                      ? _buildEmptyDocuments(context)
+                      : _buildDocuments(documents),
+                  loading: () => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  error: (error, _) => Center(
+                    child: Text(error.toString()),
+                  ),
+                ),
               ),
             ),
           ],
@@ -353,14 +276,96 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
     );
   }
 
+  Widget _buildDocuments(List<IdentityCardModel> documents) {
+    return RefreshIndicator(
+      onRefresh: () async =>
+          ref.read(identityCardNotifierProvider.notifier).refresh(),
+      child: ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+        itemCount: documents.length + 1,
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return const Padding(
+              padding: EdgeInsets.only(
+                left: 30.0,
+                top: 24,
+                bottom: 8.0,
+              ),
+              child: Text(
+                'Riwayat',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            );
+          }
+
+          index -= 1;
+
+          final document = documents[index];
+
+          return _buildKTPCard(
+            document,
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                '/detail',
+                arguments: document,
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Column _buildEmptyDocuments(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.only(
+            left: 30.0,
+            right: 30.0,
+            top: 24,
+          ),
+          child: Text(
+            'Riwayat',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+        ),
+        Expanded(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.hourglass_empty_rounded,
+                  size: 64,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Belum ada data KTP\nyang ditambahkan',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ],
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
   Widget _buildKTPCard(
-    String transactionID,
-    String name,
-    String nik,
-    String gender,
-    bool isValid,
-    String lastAccessed,
-  ) {
+    IdentityCardModel document, {
+    VoidCallback? onTap,
+  }) {
+    // TODO: update this
+    const isValid = true;
+
     return Container(
       margin: const EdgeInsets.all(8),
       decoration: BoxDecoration(
@@ -375,76 +380,90 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
           ),
         ],
       ),
-      child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        leading: ClipRRect(
-          child: Image.asset(
-            'assets/images/dummyktp.png',
-            fit: BoxFit.contain,
-          ),
-        ),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      child: Material(
+        borderRadius: BorderRadius.circular(8),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(8),
+          onTap: onTap,
+          child: ListTile(
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: document.cardImageUrl != null
+                  ? Image.network(
+                      document.cardImageUrl!,
+                      fit: BoxFit.contain,
+                    )
+                  : Image.asset(
+                      'assets/images/dummyktp.png',
+                      fit: BoxFit.contain,
+                    ),
+            ),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  name,
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      document.name ?? '-',
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      '${document.nik} - ${document.gender}',
+                      style: const TextStyle(fontSize: 10),
+                    ),
+                    const SizedBox(height: 5),
+                  ],
                 ),
-                Text(
-                  '$nik - $gender',
-                  style: const TextStyle(fontSize: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    // Action for the 'Unduh' button
+                    print('Unduh button tapped');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: lightColorScheme.primary,
+                    minimumSize: const Size(20, 25),
+                    padding: const EdgeInsets.symmetric(horizontal: 14),
+                  ),
+                  child: const Text('Unduh', style: TextStyle(fontSize: 10)),
                 ),
-                const SizedBox(height: 5),
               ],
             ),
-            ElevatedButton(
-              onPressed: () {
-                // Action for the 'Unduh' button
-                print('Unduh button tapped for $nik');
-              },
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: lightColorScheme.primary,
-                minimumSize: const Size(20, 25),
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-              ),
-              child: const Text('Unduh', style: TextStyle(fontSize: 10)),
-            ),
-          ],
-        ),
-        subtitle: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              width: 60,
-              height: 18,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: isValid ? Colors.green : Colors.red,
-                  width: 1,
-                ),
-              ),
-              child: Center(
-                child: Text(
-                  isValid ? 'Valid' : 'Tidak Valid',
-                  style: TextStyle(
-                    color: isValid ? Colors.green : Colors.red,
-                    fontSize: 8,
-                    fontWeight: FontWeight.bold,
+            subtitle: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: 60,
+                  height: 18,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: isValid ? Colors.green : Colors.red,
+                      width: 1,
+                    ),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      isValid ? 'Valid' : 'Tidak Valid',
+                      style: TextStyle(
+                        color: isValid ? Colors.green : Colors.red,
+                        fontSize: 8,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                Text(
+                  document.createdAt?.toString() ?? '-',
+                  style: const TextStyle(fontSize: 8),
+                ),
+              ],
             ),
-            Text(
-              lastAccessed,
-              style: const TextStyle(fontSize: 8),
-            ),
-          ],
+          ),
         ),
       ),
     );
