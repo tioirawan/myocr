@@ -10,7 +10,7 @@ import '../../domain/models/identity_card_model.dart';
 import '../providers/identity_card_provider.dart';
 import '../providers/scanner/scanner_controller_provider.dart';
 import '../providers/scanner/scanner_state.dart';
-import '../themes/color_schemes.g.dart';
+import '../widgets/identity_card_tile.dart';
 
 const Map<String, String> userData = {
   'name': 'Putin',
@@ -302,8 +302,8 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
 
           final document = documents[index];
 
-          return _buildKTPCard(
-            document,
+          return IdentityCardTile(
+            document: document,
             onTap: () {
               Navigator.pushNamed(
                 context,
@@ -356,116 +356,6 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
           ),
         )
       ],
-    );
-  }
-
-  Widget _buildKTPCard(
-    IdentityCardModel document, {
-    VoidCallback? onTap,
-  }) {
-    // TODO: update this
-    const isValid = true;
-
-    return Container(
-      margin: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 2,
-            blurRadius: 20,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Material(
-        borderRadius: BorderRadius.circular(8),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(8),
-          onTap: onTap,
-          child: ListTile(
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            leading: ClipRRect(
-              borderRadius: BorderRadius.circular(4),
-              child: document.cardImageUrl != null
-                  ? Image.network(
-                      document.cardImageUrl!,
-                      fit: BoxFit.contain,
-                    )
-                  : Image.asset(
-                      'assets/images/dummyktp.png',
-                      fit: BoxFit.contain,
-                    ),
-            ),
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      document.name ?? '-',
-                      style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      '${document.nik} - ${document.gender}',
-                      style: const TextStyle(fontSize: 10),
-                    ),
-                    const SizedBox(height: 5),
-                  ],
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // Action for the 'Unduh' button
-                    print('Unduh button tapped');
-                  },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: lightColorScheme.primary,
-                    minimumSize: const Size(20, 25),
-                    padding: const EdgeInsets.symmetric(horizontal: 14),
-                  ),
-                  child: const Text('Unduh', style: TextStyle(fontSize: 10)),
-                ),
-              ],
-            ),
-            subtitle: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: 60,
-                  height: 18,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: isValid ? Colors.green : Colors.red,
-                      width: 1,
-                    ),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      isValid ? 'Valid' : 'Tidak Valid',
-                      style: TextStyle(
-                        color: isValid ? Colors.green : Colors.red,
-                        fontSize: 8,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-                Text(
-                  document.createdAt?.toString() ?? '-',
-                  style: const TextStyle(fontSize: 8),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
     );
   }
 }
