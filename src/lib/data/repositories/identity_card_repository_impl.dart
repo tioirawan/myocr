@@ -1,75 +1,105 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import '../../domain/models/identity_card_model.dart';
 import '../../domain/repositories/identity_card_repository.dart';
 
 class IdentityCardRepositoryImpl implements IdentityCardRepository {
-  final db = FirebaseFirestore.instance;
-  IdentityCardModel ic = IdentityCardModel.fromJson({
-    'id': '1',
-    'cardImageUrl': 'https://i.ibb.co/0jZQYQg/ktp.png',
-    'cardPhotoUrl': 'https://i.ibb.co/0jZQYQg/ktp.png',
-    'nik': '0034132142123',
-    'name': 'Vladimir Putin',
-    'birthPlace': 'Jakarta',
-    'birthDate': '20-04-1981',
-    'gender': 'Laki-laki',
-    'bloodType': 'O',
-    'streetAddress': 'Jl. Sudirman No. 123',
-    'rtNumber': '007',
-    'rwNumber': '008',
-    'village': 'Gulag',
-    'subDistrict': 'Sukajan',
-    'district': 'Jakarta Pusat',
-    'religion': 'Islam',
-    'maritalStatus': 'Belum Kawin',
-    'job': 'Wiraswasta',
-    'nationality': 'WNI',
-    'vallidUntil': 'Seumur Hidup',
-  });
+  final FirebaseFirestore _firestore;
+  final FirebaseStorage _storage;
+
+  IdentityCardRepositoryImpl(
+    this._firestore,
+    this._storage,
+  );
+
+  CollectionReference get ic => _firestore.collection('identity_cards');
+  Reference get cardStorage => _storage.ref('identity_cards');
+
   @override
-  Future<void> create(IdentityCardModel card) async {
-    return await db.collection('identity_cards').add(card.toJson()).then(
-          (doc) => print("Add Document with id ${doc.id}"),
-          onError: (e) => print("Error adding document $e"),
-        );
+  Future<IdentityCardModel> create(
+    IdentityCardModel card, {
+    Uint8List? croppedImage,
+    Uint8List? photoImage,
+  }) async {
+    final doc = ic.doc();
+
+    final cardImageRef = cardStorage.child('${doc.id}/card.jpg');
+    final photoRef = cardStorage.child('${doc.id}/photo.jpg');
+
+    if (croppedImage != null) {
+      await cardImageRef.putData(croppedImage);
+      card = card.copyWith(cardImageUrl: await cardImageRef.getDownloadURL());
+    }
+
+    if (photoImage != null) {
+      await photoRef.putData(photoImage);
+      card = card.copyWith(cardPhotoUrl: await photoRef.getDownloadURL());
+    }
+
+    await doc.set(card.toDocument());
+
+    return card.copyWith(
+      id: doc.id,
+      createdAt: DateTime.now(),
+    );
   }
 
   @override
   Future<void> delete(IdentityCardModel card) async {
-    return await db.collection('identity_cards').doc(card.id).delete().then(
-          (doc) => print("Document deleted"),
-          onError: (e) => print("Error updating document $e"),
-        );
+    await ic.doc(card.id).delete();
+
+    try {
+      if (card.cardImageUrl != null) {
+        await _storage.refFromURL(card.cardImageUrl!).delete();
+      }
+      if (card.cardPhotoUrl != null) {
+        await _storage.refFromURL(card.cardPhotoUrl!).delete();
+      }
+    } on Exception {
+      // pass
+    }
   }
 
   @override
   Future<IdentityCardModel?> get(String id) async {
-    return await db.collection('identity_cards').doc(id).get().then(
-      (DocumentSnapshot doc) {
-        return ic as Future<IdentityCardModel>;
-      },
-      onError: (e) => print("Error getting document: $e"),
-    );
+    final snapshot = await ic.doc(id).get();
+
+    return IdentityCardModel.fromSnapshot(snapshot);
   }
 
   @override
-  Future<void> update(IdentityCardModel card) async {
-    return await db
-        .collection('identity_cards')
-        .doc(card.id)
-        .update(card.toJson())
-        .then((value) => print("DocumentSnapshot successfully updated!"),
-            onError: (e) => print("Error updating document $e"));
+  Future<IdentityCardModel> update(
+    IdentityCardModel card, {
+    Uint8List? croppedImage,
+    Uint8List? photoImage,
+  }) async {
+    final cardImageRef = cardStorage.child('${card.id}/card.jpg');
+    final photoRef = cardStorage.child('${card.id}/photo.jpg');
+
+    if (croppedImage != null) {
+      await cardImageRef.putData(croppedImage);
+      card = card.copyWith(cardImageUrl: await cardImageRef.getDownloadURL());
+    }
+
+    if (photoImage != null) {
+      await photoRef.putData(photoImage);
+      card = card.copyWith(cardPhotoUrl: await photoRef.getDownloadURL());
+    }
+
+    await ic.doc(card.id).update(card.toDocument());
+
+    return card;
   }
 
   @override
   Future<List<IdentityCardModel>> getAll() async {
-    return await db.collection('identity_cards').get().then(
-      (QuerySnapshot docs) {
-        return docs as Future<List<IdentityCardModel>>;
-      },
-      onError: (e) => print("Error getting document: $e"),
-    );
+    final snapshot = await ic.orderBy('created_at', descending: true).get();
+
+    return snapshot.docs
+        .map((doc) => IdentityCardModel.fromSnapshot(doc))
+        .toList();
   }
 }

@@ -15,8 +15,9 @@ _$IdentityCardModelImpl _$$IdentityCardModelImplFromJson(
       nik: json['nik'] as String?,
       name: json['name'] as String?,
       birthPlace: json['birthPlace'] as String?,
-      birthDate:
-          IdentityCardModel._birthDateFromJson(json['birthDate'] as String?),
+      birthDate: json['birthDate'] == null
+          ? null
+          : DateTime.parse(json['birthDate'] as String),
       gender: json['gender'] as String?,
       bloodType: json['bloodType'] as String?,
       streetAdress: json['streetAdress'] as String?,
@@ -30,6 +31,8 @@ _$IdentityCardModelImpl _$$IdentityCardModelImplFromJson(
       job: json['job'] as String?,
       nationality: json['nationality'] as String?,
       validUntil: json['validUntil'] as String?,
+      createdAt: IdentityCardModel._dateTimeFromTimestamp(
+          json['created_at'] as Timestamp?),
     );
 
 Map<String, dynamic> _$$IdentityCardModelImplToJson(
@@ -55,4 +58,5 @@ Map<String, dynamic> _$$IdentityCardModelImplToJson(
       'job': instance.job,
       'nationality': instance.nationality,
       'validUntil': instance.validUntil,
+      'created_at': instance.createdAt?.toIso8601String(),
     };

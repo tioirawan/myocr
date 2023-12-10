@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'identity_card_model.freezed.dart';
@@ -5,6 +6,8 @@ part 'identity_card_model.g.dart';
 
 @freezed
 class IdentityCardModel with _$IdentityCardModel {
+  const IdentityCardModel._();
+
   factory IdentityCardModel({
     final String? id,
     final String? cardImageUrl,
@@ -12,7 +15,7 @@ class IdentityCardModel with _$IdentityCardModel {
     final String? nik,
     final String? name,
     final String? birthPlace,
-    @JsonKey(fromJson: IdentityCardModel._birthDateFromJson)
+    // @JsonKey(fromJson: IdentityCardModel._birthDateFromJson)
     final DateTime? birthDate,
     final String? gender,
     final String? bloodType,
@@ -30,14 +33,39 @@ class IdentityCardModel with _$IdentityCardModel {
     final String? job,
     final String? nationality,
     final String? validUntil,
+    @JsonKey(
+      name: 'created_at',
+      fromJson: IdentityCardModel._dateTimeFromTimestamp,
+    )
+    final DateTime? createdAt,
   }) = _IdentityCardModel;
 
   factory IdentityCardModel.fromJson(Map<String, dynamic> json) =>
       _$IdentityCardModelFromJson(json);
 
+  Map<String, dynamic> toDocument() => toJson()
+    ..remove('id')
+    ..update(
+      'created_at',
+      (_) => Timestamp.now(),
+    );
+
+  factory IdentityCardModel.fromSnapshot(DocumentSnapshot<Object?> snapshot) {
+    final data = snapshot.data() as Map<String, dynamic>;
+
+    return IdentityCardModel.fromJson(data).copyWith(
+      id: snapshot.id,
+    );
+  }
+
   static DateTime? _birthDateFromJson(String? birthDate) {
     if (birthDate == null) return null;
     final date = birthDate.split('-');
     return DateTime(int.parse(date[2]), int.parse(date[1]), int.parse(date[0]));
+  }
+
+  static DateTime? _dateTimeFromTimestamp(Timestamp? timestamp) {
+    if (timestamp == null) return null;
+    return timestamp.toDate();
   }
 }

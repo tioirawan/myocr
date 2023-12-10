@@ -5,9 +5,11 @@ class ResultFormField extends StatefulWidget {
     required this.title,
     super.key,
     this.controller,
+    this.validator,
   });
   final String title;
   final TextEditingController? controller;
+  final String? Function(String?)? validator;
 
   @override
   State<ResultFormField> createState() => _ResultFormFieldState();
@@ -40,6 +42,7 @@ class _ResultFormFieldState extends State<ResultFormField> {
           TextFormField(
             controller: _controller,
             style: textTheme.bodyMedium,
+            validator: widget.validator,
             decoration: InputDecoration(
               filled: true,
               fillColor: const Color(0xFFE2E2E5).withOpacity(0.4),

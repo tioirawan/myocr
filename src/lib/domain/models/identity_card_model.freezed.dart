@@ -25,8 +25,8 @@ mixin _$IdentityCardModel {
   String? get cardPhotoUrl => throw _privateConstructorUsedError;
   String? get nik => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
-  String? get birthPlace => throw _privateConstructorUsedError;
-  @JsonKey(fromJson: IdentityCardModel._birthDateFromJson)
+  String? get birthPlace =>
+      throw _privateConstructorUsedError; // @JsonKey(fromJson: IdentityCardModel._birthDateFromJson)
   DateTime? get birthDate => throw _privateConstructorUsedError;
   String? get gender => throw _privateConstructorUsedError;
   String? get bloodType => throw _privateConstructorUsedError;
@@ -42,6 +42,9 @@ mixin _$IdentityCardModel {
   String? get job => throw _privateConstructorUsedError;
   String? get nationality => throw _privateConstructorUsedError;
   String? get validUntil => throw _privateConstructorUsedError;
+  @JsonKey(
+      name: 'created_at', fromJson: IdentityCardModel._dateTimeFromTimestamp)
+  DateTime? get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -62,7 +65,6 @@ abstract class $IdentityCardModelCopyWith<$Res> {
       String? nik,
       String? name,
       String? birthPlace,
-      @JsonKey(fromJson: IdentityCardModel._birthDateFromJson)
       DateTime? birthDate,
       String? gender,
       String? bloodType,
@@ -76,7 +78,11 @@ abstract class $IdentityCardModelCopyWith<$Res> {
       String? maritalStatus,
       String? job,
       String? nationality,
-      String? validUntil});
+      String? validUntil,
+      @JsonKey(
+          name: 'created_at',
+          fromJson: IdentityCardModel._dateTimeFromTimestamp)
+      DateTime? createdAt});
 }
 
 /// @nodoc
@@ -112,6 +118,7 @@ class _$IdentityCardModelCopyWithImpl<$Res, $Val extends IdentityCardModel>
     Object? job = freezed,
     Object? nationality = freezed,
     Object? validUntil = freezed,
+    Object? createdAt = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -194,6 +201,10 @@ class _$IdentityCardModelCopyWithImpl<$Res, $Val extends IdentityCardModel>
           ? _value.validUntil
           : validUntil // ignore: cast_nullable_to_non_nullable
               as String?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 }
@@ -213,7 +224,6 @@ abstract class _$$IdentityCardModelImplCopyWith<$Res>
       String? nik,
       String? name,
       String? birthPlace,
-      @JsonKey(fromJson: IdentityCardModel._birthDateFromJson)
       DateTime? birthDate,
       String? gender,
       String? bloodType,
@@ -227,7 +237,11 @@ abstract class _$$IdentityCardModelImplCopyWith<$Res>
       String? maritalStatus,
       String? job,
       String? nationality,
-      String? validUntil});
+      String? validUntil,
+      @JsonKey(
+          name: 'created_at',
+          fromJson: IdentityCardModel._dateTimeFromTimestamp)
+      DateTime? createdAt});
 }
 
 /// @nodoc
@@ -261,6 +275,7 @@ class __$$IdentityCardModelImplCopyWithImpl<$Res>
     Object? job = freezed,
     Object? nationality = freezed,
     Object? validUntil = freezed,
+    Object? createdAt = freezed,
   }) {
     return _then(_$IdentityCardModelImpl(
       id: freezed == id
@@ -343,13 +358,17 @@ class __$$IdentityCardModelImplCopyWithImpl<$Res>
           ? _value.validUntil
           : validUntil // ignore: cast_nullable_to_non_nullable
               as String?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$IdentityCardModelImpl implements _IdentityCardModel {
+class _$IdentityCardModelImpl extends _IdentityCardModel {
   _$IdentityCardModelImpl(
       {this.id,
       this.cardImageUrl,
@@ -357,7 +376,7 @@ class _$IdentityCardModelImpl implements _IdentityCardModel {
       this.nik,
       this.name,
       this.birthPlace,
-      @JsonKey(fromJson: IdentityCardModel._birthDateFromJson) this.birthDate,
+      this.birthDate,
       this.gender,
       this.bloodType,
       this.streetAdress,
@@ -370,7 +389,12 @@ class _$IdentityCardModelImpl implements _IdentityCardModel {
       this.maritalStatus,
       this.job,
       this.nationality,
-      this.validUntil});
+      this.validUntil,
+      @JsonKey(
+          name: 'created_at',
+          fromJson: IdentityCardModel._dateTimeFromTimestamp)
+      this.createdAt})
+      : super._();
 
   factory _$IdentityCardModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$IdentityCardModelImplFromJson(json);
@@ -387,8 +411,8 @@ class _$IdentityCardModelImpl implements _IdentityCardModel {
   final String? name;
   @override
   final String? birthPlace;
+// @JsonKey(fromJson: IdentityCardModel._birthDateFromJson)
   @override
-  @JsonKey(fromJson: IdentityCardModel._birthDateFromJson)
   final DateTime? birthDate;
   @override
   final String? gender;
@@ -419,10 +443,14 @@ class _$IdentityCardModelImpl implements _IdentityCardModel {
   final String? nationality;
   @override
   final String? validUntil;
+  @override
+  @JsonKey(
+      name: 'created_at', fromJson: IdentityCardModel._dateTimeFromTimestamp)
+  final DateTime? createdAt;
 
   @override
   String toString() {
-    return 'IdentityCardModel(id: $id, cardImageUrl: $cardImageUrl, cardPhotoUrl: $cardPhotoUrl, nik: $nik, name: $name, birthPlace: $birthPlace, birthDate: $birthDate, gender: $gender, bloodType: $bloodType, streetAdress: $streetAdress, rtNumber: $rtNumber, rwNumber: $rwNumber, village: $village, subDistrict: $subDistrict, district: $district, religion: $religion, maritalStatus: $maritalStatus, job: $job, nationality: $nationality, validUntil: $validUntil)';
+    return 'IdentityCardModel(id: $id, cardImageUrl: $cardImageUrl, cardPhotoUrl: $cardPhotoUrl, nik: $nik, name: $name, birthPlace: $birthPlace, birthDate: $birthDate, gender: $gender, bloodType: $bloodType, streetAdress: $streetAdress, rtNumber: $rtNumber, rwNumber: $rwNumber, village: $village, subDistrict: $subDistrict, district: $district, religion: $religion, maritalStatus: $maritalStatus, job: $job, nationality: $nationality, validUntil: $validUntil, createdAt: $createdAt)';
   }
 
   @override
@@ -463,7 +491,9 @@ class _$IdentityCardModelImpl implements _IdentityCardModel {
             (identical(other.nationality, nationality) ||
                 other.nationality == nationality) &&
             (identical(other.validUntil, validUntil) ||
-                other.validUntil == validUntil));
+                other.validUntil == validUntil) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt));
   }
 
   @JsonKey(ignore: true)
@@ -489,7 +519,8 @@ class _$IdentityCardModelImpl implements _IdentityCardModel {
         maritalStatus,
         job,
         nationality,
-        validUntil
+        validUntil,
+        createdAt
       ]);
 
   @JsonKey(ignore: true)
@@ -507,7 +538,7 @@ class _$IdentityCardModelImpl implements _IdentityCardModel {
   }
 }
 
-abstract class _IdentityCardModel implements IdentityCardModel {
+abstract class _IdentityCardModel extends IdentityCardModel {
   factory _IdentityCardModel(
       {final String? id,
       final String? cardImageUrl,
@@ -515,7 +546,6 @@ abstract class _IdentityCardModel implements IdentityCardModel {
       final String? nik,
       final String? name,
       final String? birthPlace,
-      @JsonKey(fromJson: IdentityCardModel._birthDateFromJson)
       final DateTime? birthDate,
       final String? gender,
       final String? bloodType,
@@ -529,7 +559,12 @@ abstract class _IdentityCardModel implements IdentityCardModel {
       final String? maritalStatus,
       final String? job,
       final String? nationality,
-      final String? validUntil}) = _$IdentityCardModelImpl;
+      final String? validUntil,
+      @JsonKey(
+          name: 'created_at',
+          fromJson: IdentityCardModel._dateTimeFromTimestamp)
+      final DateTime? createdAt}) = _$IdentityCardModelImpl;
+  _IdentityCardModel._() : super._();
 
   factory _IdentityCardModel.fromJson(Map<String, dynamic> json) =
       _$IdentityCardModelImpl.fromJson;
@@ -546,8 +581,7 @@ abstract class _IdentityCardModel implements IdentityCardModel {
   String? get name;
   @override
   String? get birthPlace;
-  @override
-  @JsonKey(fromJson: IdentityCardModel._birthDateFromJson)
+  @override // @JsonKey(fromJson: IdentityCardModel._birthDateFromJson)
   DateTime? get birthDate;
   @override
   String? get gender;
@@ -575,6 +609,10 @@ abstract class _IdentityCardModel implements IdentityCardModel {
   String? get nationality;
   @override
   String? get validUntil;
+  @override
+  @JsonKey(
+      name: 'created_at', fromJson: IdentityCardModel._dateTimeFromTimestamp)
+  DateTime? get createdAt;
   @override
   @JsonKey(ignore: true)
   _$$IdentityCardModelImplCopyWith<_$IdentityCardModelImpl> get copyWith =>
