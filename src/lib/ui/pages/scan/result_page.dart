@@ -6,6 +6,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../domain/models/card_scanner_result_model.dart';
+import '../../../domain/models/identity_card_model.dart';
+import '../../providers/identity_card_provider.dart';
 import '../../providers/scanner/scanner_controller_provider.dart';
 import '../../providers/scanner/scanner_state.dart';
 import '../../widgets/custom_scaffold.dart';
@@ -20,6 +22,8 @@ class ResultPage extends ConsumerStatefulWidget {
 }
 
 class _ResultPageState extends ConsumerState<ResultPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   late final TextEditingController _nikController,
       _nameController,
       _birthPlaceController,
@@ -39,6 +43,8 @@ class _ResultPageState extends ConsumerState<ResultPage> {
       _validUntilController;
   Uint8List? _croppedCard;
   Uint8List? _photo;
+
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -250,8 +256,18 @@ class _ResultPageState extends ConsumerState<ResultPage> {
     );
   }
 
+  String? Function(String? value) notEmpty(String field) {
+    return (value) {
+      if (value == null || value.isEmpty) {
+        return '$field tidak boleh kosong';
+      }
+      return null;
+    };
+  }
+
   Form _buildForm(BuildContext context) {
     return Form(
+      key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -279,69 +295,87 @@ class _ResultPageState extends ConsumerState<ResultPage> {
                 ResultFormField(
                   title: 'NIK',
                   controller: _nikController,
+                  validator: notEmpty('NIK'),
                 ),
                 ResultFormField(
                   title: 'Nama',
                   controller: _nameController,
+                  validator: notEmpty('Nama'),
                 ),
                 ResultFormField(
                   title: 'Tempat Lahir',
                   controller: _birthPlaceController,
+                  validator: notEmpty('Tempat Lahir'),
                 ),
                 ResultFormField(
                   title: 'Tanggal Lahir',
                   controller: _birthDateController,
+                  validator: notEmpty('Tanggal Lahir'),
                 ),
                 ResultFormField(
                   title: 'Jenis Kelamin',
                   controller: _genderController,
+                  validator: notEmpty('Jenis Kelamin'),
                 ),
                 ResultFormField(
                   title: 'Golongan Darah',
                   controller: _bloodTypeController,
+                  validator: notEmpty('Golongan Darah'),
                 ),
                 ResultFormField(
                   title: 'Alamat',
                   controller: _streetAddressController,
+                  validator: notEmpty('Alamat'),
                 ),
                 ResultFormField(
                   title: 'RT',
                   controller: _rtNumberController,
+                  validator: notEmpty('RT'),
                 ),
                 ResultFormField(
                   title: 'RW',
                   controller: _rwNumberController,
+                  validator: notEmpty('RW'),
                 ),
                 ResultFormField(
                   title: 'Kelurahan/Desa',
                   controller: _villageController,
+                  validator: notEmpty('Kelurahan/Desa'),
                 ),
                 ResultFormField(
                   title: 'Kecamatan',
                   controller: _subDistrictController,
+                  validator: notEmpty('Kecamatan'),
                 ),
                 ResultFormField(
                   title: 'Kabupaten/Kota',
                   controller: _districtController,
+                  validator: notEmpty('Kabupaten/Kota'),
                 ),
                 ResultFormField(
                   title: 'Agama',
                   controller: _religionController,
+                  validator: notEmpty('Agama'),
                 ),
                 ResultFormField(
                   title: 'Status Perkawinan',
                   controller: _maritalStatusController,
+                  validator: notEmpty('Status Perkawinan'),
                 ),
                 ResultFormField(
                   title: 'Pekerjaan',
                   controller: _jobController,
+                  validator: notEmpty('Pekerjaan'),
                 ),
                 ResultFormField(
-                    title: 'Kewarganegaraan',
-                    controller: _nationalityController),
+                  title: 'Kewarganegaraan',
+                  controller: _nationalityController,
+                  validator: notEmpty('Kewarganegaraan'),
+                ),
                 ResultFormField(
                   title: 'Berlaku Hingga',
                   controller: _validUntilController,
+                  validator: notEmpty('Berlaku Hingga'),
                 ),
               ],
             ),
@@ -354,14 +388,10 @@ class _ResultPageState extends ConsumerState<ResultPage> {
                 foregroundColor: Theme.of(context).colorScheme.onSecondary,
                 backgroundColor: Theme.of(context).colorScheme.primary,
               ),
-              onPressed: () {
-                try {
-                  Navigator.popAndPushNamed(context, '/scan/success');
-                } catch (e) {
-                  print('Error result page insert data: $e');
-                }
-              },
-              child: const Text('Simpan'),
+              onPressed: _isLoading ? null : _saveIdentityCard,
+              child: _isLoading
+                  ? const CircularProgressIndicator()
+                  : const Text('Simpan'),
             ),
           ),
         ],
@@ -422,6 +452,67 @@ class _ResultPageState extends ConsumerState<ResultPage> {
         ],
       ),
     );
+  }
+
+  Future<void> _saveIdentityCard() async {
+    try {
+      if (!_formKey.currentState!.validate()) return;
+
+      setState(() {
+        _isLoading = true;
+      });
+
+      final notifier = ref.read(identityCardNotifierProvider.notifier);
+
+      final birthDateString = _birthDateController.text.split('-');
+      final birthDate = DateTime(
+        int.tryParse(birthDateString[2]) ?? 2023,
+        int.tryParse(birthDateString[1]) ?? 1,
+        int.tryParse(birthDateString[0]) ?? 1,
+      );
+
+      final identityCard = IdentityCardModel(
+        nik: _nikController.text,
+        name: _nameController.text,
+        birthPlace: _birthPlaceController.text,
+        birthDate: birthDate,
+        gender: _genderController.text,
+        bloodType: _bloodTypeController.text,
+        streetAdress: _streetAddressController.text,
+        rtNumber: _rtNumberController.text,
+        rwNumber: _rwNumberController.text,
+        village: _villageController.text,
+        subDistrict: _subDistrictController.text,
+        district: _districtController.text,
+        religion: _religionController.text,
+        maritalStatus: _maritalStatusController.text,
+        job: _jobController.text,
+        nationality: _nationalityController.text,
+        validUntil: _validUntilController.text,
+      );
+
+      await notifier.save(
+        identityCard,
+        croppedImage: _croppedCard,
+        photoImage: _photo,
+      );
+
+      if (context.mounted) {
+        Navigator.popUntil(context, ModalRoute.withName('/dashboard'));
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.toString()),
+          ),
+        );
+      }
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override

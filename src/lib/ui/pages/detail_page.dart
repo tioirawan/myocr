@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../data/repositories/identity_card_repository_impl.dart';
+import '../../domain/models/identity_card_model.dart';
 import '../widgets/custom_scaffold.dart';
 
 final ktp = {
@@ -22,14 +23,19 @@ final ktp = {
   'Berlaku Hingga': 'Seumur Hidup',
 };
 
-class DetailPage extends StatelessWidget {
+class DetailPage extends ConsumerStatefulWidget {
   const DetailPage({super.key});
 
   @override
+  ConsumerState<DetailPage> createState() => _DetailPageState();
+}
+
+class _DetailPageState extends ConsumerState<DetailPage> {
+  @override
   Widget build(BuildContext context) {
     final data =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    IdentityCardRepositoryImpl repo = IdentityCardRepositoryImpl();
+        ModalRoute.of(context)!.settings.arguments as IdentityCardModel?;
+
     return CustomScaffold(
       body: Center(
         child: Column(
@@ -50,55 +56,32 @@ class DetailPage extends StatelessWidget {
             ),
             const Divider(height: 0),
             Expanded(
-                child: FutureBuilder(
-                    future: repo.get(data['id'] as String),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return ListView.builder(
-                          padding: const EdgeInsets.all(24.0),
-                          itemCount: snapshot.data!.toJson().length + 2,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            if (index == 0) {
-                              return _buildKtpImage(context);
-                            } else if (index == 1) {
-                              return _buildScannedPicture(context);
-                            }
-
-                            index -= 2;
-
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 4.0),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                      child: Text(
-                                    snapshot.data!
-                                        .toJson()
-                                        .keys
-                                        .elementAt(index),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
-                                        .copyWith(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                  )),
-                                  Expanded(
-                                    child: Text(
-                                        ': ${snapshot.data!.toJson().values.elementAt(index).toUpperCase()}'),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        );
-                      } else if (snapshot.hasError) {
-                        return Text("${snapshot.error}");
-                      }
-                      return const CircularProgressIndicator();
-                    })),
+              child: ListView(
+                padding: const EdgeInsets.all(24.0),
+                shrinkWrap: true,
+                children: [
+                  _buildKtpImage(context, data?.cardImageUrl),
+                  _buildScannedPicture(context, data?.cardPhotoUrl),
+                  _infoTile('NIK', data?.nik),
+                  _infoTile('Nama', data?.name),
+                  _infoTile('Tempat Lahir', data?.birthPlace),
+                  _infoTile('Tanggal Lahir', data?.birthDate.toString()),
+                  _infoTile('Jenis Kelamin', data?.gender),
+                  _infoTile('Golongan Darah', data?.bloodType),
+                  _infoTile('Alamat', data?.streetAdress),
+                  _infoTile('RT', data?.rtNumber),
+                  _infoTile('RW', data?.rwNumber),
+                  _infoTile('Kel/Desa', data?.village),
+                  _infoTile('Kecamatan', data?.subDistrict),
+                  _infoTile('Kab/Kot', data?.district),
+                  _infoTile('Agama', data?.religion),
+                  _infoTile('Status Perkawinan', data?.maritalStatus),
+                  _infoTile('Pekerjaan', data?.job),
+                  _infoTile('Kewarganegaraan', data?.nationality),
+                  _infoTile('Berlaku Hingga', data?.validUntil),
+                ],
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(24.0),
               child: ElevatedButton(
@@ -119,20 +102,49 @@ class DetailPage extends StatelessWidget {
     );
   }
 
-  Widget _buildKtpImage(BuildContext context) {
+  Widget _infoTile(String label, String? value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              label,
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+          ),
+          Expanded(
+            child: Text(': ${value?.toUpperCase() ?? '-'}'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildKtpImage(BuildContext context, String? url) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 24.0),
       child: AspectRatio(
         aspectRatio: 1.6,
-        child: Image.asset(
-          'assets/images/dummyktp.png',
-          fit: BoxFit.cover,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: url != null
+              ? Image.network(
+                  url,
+                  fit: BoxFit.cover,
+                )
+              : Image.asset(
+                  'assets/images/dummyktp.png',
+                  fit: BoxFit.cover,
+                ),
         ),
       ),
     );
   }
 
-  Widget _buildScannedPicture(BuildContext context) {
+  Widget _buildScannedPicture(BuildContext context, String? url) {
     return Align(
       alignment: Alignment.centerLeft,
       child: Column(
@@ -151,10 +163,15 @@ class DetailPage extends StatelessWidget {
               aspectRatio: 3 / 4,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Image.asset(
-                  'assets/images/profile.png',
-                  fit: BoxFit.cover,
-                ),
+                child: url != null
+                    ? Image.network(
+                        url,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.asset(
+                        'assets/images/profile.png',
+                        fit: BoxFit.cover,
+                      ),
               ),
             ),
           ),
