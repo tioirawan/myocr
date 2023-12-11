@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../data/datasources/dio_provider.dart';
 import '../../data/repositories/card_scanner_repository_impl.dart';
 import '../models/card_scanner_result_model.dart';
 
@@ -13,5 +14,7 @@ abstract class CardScannerRepository {
 
 @riverpod
 CardScannerRepository cardScannerRepository(CardScannerRepositoryRef ref) {
-  return CardScannerRepositoryImpl();
+  final dio = ref.watch(dioProvider);
+
+  return CardScannerRepositoryImpl(dio);
 }

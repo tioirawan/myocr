@@ -7,7 +7,7 @@ part of 'card_scanner_repository.dart';
 // **************************************************************************
 
 String _$cardScannerRepositoryHash() =>
-    r'86e6150c93595322b0c91cd9602fdb5c28ac567b';
+    r'6459a214a3602aed1c9e2d3395802f606cedc956';
 
 /// See also [cardScannerRepository].
 @ProviderFor(cardScannerRepository)
