@@ -1,5 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../providers/user_provider.dart';
 import '../widgets/custom_scaffold.dart';
@@ -15,6 +19,10 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   late TextEditingController fullName, email, password, phone;
+
+  late String? photoUrl;
+  Uint8List? photoImage;
+
   bool isShowPassword = true;
   bool isLoading = false;
 
@@ -28,6 +36,26 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
     email = TextEditingController(text: user?.email);
     password = TextEditingController();
     phone = TextEditingController(text: user?.phoneNumber);
+    photoUrl = user?.photoUrl;
+  }
+
+  Future<void> _updatePhoto() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      final cropped = await ImageCropper().cropImage(
+        sourcePath: image.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+        ],
+      );
+      final bytes =
+          await (cropped != null ? cropped.readAsBytes() : image.readAsBytes());
+
+      setState(() {
+        photoImage = bytes;
+      });
+    }
   }
 
   @override
@@ -70,27 +98,61 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                 padding: const EdgeInsets.all(24),
                 child: Column(
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Colors.white,
-                          width: 4.0,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 3,
-                            blurRadius: 5,
-                            offset: const Offset(0, 3),
+                    Stack(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: Colors.white,
+                              width: 4.0,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.2),
+                                spreadRadius: 3,
+                                blurRadius: 5,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      child: const CircleAvatar(
-                        radius: 50,
-                        backgroundImage:
-                            AssetImage('assets/images/profile.png'),
-                      ),
+                          child: photoImage != null
+                              ? CircleAvatar(
+                                  radius: 50,
+                                  backgroundImage: MemoryImage(photoImage!),
+                                )
+                              : (photoUrl != null
+                                  ? CircleAvatar(
+                                      radius: 50,
+                                      backgroundImage: NetworkImage(photoUrl!),
+                                    )
+                                  : const CircleAvatar(
+                                      radius: 50,
+                                      backgroundImage: AssetImage(
+                                          'assets/images/profile.png'),
+                                    )),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            width: 38,
+                            child: FittedBox(
+                              child: IconButton(
+                                icon: const Icon(
+                                  Icons.edit_rounded,
+                                  color: Colors.white,
+                                ),
+                                onPressed: _updatePhoto,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(
                       height: 36,
@@ -328,6 +390,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
       await ref.read(userNotifierProvider.notifier).updateProfile(
             updatedUser!,
             password: password.text.isEmpty ? null : password.text,
+            photoImage: photoImage,
           );
 
       setState(() {

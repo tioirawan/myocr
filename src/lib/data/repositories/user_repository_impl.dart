@@ -1,5 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../domain/models/user_model.dart';
@@ -8,12 +11,15 @@ import '../../domain/repositories/user_repository.dart';
 class UserRepositoryImpl implements UserRepository {
   final FirebaseAuth _auth;
   final FirebaseFirestore _firestore;
+  final FirebaseStorage _storage;
 
   CollectionReference get _users => _firestore.collection('users');
+  Reference get photoRef => _storage.ref('profile_photos');
 
   UserRepositoryImpl(
     this._auth,
     this._firestore,
+    this._storage,
   );
 
   @override
@@ -103,6 +109,7 @@ class UserRepositoryImpl implements UserRepository {
   Future<UserModel?> updateProfile(
     UserModel user, {
     String? password,
+    Uint8List? photoImage,
   }) async {
     final authUser = _auth.currentUser;
 
@@ -121,6 +128,18 @@ class UserRepositoryImpl implements UserRepository {
 
     if (password != null) {
       futures.add(authUser.updatePassword(password));
+    }
+
+    if (photoImage != null) {
+      final ref = photoRef.child('${authUser.uid}.jpg');
+
+      await ref.putData(photoImage);
+
+      final url = await ref.getDownloadURL();
+
+      futures.add(authUser.updatePhotoURL(url));
+
+      user = user.copyWith(photoUrl: url);
     }
 
     await Future.wait(futures);

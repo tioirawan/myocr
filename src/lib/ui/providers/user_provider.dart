@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../domain/models/user_model.dart';
@@ -31,9 +33,17 @@ class UserNotifier extends _$UserNotifier {
     );
   }
 
-  Future<void> updateProfile(UserModel user, {String? password}) async {
+  Future<void> updateProfile(
+    UserModel user, {
+    String? password,
+    Uint8List? photoImage,
+  }) async {
     state = await AsyncValue.guard(
-      () => _repository.updateProfile(user, password: password),
+      () => _repository.updateProfile(
+        user,
+        password: password,
+        photoImage: photoImage,
+      ),
     );
   }
 
