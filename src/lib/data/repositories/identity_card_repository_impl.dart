@@ -15,16 +15,18 @@ class IdentityCardRepositoryImpl implements IdentityCardRepository {
     this._storage,
   );
 
-  CollectionReference get ic => _firestore.collection('identity_cards');
+  CollectionReference ic(String userId) =>
+      _firestore.collection('users').doc(userId).collection('identity_cards');
   Reference get cardStorage => _storage.ref('identity_cards');
 
   @override
   Future<IdentityCardModel> create(
+    String userId,
     IdentityCardModel card, {
     Uint8List? croppedImage,
     Uint8List? photoImage,
   }) async {
-    final doc = ic.doc();
+    final doc = ic(userId).doc();
 
     final cardImageRef = cardStorage.child('${doc.id}/card.jpg');
     final photoRef = cardStorage.child('${doc.id}/photo.jpg');
@@ -48,8 +50,8 @@ class IdentityCardRepositoryImpl implements IdentityCardRepository {
   }
 
   @override
-  Future<void> delete(IdentityCardModel card) async {
-    await ic.doc(card.id).delete();
+  Future<void> delete(String userId, IdentityCardModel card) async {
+    await ic(userId).doc(card.id).delete();
 
     try {
       if (card.cardImageUrl != null) {
@@ -64,14 +66,15 @@ class IdentityCardRepositoryImpl implements IdentityCardRepository {
   }
 
   @override
-  Future<IdentityCardModel?> get(String id) async {
-    final snapshot = await ic.doc(id).get();
+  Future<IdentityCardModel?> get(String userId, String id) async {
+    final snapshot = await ic(userId).doc(id).get();
 
     return IdentityCardModel.fromSnapshot(snapshot);
   }
 
   @override
   Future<IdentityCardModel> update(
+    String userId,
     IdentityCardModel card, {
     Uint8List? croppedImage,
     Uint8List? photoImage,
@@ -89,14 +92,17 @@ class IdentityCardRepositoryImpl implements IdentityCardRepository {
       card = card.copyWith(cardPhotoUrl: await photoRef.getDownloadURL());
     }
 
-    await ic.doc(card.id).update(card.toDocument());
+    await ic(userId).doc(card.id).update(card.toDocument());
 
     return card;
   }
 
   @override
-  Future<List<IdentityCardModel>> getAll() async {
-    final snapshot = await ic.orderBy('created_at', descending: true).get();
+  Future<List<IdentityCardModel>> getAll(
+    String userId,
+  ) async {
+    final snapshot =
+        await ic(userId).orderBy('created_at', descending: true).get();
 
     return snapshot.docs
         .map((doc) => IdentityCardModel.fromSnapshot(doc))

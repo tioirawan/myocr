@@ -9,18 +9,20 @@ part 'identity_card_repository.g.dart';
 
 abstract class IdentityCardRepository {
   Future<IdentityCardModel> create(
+    String userId,
     IdentityCardModel card, {
     Uint8List? croppedImage,
     Uint8List? photoImage,
   });
   Future<IdentityCardModel> update(
+    String userId,
     IdentityCardModel card, {
     Uint8List? croppedImage,
     Uint8List? photoImage,
   });
-  Future<void> delete(IdentityCardModel card);
-  Future<IdentityCardModel?> get(String id);
-  Future<List<IdentityCardModel>> getAll();
+  Future<void> delete(String userId, IdentityCardModel card);
+  Future<IdentityCardModel?> get(String userId, String id);
+  Future<List<IdentityCardModel>> getAll(String userId);
 }
 
 @riverpod
