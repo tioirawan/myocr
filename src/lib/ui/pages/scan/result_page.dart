@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../domain/models/card_scanner_result_model.dart';
 import '../../../domain/models/identity_card_model.dart';
+import '../../../domain/services/audio_service.dart';
 import '../../providers/identity_card_provider.dart';
 import '../../providers/scanner/scanner_controller_provider.dart';
 import '../../providers/scanner/scanner_state.dart';
@@ -67,6 +68,12 @@ class _ResultPageState extends ConsumerState<ResultPage> {
     _jobController = TextEditingController();
     _nationalityController = TextEditingController();
     _validUntilController = TextEditingController();
+
+    final currentState = ref.read(scannerControllerProvider);
+
+    if (currentState is ScannerStateScanning) {
+      ref.read(audioServiceProvider).play(AudioType.scan);
+    }
   }
 
   void updateValues(CardScannerResultModel? result) {
@@ -106,6 +113,7 @@ class _ResultPageState extends ConsumerState<ResultPage> {
     ref.listen(scannerControllerProvider, (_, ScannerState state) {
       if (state is ScannerStateSuccess) {
         updateValues(state.result);
+        ref.read(audioServiceProvider).stop();
       } else if (state is ScannerStateError) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -114,6 +122,8 @@ class _ResultPageState extends ConsumerState<ResultPage> {
         );
       } else if (state is ScannerStateNoImage) {
         Navigator.popAndPushNamed(context, '/scan');
+      } else if (state is ScannerStateScanning) {
+        ref.read(audioServiceProvider).play(AudioType.scan);
       }
     });
 
@@ -498,7 +508,7 @@ class _ResultPageState extends ConsumerState<ResultPage> {
       );
 
       if (context.mounted) {
-        Navigator.popUntil(context, ModalRoute.withName('/dashboard'));
+        Navigator.pushReplacementNamed(context, '/scan/success');
       }
     } catch (e) {
       if (context.mounted) {

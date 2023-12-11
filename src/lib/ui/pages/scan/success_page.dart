@@ -2,22 +2,28 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SuccessPage extends StatefulWidget {
+import '../../../domain/services/audio_service.dart';
+
+class SuccessPage extends ConsumerStatefulWidget {
   const SuccessPage({super.key});
 
   @override
-  State<SuccessPage> createState() => _SuccessPageState();
+  ConsumerState<SuccessPage> createState() => _SuccessPageState();
 }
 
-class _SuccessPageState extends State<SuccessPage> {
+class _SuccessPageState extends ConsumerState<SuccessPage> {
   Timer? _timer;
 
   @override
   void initState() {
     super.initState();
+
+    ref.read(audioServiceProvider).play(AudioType.success);
+
     _timer = Timer(const Duration(seconds: 3), () {
-      Navigator.pop(context);
+      Navigator.popUntil(context, ModalRoute.withName('/dashboard'));
     });
   }
 
