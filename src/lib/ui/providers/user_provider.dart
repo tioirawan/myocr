@@ -25,6 +25,12 @@ class UserNotifier extends _$UserNotifier {
     );
   }
 
+  Future<void> loginWithGoogle() async {
+    state = await AsyncValue.guard(
+      () => _repository.loginWithGoogle(),
+    );
+  }
+
   Future<void> logout() async {
     final user = state.value;
 

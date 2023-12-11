@@ -9,6 +9,7 @@ part 'user_repository.g.dart';
 abstract class UserRepository {
   Future<UserModel?> register(String username, String email, String password);
   Future<UserModel?> login(String email, String password);
+  Future<UserModel?> loginWithGoogle();
   Future<UserModel?> currentUser();
   Future<bool> logout();
 }

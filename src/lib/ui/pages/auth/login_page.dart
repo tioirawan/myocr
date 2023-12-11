@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../domain/models/user_model.dart';
 import '../../providers/user_provider.dart';
 import '../../widgets/custom_scaffold.dart';
@@ -20,6 +21,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   bool isShowPassword = true;
   bool isLoading = false;
+  bool isGoogleLoading = false;
 
   void _listenUser(_, AsyncValue<UserModel?> state) {
     state.when(
@@ -219,11 +221,34 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           ),
                         ],
                       ),
-                      child: Center(
-                        child: Image.network(
-                          'https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png',
-                          width: 30, // Lebar gambar
-                          height: 30, // Tinggi gambar
+                      child: Material(
+                        shape: const CircleBorder(),
+                        color: Colors.white,
+                        child: InkWell(
+                          customBorder: const CircleBorder(),
+                          onTap: () async {
+                            setState(() {
+                              isGoogleLoading = true;
+                            });
+                            await ref
+                                .read(userNotifierProvider.notifier)
+                                .loginWithGoogle();
+                            setState(() {
+                              isGoogleLoading = false;
+                            });
+                          },
+                          child: Center(
+                            child: isGoogleLoading
+                                ? const Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : Image.network(
+                                    'https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png',
+                                    width: 30, // Lebar gambar
+                                    height: 30, // Tinggi gambar
+                                  ),
+                          ),
                         ),
                       ),
                     ),
