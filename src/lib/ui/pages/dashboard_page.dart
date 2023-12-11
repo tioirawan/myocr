@@ -10,6 +10,7 @@ import '../../domain/models/identity_card_model.dart';
 import '../providers/identity_card_provider.dart';
 import '../providers/scanner/scanner_controller_provider.dart';
 import '../providers/scanner/scanner_state.dart';
+import '../providers/user_provider.dart';
 import '../widgets/identity_card_tile.dart';
 
 const Map<String, String> userData = {
@@ -109,12 +110,27 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                               color: colorScheme.onPrimary,
                             ),
                           ),
-                          Text(
-                            '${userData['name']}!',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: colorScheme.onPrimary,
+                          Expanded(
+                            child: Consumer(
+                              builder: (context, ref, child) {
+                                final username = ref.watch(
+                                  userNotifierProvider.select(
+                                    (state) => state.value?.name,
+                                  ),
+                                );
+
+                                // print(FirebaseAuth.instance.currentUser);
+
+                                return Text(
+                                  '$username!',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: colorScheme.onPrimary,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                );
+                              },
                             ),
                           ),
                           const Spacer(),
@@ -140,12 +156,32 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                                       width: 3,
                                     ),
                                   ),
-                                  child: CircleAvatar(
-                                    radius: 28,
-                                    backgroundColor: Colors.transparent,
-                                    backgroundImage:
-                                        AssetImage(userData['profileImage']!),
-                                    foregroundColor: Colors.white,
+                                  child: Consumer(
+                                    builder: (context, ref, child) {
+                                      final photoUrl = ref.watch(
+                                        userNotifierProvider.select(
+                                          (state) => state.value?.photoUrl,
+                                        ),
+                                      );
+
+                                      if (photoUrl != null) {
+                                        return CircleAvatar(
+                                          radius: 28,
+                                          backgroundColor: Colors.transparent,
+                                          backgroundImage:
+                                              NetworkImage(photoUrl),
+                                          foregroundColor: Colors.white,
+                                        );
+                                      }
+
+                                      return const CircleAvatar(
+                                        radius: 28,
+                                        backgroundColor: Colors.transparent,
+                                        backgroundImage: AssetImage(
+                                            'assets/images/profile.png'),
+                                        foregroundColor: Colors.white,
+                                      );
+                                    },
                                   ),
                                 )),
                           ),

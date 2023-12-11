@@ -19,7 +19,7 @@ class UserRepositoryImpl implements UserRepository {
       password: password,
     );
     await credential.user?.updateDisplayName(username);
-    return UserModel.fromCredential(credential);
+    return UserModel.fromCredential(credential).copyWith(name: username);
   }
 
   @override
