@@ -10,6 +10,10 @@ abstract class UserRepository {
   Future<UserModel?> register(String username, String email, String password);
   Future<UserModel?> login(String email, String password);
   Future<UserModel?> loginWithGoogle();
+  Future<UserModel?> updateProfile(
+    UserModel user, {
+    String? password,
+  });
   Future<UserModel?> currentUser();
   Future<bool> logout();
 }
@@ -17,6 +21,7 @@ abstract class UserRepository {
 @riverpod
 UserRepository userRepository(UserRepositoryRef ref) {
   final auth = ref.watch(firebaseAuthProvider);
+  final firestore = ref.watch(firebaseFirestoreProvider);
 
-  return UserRepositoryImpl(auth);
+  return UserRepositoryImpl(auth, firestore);
 }

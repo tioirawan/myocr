@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'user_model.freezed.dart';
@@ -18,13 +18,13 @@ class UserModel with _$UserModel {
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
 
-  factory UserModel.fromCredential(UserCredential credential) {
+  factory UserModel.fromFirebaseUser(auth.User user) {
     return UserModel(
-      id: credential.user!.uid,
-      name: credential.user!.displayName,
-      email: credential.user!.email,
-      phoneNumber: credential.user!.phoneNumber,
-      photoUrl: credential.user!.photoURL,
+      id: user.uid,
+      name: user.displayName,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      photoUrl: user.photoURL,
     );
   }
 }

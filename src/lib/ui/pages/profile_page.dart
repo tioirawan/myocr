@@ -9,6 +9,8 @@ class ProfilePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
+    final user = ref.watch(userNotifierProvider.select((state) => state.value));
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Akun Saya',
@@ -49,34 +51,40 @@ class ProfilePage extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  child: const CircleAvatar(
-                    radius: 40,
-                    backgroundImage: AssetImage('assets/images/profile.png'),
-                  ),
+                  child: user?.photoUrl != null
+                      ? CircleAvatar(
+                          radius: 40,
+                          backgroundImage: NetworkImage(user!.photoUrl!),
+                        )
+                      : const CircleAvatar(
+                          radius: 40,
+                          backgroundImage:
+                              AssetImage('assets/images/profile.png'),
+                        ),
                 ),
                 const SizedBox(
                   width: 20,
                 ), // Add spacing between the CircleAvatar and Text
-                const Column(
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Vladimir Putin',
-                        style: TextStyle(
+                    Text(user?.name ?? '-',
+                        style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
                         textAlign: TextAlign.left),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Text(
-                      'vladimirputin@gmail.com',
-                      style: TextStyle(
+                      user?.email ?? '-',
+                      style: const TextStyle(
                         color: Colors
                             .grey, // Ganti dengan warna yang Anda inginkan
                         fontSize: 14, // Atur ukuran teks sesuai keinginan Anda
                       ),
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Text(
-                      '083848492377',
-                      style: TextStyle(
+                      user?.phoneNumber ?? '-',
+                      style: const TextStyle(
                         color: Colors
                             .grey, // Ganti dengan warna yang Anda inginkan
                         fontSize: 14, // Atur ukuran teks sesuai keinginan Anda
@@ -96,11 +104,10 @@ class ProfilePage extends ConsumerWidget {
                 const SizedBox(height: 10),
                 TextButton(
                   onPressed: () async {
-                    await ref.read(userNotifierProvider.notifier).logout();
-
-                    if (context.mounted) {
-                      Navigator.pushNamed(context, '/');
-                    }
+                    Navigator.pushNamed(
+                      context,
+                      '/profile/edit',
+                    );
                   },
                   style: TextButton.styleFrom(
                     foregroundColor: Theme.of(context).colorScheme.onBackground,

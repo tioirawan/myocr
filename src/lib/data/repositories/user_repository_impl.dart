@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -6,8 +7,14 @@ import '../../domain/repositories/user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final FirebaseAuth _auth;
+  final FirebaseFirestore _firestore;
 
-  UserRepositoryImpl(this._auth);
+  CollectionReference get _users => _firestore.collection('users');
+
+  UserRepositoryImpl(
+    this._auth,
+    this._firestore,
+  );
 
   @override
   Future<UserModel?> register(
@@ -19,8 +26,10 @@ class UserRepositoryImpl implements UserRepository {
       email: email,
       password: password,
     );
+
     await credential.user?.updateDisplayName(username);
-    return UserModel.fromCredential(credential).copyWith(name: username);
+
+    return UserModel.fromFirebaseUser(credential.user!);
   }
 
   @override
@@ -28,12 +37,12 @@ class UserRepositoryImpl implements UserRepository {
     String email,
     String password,
   ) async {
-    final credential = await _auth.signInWithEmailAndPassword(
+    await _auth.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
 
-    return UserModel.fromCredential(credential);
+    return currentUser();
   }
 
   @override
@@ -48,13 +57,23 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<UserModel?> currentUser() async {
-    return _auth.currentUser != null
-        ? UserModel(
-            id: _auth.currentUser!.uid,
-            name: _auth.currentUser!.displayName,
-            email: _auth.currentUser!.email,
-          )
+    final user = _auth.currentUser != null
+        ? UserModel.fromFirebaseUser(_auth.currentUser!)
         : null;
+
+    if (user == null) {
+      return null;
+    }
+
+    final snapshot = await _users.doc(user.id).get();
+
+    if (snapshot.exists) {
+      return user.copyWith(
+        phoneNumber: snapshot.get('phone_number'),
+      );
+    }
+
+    return null;
   }
 
   @override
@@ -77,6 +96,35 @@ class UserRepositoryImpl implements UserRepository {
 
     final userCredential = await _auth.signInWithCredential(credential);
 
-    return UserModel.fromCredential(userCredential);
+    return UserModel.fromFirebaseUser(userCredential.user!);
+  }
+
+  @override
+  Future<UserModel?> updateProfile(
+    UserModel user, {
+    String? password,
+  }) async {
+    final authUser = _auth.currentUser;
+
+    if (authUser == null) {
+      return null;
+    }
+
+    final futures = <Future>[];
+
+    futures.add(authUser.updateDisplayName(user.name));
+    futures.add(authUser.updateEmail(user.email!));
+
+    futures.add(_users.doc(user.id).set({
+      'phone_number': user.phoneNumber,
+    }));
+
+    if (password != null) {
+      futures.add(authUser.updatePassword(password));
+    }
+
+    await Future.wait(futures);
+
+    return user;
   }
 }

@@ -31,6 +31,12 @@ class UserNotifier extends _$UserNotifier {
     );
   }
 
+  Future<void> updateProfile(UserModel user, {String? password}) async {
+    state = await AsyncValue.guard(
+      () => _repository.updateProfile(user, password: password),
+    );
+  }
+
   Future<void> logout() async {
     final user = state.value;
 

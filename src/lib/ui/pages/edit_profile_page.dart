@@ -1,104 +1,114 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../providers/user_provider.dart';
 import '../widgets/custom_scaffold.dart';
 
-class EditProfilePage extends StatefulWidget {
+class EditProfilePage extends ConsumerStatefulWidget {
   const EditProfilePage({super.key});
 
   @override
-  State<EditProfilePage> createState() => _EditProfilePageState();
+  ConsumerState<EditProfilePage> createState() => _EditProfilePageState();
 }
 
-class _EditProfilePageState extends State<EditProfilePage> {
+class _EditProfilePageState extends ConsumerState<EditProfilePage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   late TextEditingController fullName, email, password, phone;
   bool isShowPassword = true;
+  bool isLoading = false;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    fullName = TextEditingController(text: "Vladimir Putin");
-    email = TextEditingController(text: "vladimirputin@gmail.com");
-    password = TextEditingController(text: "putinganteng123");
-    phone = TextEditingController(text: "083848492377");
+
+    final user = ref.read(userNotifierProvider).value;
+
+    fullName = TextEditingController(text: user?.name);
+    email = TextEditingController(text: user?.email);
+    password = TextEditingController();
+    phone = TextEditingController(text: user?.phoneNumber);
   }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+
     return CustomScaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          AppBar(
-            backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-            centerTitle: true,
-            scrolledUnderElevation: 0,
-            title: const Text(
-              'Edit Profil',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+      body: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            AppBar(
+              backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+              centerTitle: true,
+              scrolledUnderElevation: 0,
+              title: const Text(
+                'Edit Profil',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                color: Colors.black,
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              toolbarHeight: 60.0,
             ),
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              color: Colors.black,
-              onPressed: () {
-                Navigator.pop(context);
-              },
+            const Divider(
+              height: 1,
+              thickness: 1,
             ),
-            toolbarHeight: 60.0,
-          ),
-          const Divider(
-            // Tambahkan Divider di sini
-            height: 1,
-            thickness: 1,
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 4.0,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          spreadRadius: 3,
-                          blurRadius: 5,
-                          offset: const Offset(0, 3),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.white,
+                          width: 4.0,
                         ),
-                      ],
-                    ),
-                    child: const CircleAvatar(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            spreadRadius: 3,
+                            blurRadius: 5,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: const CircleAvatar(
                         radius: 50,
                         backgroundImage:
-                            AssetImage('assets/images/profile.png')),
-                  ),
-                  const SizedBox(
-                    height: 36,
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Nama Lengkap',
-                      style: textTheme.labelLarge!.apply(fontWeightDelta: 2),
+                            AssetImage('assets/images/profile.png'),
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  TextFormField(
-                    controller: fullName,
-                    style: textTheme.bodyMedium,
-                    decoration: InputDecoration(
+                    const SizedBox(
+                      height: 36,
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Nama Lengkap',
+                        style: textTheme.labelLarge!.apply(fontWeightDelta: 2),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    TextFormField(
+                      controller: fullName,
+                      style: textTheme.bodyMedium,
+                      decoration: InputDecoration(
                         filled: true,
                         fillColor: const Color(0xFFE2E2E5).withOpacity(0.4),
                         hintText: 'Masukkan Nama Lengkap',
@@ -114,25 +124,39 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         ),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide.none)),
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Alamat Email',
-                      style: textTheme.labelLarge!.apply(fontWeightDelta: 2),
+                            borderSide: BorderSide.none),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Nama lengkap tidak boleh kosong';
+                        }
+                        return null;
+                      },
                     ),
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  TextFormField(
-                    controller: email,
-                    style: textTheme.bodyMedium,
-                    decoration: InputDecoration(
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Alamat Email',
+                        style: textTheme.labelLarge!.apply(fontWeightDelta: 2),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    TextFormField(
+                      controller: email,
+                      style: textTheme.bodyMedium!.copyWith(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onBackground
+                            .withOpacity(0.5),
+                      ),
+                      readOnly: true,
+                      enabled: false,
+                      decoration: InputDecoration(
                         filled: true,
                         fillColor: const Color(0xFFE2E2E5).withOpacity(0.4),
                         hintText: 'Masukkan Alamat Email',
@@ -147,27 +171,35 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide.none)),
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Kata Sandi',
-                      style: textTheme.labelLarge!.apply(fontWeightDelta: 2),
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Alamat email tidak boleh kosong';
+                        }
+                        return null;
+                      },
                     ),
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  TextFormField(
-                    controller: password,
-                    style: textTheme.bodyMedium,
-                    obscureText: isShowPassword,
-                    decoration: InputDecoration(
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Kata Sandi',
+                        style: textTheme.labelLarge!.apply(fontWeightDelta: 2),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    TextFormField(
+                      controller: password,
+                      style: textTheme.bodyMedium,
+                      obscureText: isShowPassword,
+                      decoration: InputDecoration(
                         filled: true,
                         fillColor: const Color(0xFFE2E2E5).withOpacity(0.4),
                         hintText: 'Masukkan Kata Sandi',
@@ -191,26 +223,35 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide.none)),
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Nomor Telepon',
-                      style: textTheme.labelLarge!.apply(fontWeightDelta: 2),
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value?.isNotEmpty == true && value!.length < 6) {
+                          return 'Kata sandi minimal 6 karakter';
+                        }
+
+                        return null;
+                      },
                     ),
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  TextFormField(
-                    controller: phone,
-                    style: textTheme.bodyMedium,
-                    decoration: InputDecoration(
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Nomor Telepon',
+                        style: textTheme.labelLarge!.apply(fontWeightDelta: 2),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    TextFormField(
+                      controller: phone,
+                      style: textTheme.bodyMedium,
+                      decoration: InputDecoration(
                         filled: true,
                         fillColor: const Color(0xFFE2E2E5).withOpacity(0.4),
                         hintText: '083848492377',
@@ -226,33 +267,86 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         ),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide.none)),
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 48),
-                      backgroundColor: Theme.of(context).colorScheme.primary,
+                            borderSide: BorderSide.none),
+                      ),
                     ),
-                    onPressed: () {
-                      Navigator.popAndPushNamed(context, '/profile');
-                    },
-                    child: Text(
-                      'Simpan',
-                      style: Theme.of(context).textTheme.labelLarge!.apply(
-                            fontWeightDelta: 2,
-                            color: Theme.of(context).colorScheme.onPrimary,
-                          ),
+                    const SizedBox(
+                      height: 40,
                     ),
-                  ),
-                ],
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 48),
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                      ),
+                      onPressed: isLoading
+                          ? null
+                          : _onSave, // Tambahkan parameter onPressed
+                      child: isLoading
+                          ? const SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
+                            )
+                          : Text(
+                              'Simpan',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelLarge!
+                                  .apply(
+                                    fontWeightDelta: 2,
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary,
+                                  ),
+                            ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
+  }
+
+  Future<void> _onSave() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        isLoading = true;
+      });
+
+      final user = ref.read(userNotifierProvider).value;
+
+      final updatedUser = user?.copyWith(
+        name: fullName.text,
+        email: email.text,
+        phoneNumber: phone.text,
+      );
+
+      await ref.read(userNotifierProvider.notifier).updateProfile(
+            updatedUser!,
+            password: password.text.isEmpty ? null : password.text,
+          );
+
+      setState(() {
+        isLoading = false;
+      });
+
+      if (context.mounted) {
+        Navigator.pop(context);
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    fullName.dispose();
+    email.dispose();
+    password.dispose();
+    phone.dispose();
+
+    super.dispose();
   }
 }
