@@ -252,6 +252,28 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 18),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Belum punya akun? ',
+                          style: Theme.of(context).textTheme.bodySmall!,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).pushNamed('/register');
+                          },
+                          child: Text(
+                            'Daftar',
+                            style:
+                                Theme.of(context).textTheme.bodySmall!.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 )
               ],
