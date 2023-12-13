@@ -43,6 +43,7 @@ class MainApp extends StatelessWidget {
         useMaterial3: true,
         colorScheme: darkColorScheme,
       ),
+      debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.light,
       initialRoute: '/',
       routes: {
