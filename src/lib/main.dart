@@ -6,6 +6,7 @@ import 'firebase_options.dart';
 import 'ui/pages/about_page.dart';
 import 'ui/pages/auth/login_page.dart';
 import 'ui/pages/auth/register_page.dart';
+import 'ui/pages/cv_page.dart';
 import 'ui/pages/dashboard_page.dart';
 import 'ui/pages/detail_page.dart';
 import 'ui/pages/edit_profile_page.dart';
@@ -57,6 +58,7 @@ class MainApp extends StatelessWidget {
         '/profile': (_) => const ProfilePage(),
         '/about': (_) => const AboutPage(),
         '/profile/edit': (_) => const EditProfilePage(),
+        '/cv': (_) => const InputCvPage(),
       },
     );
   }
