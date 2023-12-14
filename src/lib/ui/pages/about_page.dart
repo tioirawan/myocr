@@ -5,17 +5,23 @@ class AboutPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        centerTitle: true,
-        scrolledUnderElevation: 0,
-        title: const Text(
+        title: Text(
           'Tentang Kami',
           style: TextStyle(
-            color: Colors.black,
+            color: colorScheme.onBackground,
             fontSize: 18,
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
+        bottom: const PreferredSize(
+          preferredSize: Size.fromHeight(1.0),
+          child: Divider(
+            height: 1,
+            thickness: 1,
           ),
         ),
       ),

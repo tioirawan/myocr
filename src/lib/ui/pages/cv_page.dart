@@ -37,25 +37,25 @@ class _InputCVPageState extends State<InputCvPage> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
     return CustomScaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           AppBar(
-            backgroundColor: const Color.fromARGB(255, 255, 255, 255),
             centerTitle: true,
             scrolledUnderElevation: 0,
-            title: const Text(
+            title: Text(
               'Data CV',
               style: TextStyle(
-                color: Colors.black,
+                color: colorScheme.onBackground,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
             leading: IconButton(
               icon: const Icon(Icons.arrow_back),
-              color: Colors.black,
+              color: colorScheme.onBackground,
               onPressed: () {
                 Navigator.pop(context);
               },
