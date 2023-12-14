@@ -35,7 +35,9 @@ class UserRepositoryImpl implements UserRepository {
 
     await credential.user?.updateDisplayName(username);
 
-    return UserModel.fromFirebaseUser(credential.user!);
+    return UserModel.fromFirebaseUser(credential.user!).copyWith(
+      name: username,
+    );
   }
 
   @override
