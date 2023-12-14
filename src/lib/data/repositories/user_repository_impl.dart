@@ -79,7 +79,7 @@ class UserRepositoryImpl implements UserRepository {
       );
     }
 
-    return null;
+    return user;
   }
 
   @override

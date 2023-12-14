@@ -29,7 +29,7 @@ class _InputCVPageState extends State<InputCvPage> {
   final List<String> orgExperiences = ["Tidak Ada", "Ada"];
 
   String? selectedAge;
-  final List<String> ages = ["<= 25 Tahun", "25 - 30", "> 30 Tahun"];
+  final List<String> ages = ["< 25 Tahun", "25 - 30", "> 30 Tahun"];
 
   String? selectedGPA;
   final List<String> gpa = ["< 3.0", ">= 3.0"];
