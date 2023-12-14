@@ -12,6 +12,7 @@ import 'ui/pages/cv_page.dart';
 import 'ui/pages/dashboard_page.dart';
 import 'ui/pages/detail_page.dart';
 import 'ui/pages/edit_profile_page.dart';
+import 'ui/pages/ocr_methode_page.dart';
 import 'ui/pages/profile_page.dart';
 import 'ui/pages/scan/camera_page.dart';
 import 'ui/pages/scan/result_page.dart';
@@ -58,7 +59,7 @@ class MainApp extends ConsumerWidget {
       ),
       debugShowCheckedModeBanner: false,
       themeMode: themeMode,
-      initialRoute: '/',
+      initialRoute: '/ocr',
       routes: {
         '/': (_) => const SplashScreenPage(),
         '/login': (_) => const LoginPage(),
@@ -66,6 +67,7 @@ class MainApp extends ConsumerWidget {
         '/dashboard': (_) => const DashboardPage(),
         '/detail': (_) => const DetailPage(),
         '/scan': (_) => const CameraPage(),
+        '/ocr': (_) => const OcrScreenPage(),
         '/scan/result': (_) => const ResultPage(pageTitle: 'Hasil Scan KTP'),
         '/detail/edit': (_) => const ResultPage(pageTitle: 'Ubah KTP'),
         '/scan/success': (_) => const SuccessPage(),
