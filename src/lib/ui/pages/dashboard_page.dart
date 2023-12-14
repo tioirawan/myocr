@@ -164,6 +164,12 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                                         ),
                                       );
 
+                                      final username = ref.watch(
+                                        userNotifierProvider.select(
+                                          (state) => state.value?.name,
+                                        ),
+                                      );
+
                                       if (photoUrl != null) {
                                         return CircleAvatar(
                                           radius: 28,
@@ -174,12 +180,29 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                                         );
                                       }
 
-                                      return const CircleAvatar(
+                                      // If there is no photoUrl, use initials of the username
+                                      final initials = username != null &&
+                                              username.isNotEmpty
+                                          ? username
+                                              .substring(0, 1)
+                                              .toUpperCase()
+                                          : '';
+
+                                      return CircleAvatar(
                                         radius: 28,
-                                        backgroundColor: Colors.transparent,
-                                        backgroundImage: AssetImage(
-                                            'assets/images/profile.png'),
-                                        foregroundColor: Colors.white,
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                        child: Text(
+                                          initials,
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary,
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       );
                                     },
                                   ),

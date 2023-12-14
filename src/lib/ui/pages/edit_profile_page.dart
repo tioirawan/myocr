@@ -126,11 +126,27 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                                       radius: 50,
                                       backgroundImage: NetworkImage(photoUrl!),
                                     )
-                                  : const CircleAvatar(
-                                      radius: 50,
-                                      backgroundImage: AssetImage(
-                                          'assets/images/profile.png'),
-                                    )),
+                                  : (fullName.text.isNotEmpty
+                                      ? CircleAvatar(
+                                          radius: 50,
+                                          backgroundColor: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                          child: Text(
+                                            fullName.text[0].toUpperCase(),
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimary,
+                                              fontSize: 40,
+                                            ),
+                                          ),
+                                        )
+                                      : const CircleAvatar(
+                                          radius: 50,
+                                          backgroundImage: AssetImage(
+                                              'assets/images/profile.png'),
+                                        ))),
                         ),
                         Positioned(
                           bottom: 0,
@@ -138,6 +154,11 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                           child: Container(
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Colors
+                                    .white, // Set the color of the border to white
+                                width: 4.0, // Set the width of the border
+                              ),
                               color: Theme.of(context).colorScheme.primary,
                             ),
                             width: 38,

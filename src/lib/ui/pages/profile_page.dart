@@ -61,12 +61,22 @@ class ProfilePage extends ConsumerWidget {
                           radius: 40,
                           backgroundImage: NetworkImage(user!.photoUrl!),
                         )
-                      : const CircleAvatar(
+                      : CircleAvatar(
                           radius: 40,
-                          backgroundImage:
-                              AssetImage('assets/images/profile.png'),
+                          backgroundColor: Theme.of(context)
+                              .colorScheme
+                              .primary, // Set the background color to your desired color
+                          child: Text(
+                            user?.name?[0].toUpperCase() ??
+                                "", // Get the initial of the user's name
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                              fontSize: 32,
+                            ),
+                          ),
                         ),
                 ),
+
                 const SizedBox(
                   width: 20,
                 ), // Add spacing between the CircleAvatar and Text
