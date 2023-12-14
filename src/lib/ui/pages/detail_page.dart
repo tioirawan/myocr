@@ -92,7 +92,7 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                 onPressed: () {
                   Navigator.pushNamed(context, '/detail/edit');
                 },
-                child: const Text('Ubah'),
+                child: const Text('Tambah Data CV'),
               ),
             ),
           ],

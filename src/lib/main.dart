@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'ui/pages/rank_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'domain/services/shared_preference_service.dart';
@@ -59,7 +60,7 @@ class MainApp extends ConsumerWidget {
       ),
       debugShowCheckedModeBanner: false,
       themeMode: themeMode,
-      initialRoute: '/ocr',
+      initialRoute: '/',
       routes: {
         '/': (_) => const SplashScreenPage(),
         '/login': (_) => const LoginPage(),
@@ -75,6 +76,7 @@ class MainApp extends ConsumerWidget {
         '/about': (_) => const AboutPage(),
         '/profile/edit': (_) => const EditProfilePage(),
         '/cv': (_) => const InputCvPage(),
+        '/rank': (_) => const RankPage(),
       },
     );
   }
