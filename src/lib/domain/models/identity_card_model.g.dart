@@ -15,9 +15,7 @@ _$IdentityCardModelImpl _$$IdentityCardModelImplFromJson(
       nik: json['nik'] as String?,
       name: json['name'] as String?,
       birthPlace: json['birthPlace'] as String?,
-      birthDate: json['birthDate'] == null
-          ? null
-          : DateTime.parse(json['birthDate'] as String),
+      birthDate: json['birthDate'] as String?,
       gender: json['gender'] as String?,
       bloodType: json['bloodType'] as String?,
       streetAdress: json['streetAdress'] as String?,
@@ -44,7 +42,7 @@ Map<String, dynamic> _$$IdentityCardModelImplToJson(
       'nik': instance.nik,
       'name': instance.name,
       'birthPlace': instance.birthPlace,
-      'birthDate': instance.birthDate?.toIso8601String(),
+      'birthDate': instance.birthDate,
       'gender': instance.gender,
       'bloodType': instance.bloodType,
       'streetAdress': instance.streetAdress,

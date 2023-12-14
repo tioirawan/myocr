@@ -5,5 +5,5 @@ part 'dio_provider.g.dart';
 
 @riverpod
 Dio dio(DioRef ref) => Dio(BaseOptions(
-      baseUrl: 'http://10.0.2.2:5000',
+      baseUrl: 'https://myktp-backend-f9626b022d13.herokuapp.com',
     ));

@@ -78,11 +78,11 @@ class IdentityCardNotifier extends _$IdentityCardNotifier {
       return;
     }
 
-    await _repository.delete(_userId!, card);
-
     state = AsyncValue.data([
       for (final item in state.value ?? [])
         if (item.id != card.id) item
     ]);
+
+    await _repository.delete(_userId!, card);
   }
 }

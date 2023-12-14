@@ -27,7 +27,7 @@ mixin _$IdentityCardModel {
   String? get name => throw _privateConstructorUsedError;
   String? get birthPlace =>
       throw _privateConstructorUsedError; // @JsonKey(fromJson: IdentityCardModel._birthDateFromJson)
-  DateTime? get birthDate => throw _privateConstructorUsedError;
+  String? get birthDate => throw _privateConstructorUsedError;
   String? get gender => throw _privateConstructorUsedError;
   String? get bloodType => throw _privateConstructorUsedError;
   String? get streetAdress => throw _privateConstructorUsedError;
@@ -65,7 +65,7 @@ abstract class $IdentityCardModelCopyWith<$Res> {
       String? nik,
       String? name,
       String? birthPlace,
-      DateTime? birthDate,
+      String? birthDate,
       String? gender,
       String? bloodType,
       String? streetAdress,
@@ -148,7 +148,7 @@ class _$IdentityCardModelCopyWithImpl<$Res, $Val extends IdentityCardModel>
       birthDate: freezed == birthDate
           ? _value.birthDate
           : birthDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as String?,
       gender: freezed == gender
           ? _value.gender
           : gender // ignore: cast_nullable_to_non_nullable
@@ -224,7 +224,7 @@ abstract class _$$IdentityCardModelImplCopyWith<$Res>
       String? nik,
       String? name,
       String? birthPlace,
-      DateTime? birthDate,
+      String? birthDate,
       String? gender,
       String? bloodType,
       String? streetAdress,
@@ -305,7 +305,7 @@ class __$$IdentityCardModelImplCopyWithImpl<$Res>
       birthDate: freezed == birthDate
           ? _value.birthDate
           : birthDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as String?,
       gender: freezed == gender
           ? _value.gender
           : gender // ignore: cast_nullable_to_non_nullable
@@ -413,7 +413,7 @@ class _$IdentityCardModelImpl extends _IdentityCardModel {
   final String? birthPlace;
 // @JsonKey(fromJson: IdentityCardModel._birthDateFromJson)
   @override
-  final DateTime? birthDate;
+  final String? birthDate;
   @override
   final String? gender;
   @override
@@ -546,7 +546,7 @@ abstract class _IdentityCardModel extends IdentityCardModel {
       final String? nik,
       final String? name,
       final String? birthPlace,
-      final DateTime? birthDate,
+      final String? birthDate,
       final String? gender,
       final String? bloodType,
       final String? streetAdress,
@@ -582,7 +582,7 @@ abstract class _IdentityCardModel extends IdentityCardModel {
   @override
   String? get birthPlace;
   @override // @JsonKey(fromJson: IdentityCardModel._birthDateFromJson)
-  DateTime? get birthDate;
+  String? get birthDate;
   @override
   String? get gender;
   @override

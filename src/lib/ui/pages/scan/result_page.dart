@@ -84,9 +84,7 @@ class _ResultPageState extends ConsumerState<ResultPage> {
     _nikController.text = card?.nik ?? _nikController.text;
     _nameController.text = card?.name ?? _nameController.text;
     _birthPlaceController.text = card?.birthPlace ?? _birthPlaceController.text;
-    _birthDateController.text = card?.birthDate != null
-        ? '${card?.birthDate?.day}-${card?.birthDate?.month}-${card?.birthDate?.year}'
-        : _birthDateController.text;
+    _birthDateController.text = card?.birthDate ?? _birthDateController.text;
     _genderController.text = card?.gender ?? _genderController.text;
     _bloodTypeController.text = card?.bloodType ?? _bloodTypeController.text;
     _streetAddressController.text =
@@ -168,7 +166,10 @@ class _ResultPageState extends ConsumerState<ResultPage> {
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.popAndPushNamed(context, '/scan');
+                      Navigator.popUntil(
+                        context,
+                        ModalRoute.withName('/dashboard'),
+                      );
                     },
                     child: const Text('Kembali'),
                   ),
@@ -411,17 +412,20 @@ class _ResultPageState extends ConsumerState<ResultPage> {
   Widget _buildKtpImage(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 24.0),
-      child: AspectRatio(
-        aspectRatio: 1.6,
-        child: _croppedCard != null
-            ? Image.memory(
-                _croppedCard!,
-                fit: BoxFit.cover,
-              )
-            : Image.asset(
-                'assets/images/dummyktp.png',
-                fit: BoxFit.cover,
-              ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: AspectRatio(
+          aspectRatio: 1.6,
+          child: _croppedCard != null
+              ? Image.memory(
+                  _croppedCard!,
+                  fit: BoxFit.contain,
+                )
+              : Image.asset(
+                  'assets/images/dummyktp.png',
+                  fit: BoxFit.cover,
+                ),
+        ),
       ),
     );
   }
@@ -473,18 +477,11 @@ class _ResultPageState extends ConsumerState<ResultPage> {
 
       final notifier = ref.read(identityCardNotifierProvider.notifier);
 
-      final birthDateString = _birthDateController.text.split('-');
-      final birthDate = DateTime(
-        int.tryParse(birthDateString[2]) ?? 2023,
-        int.tryParse(birthDateString[1]) ?? 1,
-        int.tryParse(birthDateString[0]) ?? 1,
-      );
-
       final identityCard = IdentityCardModel(
         nik: _nikController.text,
         name: _nameController.text,
         birthPlace: _birthPlaceController.text,
-        birthDate: birthDate,
+        birthDate: _birthDateController.text,
         gender: _genderController.text,
         bloodType: _bloodTypeController.text,
         streetAdress: _streetAddressController.text,

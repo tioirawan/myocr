@@ -16,7 +16,7 @@ class IdentityCardModel with _$IdentityCardModel {
     final String? name,
     final String? birthPlace,
     // @JsonKey(fromJson: IdentityCardModel._birthDateFromJson)
-    final DateTime? birthDate,
+    final String? birthDate,
     final String? gender,
     final String? bloodType,
     final String? streetAdress,

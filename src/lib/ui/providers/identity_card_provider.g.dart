@@ -7,7 +7,7 @@ part of 'identity_card_provider.dart';
 // **************************************************************************
 
 String _$identityCardNotifierHash() =>
-    r'213f06839d6f3f52e6bc19449abd7176b9fb8426';
+    r'cca823bf0990582739f76282523e5942839ffa35';
 
 /// See also [IdentityCardNotifier].
 @ProviderFor(IdentityCardNotifier)
