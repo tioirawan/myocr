@@ -341,15 +341,62 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
 
           final document = documents[index];
 
-          return IdentityCardTile(
-            document: document,
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                '/detail',
-                arguments: document,
+          return Dismissible(
+            key: ValueKey(document.id),
+            direction: DismissDirection.endToStart,
+            background: Container(
+              color: Colors.red,
+              alignment: Alignment.centerRight,
+              padding: const EdgeInsets.only(right: 24.0),
+              child: const Icon(
+                Icons.delete,
+                color: Colors.white,
+              ),
+            ),
+            confirmDismiss: (direction) async {
+              final confirm = await showDialog<bool>(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text('Konfirmasi'),
+                    content: const Text(
+                      'Apakah anda yakin ingin menghapus data KTP ini?',
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context, false);
+                        },
+                        child: const Text('Batal'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context, true);
+                        },
+                        child: const Text('Hapus'),
+                      ),
+                    ],
+                  );
+                },
               );
+
+              if (confirm == null || !confirm) return false;
+
+              return true;
             },
+            onDismissed: (direction) async => ref
+                .read(identityCardNotifierProvider.notifier)
+                .delete(document),
+            child: IdentityCardTile(
+              document: document,
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  '/detail',
+                  arguments: document,
+                );
+              },
+            ),
           );
         },
       ),
@@ -376,10 +423,10 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.hourglass_empty_rounded,
-                  size: 64,
-                  color: Theme.of(context).colorScheme.primary,
+                Image.asset(
+                  'assets/images/empty.gif',
+                  width: 120,
+                  height: 120,
                 ),
                 const SizedBox(height: 16),
                 Text(
