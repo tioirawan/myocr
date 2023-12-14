@@ -282,13 +282,12 @@ class _ResultPageState extends ConsumerState<ResultPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           AppBar(
-            backgroundColor: const Color.fromARGB(255, 255, 255, 255),
             centerTitle: true,
             scrolledUnderElevation: 0,
             title: Text(
               widget.pageTitle,
-              style: const TextStyle(
-                color: Colors.black,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onBackground,
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
               ),

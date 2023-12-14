@@ -217,7 +217,10 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onBackground
+                              .withOpacity(0.05),
                           blurRadius: 20,
                           spreadRadius: 5,
                           offset: const Offset(0, 4),

@@ -29,6 +29,7 @@ dependencies:
   file_saver: ^0.2.9
   google_sign_in: ^6.1.6
   audioplayers: ^5.2.1
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:

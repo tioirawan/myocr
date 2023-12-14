@@ -42,13 +42,12 @@ class _DetailPageState extends ConsumerState<DetailPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             AppBar(
-              backgroundColor: const Color.fromARGB(255, 255, 255, 255),
               centerTitle: true,
               scrolledUnderElevation: 0,
-              title: const Text(
+              title: Text(
                 'KTP Anda',
                 style: TextStyle(
-                  color: Colors.black,
+                  color: Theme.of(context).colorScheme.onBackground,
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
                 ),

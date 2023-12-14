@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../providers/theme_mode_provider.dart';
 import '../providers/user_provider.dart';
 
 class ProfilePage extends ConsumerWidget {
@@ -9,15 +10,19 @@ class ProfilePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
     final user = ref.watch(userNotifierProvider.select((state) => state.value));
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Akun Saya',
-            style: TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.bold)),
+        title: Text(
+          'Pengaturan',
+          style: TextStyle(
+            color: colorScheme.onBackground,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         centerTitle: true,
         bottom: const PreferredSize(
           preferredSize: Size.fromHeight(1.0),
@@ -102,6 +107,47 @@ class ProfilePage extends ConsumerWidget {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.left),
                 const SizedBox(height: 10),
+                TextButton(
+                  onPressed: () {},
+                  style: TextButton.styleFrom(
+                    foregroundColor: Theme.of(context).colorScheme.onBackground,
+                    textStyle: textTheme.bodyLarge,
+                    padding: const EdgeInsets.all(0.0),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        Icons.dark_mode_rounded,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 10),
+                      const Text(
+                        'Dark Mode',
+                      ),
+                      const Spacer(),
+                      Consumer(builder: (context, ref, _) {
+                        final themeMdoe =
+                            ref.watch(themeModeNotifierProvider).value;
+
+                        return Switch(
+                          value: themeMdoe == ThemeMode.dark,
+                          onChanged: (value) {
+                            if (value) {
+                              ref
+                                  .read(themeModeNotifierProvider.notifier)
+                                  .setThemeMode(ThemeMode.dark);
+                            } else {
+                              ref
+                                  .read(themeModeNotifierProvider.notifier)
+                                  .setThemeMode(ThemeMode.light);
+                            }
+                          },
+                        );
+                      }),
+                    ],
+                  ),
+                ),
                 TextButton(
                   onPressed: () async {
                     Navigator.pushNamed(

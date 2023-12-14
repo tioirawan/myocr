@@ -16,9 +16,12 @@ class CustomScaffold extends StatelessWidget {
       appBar: AppBar(
         scrolledUnderElevation: 0,
         toolbarHeight: 0,
-        systemOverlayStyle: const SystemUiOverlayStyle(
+        systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.dark,
+          statusBarIconBrightness:
+              Theme.of(context).brightness == Brightness.light
+                  ? Brightness.dark
+                  : Brightness.light,
         ),
       ),
       body: body,
