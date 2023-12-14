@@ -61,6 +61,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return CustomScaffold(
       body: Form(
@@ -69,20 +70,19 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             AppBar(
-              backgroundColor: const Color.fromARGB(255, 255, 255, 255),
               centerTitle: true,
               scrolledUnderElevation: 0,
-              title: const Text(
+              title: Text(
                 'Edit Profil',
                 style: TextStyle(
-                  color: Colors.black,
+                  color: colorScheme.onBackground,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back),
-                color: Colors.black,
+                color: colorScheme.onBackground,
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -316,7 +316,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: const Color(0xFFE2E2E5).withOpacity(0.4),
-                        hintText: '083848492377',
+                        hintText: 'Masukkan Nomor Telepon',
                         hintStyle: textTheme.bodySmall,
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(

@@ -430,11 +430,11 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Belum ada data KTP\nyang ditambahkan',
+                  'Belum ada data KTP yang ditambahkan',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         fontSize: 14,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w500,
                       ),
                 ),
               ],
