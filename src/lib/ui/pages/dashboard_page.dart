@@ -12,6 +12,7 @@ import '../providers/scanner/scanner_controller_provider.dart';
 import '../providers/scanner/scanner_state.dart';
 import '../providers/user_provider.dart';
 import '../widgets/identity_card_tile.dart';
+import 'ocr_method_page.dart';
 
 const Map<String, String> userData = {
   'name': 'Putin',
@@ -68,7 +69,12 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
   }
 
   Future<void> _scanResult(File image) async {
-    await ref.read(scannerControllerProvider.notifier).scan(image);
+    final method =
+        (await Navigator.of(context).pushNamed('/ocr-method')) as OCRMethod?;
+
+    if (method == null) return;
+
+    await ref.read(scannerControllerProvider.notifier).scan(image, method);
   }
 
   @override

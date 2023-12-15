@@ -3,14 +3,14 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 
-import '../../domain/models/card_scanner_result_model.dart';
-import '../../domain/models/identity_card_model.dart';
-import '../../domain/repositories/card_scanner_repository.dart';
+import '../../../domain/models/card_scanner_result_model.dart';
+import '../../../domain/models/identity_card_model.dart';
+import '../../../domain/repositories/card_scanner_repository.dart';
 
-class CardScannerRepositoryImpl implements CardScannerRepository {
+class TesseractCardScannerRepositoryImpl implements CardScannerRepository {
   final Dio _dio;
 
-  CardScannerRepositoryImpl(this._dio);
+  TesseractCardScannerRepositoryImpl(this._dio);
 
   @override
   Future<CardScannerResultModel?> scan(File image) async {
@@ -18,7 +18,7 @@ class CardScannerRepositoryImpl implements CardScannerRepository {
       'ktp_image': await MultipartFile.fromFile(image.path),
     });
 
-    final response = await _dio.post('/recognize/ktp/custom', data: form);
+    final response = await _dio.post('/recognize/ktp/tesseract', data: form);
     final data = response.data;
 
     final Map<String, dynamic> cardData = data['data'];

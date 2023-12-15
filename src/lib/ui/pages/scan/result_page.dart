@@ -113,6 +113,8 @@ class _ResultPageState extends ConsumerState<ResultPage> {
         updateValues(state.result);
         ref.read(audioServiceProvider).stop();
       } else if (state is ScannerStateError) {
+        ref.read(audioServiceProvider).stop();
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(state.error),

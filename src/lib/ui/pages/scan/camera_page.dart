@@ -8,6 +8,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../providers/scanner/scanner_controller_provider.dart';
 import '../../providers/scanner/scanner_state.dart';
+import '../ocr_method_page.dart';
 
 class CameraPage extends ConsumerStatefulWidget {
   const CameraPage({super.key});
@@ -485,6 +486,11 @@ class _CameraPageState extends ConsumerState<CameraPage>
   }
 
   Future<void> _scanResult(File image) async {
-    await ref.read(scannerControllerProvider.notifier).scan(image);
+    final OCRMethod? method =
+        await Navigator.of(context).pushNamed('/ocr-method');
+
+    if (method == null) return;
+
+    await ref.read(scannerControllerProvider.notifier).scan(image, method);
   }
 }

@@ -90,7 +90,7 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                   backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/detail/edit');
+                  Navigator.pushNamed(context, '/cv');
                 },
                 child: const Text('Tambah Data CV'),
               ),

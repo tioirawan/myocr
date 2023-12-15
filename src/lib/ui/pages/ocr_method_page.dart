@@ -1,41 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/models/user_model.dart';
-import '../providers/user_provider.dart';
 import '../widgets/custom_scaffold.dart';
 
-class OcrScreenPage extends ConsumerStatefulWidget {
-  const OcrScreenPage({Key? key}) : super(key: key);
+enum OCRMethod { tesseract, google, myktp }
+
+class OcrMethodScreenPage extends ConsumerStatefulWidget {
+  const OcrMethodScreenPage({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<OcrScreenPage> createState() => _SplashScreenPageState();
+  ConsumerState<OcrMethodScreenPage> createState() => _OcrMethodPageState();
 }
 
-class _SplashScreenPageState extends ConsumerState<OcrScreenPage> {
-  void _listenUser(_, AsyncValue<UserModel?> state) {
-    state.maybeWhen(
-      data: (user) {
-        if (user != null) {
-          Navigator.of(context).pushReplacementNamed('/dashboard');
-        }
-      },
-      error: (e, st) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(e.toString()),
-          ),
-        );
-      },
-      orElse: () {},
-    );
-  }
-
+class _OcrMethodPageState extends ConsumerState<OcrMethodScreenPage> {
   @override
   Widget build(BuildContext context) {
-    ref.listen(userNotifierProvider, _listenUser);
     return CustomScaffold(
-      body:Column(
+      body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
@@ -58,7 +39,6 @@ class _SplashScreenPageState extends ConsumerState<OcrScreenPage> {
                   'Ekstrak Data KTP Menggunakan',
                   style: TextStyle(
                     fontSize: 18,
-                    color: Colors.black,
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
@@ -70,18 +50,14 @@ class _SplashScreenPageState extends ConsumerState<OcrScreenPage> {
                     backgroundColor: Theme.of(context).colorScheme.primary,
                   ),
                   onPressed: () {
-                    Navigator.of(context).pushReplacementNamed('/login');
+                    Navigator.of(context).pop(OCRMethod.tesseract);
                   },
                   child: Text(
                     'Tesseract OCR',
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelLarge!
-                        .apply(
-                      fontWeightDelta: 2,
-                      color:
-                      Theme.of(context).colorScheme.onPrimary,
-                    ),
+                    style: Theme.of(context).textTheme.labelLarge!.apply(
+                          fontWeightDelta: 2,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -91,18 +67,14 @@ class _SplashScreenPageState extends ConsumerState<OcrScreenPage> {
                     backgroundColor: Theme.of(context).colorScheme.primary,
                   ),
                   onPressed: () {
-                    Navigator.of(context).pushReplacementNamed('/login');
+                    Navigator.of(context).pop(OCRMethod.google);
                   },
                   child: Text(
                     'Google ML Kit',
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelLarge!
-                        .apply(
-                      fontWeightDelta: 2,
-                      color:
-                      Theme.of(context).colorScheme.onPrimary,
-                    ),
+                    style: Theme.of(context).textTheme.labelLarge!.apply(
+                          fontWeightDelta: 2,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -112,18 +84,14 @@ class _SplashScreenPageState extends ConsumerState<OcrScreenPage> {
                     backgroundColor: Theme.of(context).colorScheme.primary,
                   ),
                   onPressed: () {
-                    Navigator.of(context).pushReplacementNamed('/login');
+                    Navigator.of(context).pop(OCRMethod.myktp);
                   },
                   child: Text(
                     'myKTP OCR',
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelLarge!
-                        .apply(
-                      fontWeightDelta: 2,
-                      color:
-                      Theme.of(context).colorScheme.onPrimary,
-                    ),
+                    style: Theme.of(context).textTheme.labelLarge!.apply(
+                          fontWeightDelta: 2,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
                   ),
                 ),
               ],

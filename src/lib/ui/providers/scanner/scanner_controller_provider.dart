@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../domain/repositories/card_scanner_repository.dart';
+import '../../pages/ocr_method_page.dart';
 import 'scanner_state.dart';
 
 part 'scanner_controller_provider.g.dart';
@@ -14,9 +15,10 @@ class ScannerController extends _$ScannerController {
   @override
   ScannerState build() => const ScannerStateNoImage();
 
-  CardScannerRepository get _scanner => ref.read(cardScannerRepositoryProvider);
+  CardScannerRepository _scanner(OCRMethod method) =>
+      ref.read(cardScannerRepositoryProvider(method));
 
-  Future<void> scan(File image) async {
+  Future<void> scan(File image, OCRMethod method) async {
     if (image.path.isEmpty) {
       state = ScannerStateError(error: 'Image is empty', image: image);
       return;
@@ -25,7 +27,7 @@ class ScannerController extends _$ScannerController {
     state = ScannerStateScanning(image: image);
 
     try {
-      final result = await _scanner.scan(image);
+      final result = await _scanner(method).scan(image);
 
       if (result != null) {
         state = ScannerStateSuccess(
