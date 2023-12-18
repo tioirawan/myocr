@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../common/constants.dart';
 import '../../domain/models/dss_result_model.dart';
 import '../../domain/models/identity_card_model.dart';
 import '../providers/identity_card_provider.dart';
@@ -551,14 +552,6 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
               ],
             ),
           );
-
-          return Text(
-            '${index + 1}. ${rank.name} => ${rank.score}',
-            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-          );
         },
       ),
     );
@@ -622,6 +615,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                 .delete(document),
             child: IdentityCardTile(
               document: document,
+              isValid: kValidNIK.contains(document.nik),
               onTap: () {
                 Navigator.pushNamed(
                   context,

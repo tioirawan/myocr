@@ -10,11 +10,12 @@ class IdentityCardTile extends ConsumerStatefulWidget {
     super.key,
     required this.document,
     required this.onTap,
+    this.isValid = false,
   });
 
   final IdentityCardModel document;
   final VoidCallback? onTap;
-  final bool isValid = true;
+  final bool isValid;
 
   @override
   ConsumerState<IdentityCardTile> createState() => _IdentityCardTileState();
