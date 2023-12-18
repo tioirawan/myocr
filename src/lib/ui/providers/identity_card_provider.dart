@@ -8,7 +8,7 @@ import 'user_provider.dart';
 
 part 'identity_card_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class IdentityCardNotifier extends _$IdentityCardNotifier {
   @override
   FutureOr<List<IdentityCardModel>> build() {
@@ -85,4 +85,24 @@ class IdentityCardNotifier extends _$IdentityCardNotifier {
 
     await _repository.delete(_userId!, card);
   }
+}
+
+@riverpod
+IdentityCardModel? identityCard(IdentityCardRef ref, String? id) {
+  final cards = ref.watch(identityCardNotifierProvider);
+
+  if (id == null || cards.value == null) {
+    return null;
+  }
+
+  IdentityCardModel? card;
+
+  for (final item in cards.value!) {
+    if (item.id == id) {
+      card = item;
+      break;
+    }
+  }
+
+  return card;
 }

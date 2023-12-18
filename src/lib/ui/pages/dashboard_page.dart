@@ -6,8 +6,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../domain/models/dss_result_model.dart';
 import '../../domain/models/identity_card_model.dart';
 import '../providers/identity_card_provider.dart';
+import '../providers/ranks_provider.dart';
 import '../providers/scanner/scanner_controller_provider.dart';
 import '../providers/scanner/scanner_state.dart';
 import '../providers/user_provider.dart';
@@ -27,6 +29,8 @@ class DashboardPage extends ConsumerStatefulWidget {
 }
 
 class _DashboardPageState extends ConsumerState<DashboardPage> {
+  int _selectedTab = 0;
+
   Future getImage(BuildContext context) async {
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -84,8 +88,6 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
         Navigator.pushNamed(context, '/scan/result');
       }
     });
-
-    final identityCards = ref.watch(identityCardNotifierProvider);
 
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -325,15 +327,20 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(top: 92 / 2),
-                child: identityCards.when(
-                  data: (documents) => documents.isEmpty
-                      ? _buildEmptyDocuments(context)
-                      : _buildDocuments(documents),
-                  loading: () => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                  error: (error, _) => Center(
-                    child: Text(error.toString()),
+                child: DefaultTabController(
+                  length: 2,
+                  child: Column(
+                    children: [
+                      _buildTab(),
+                      Expanded(
+                        child: TabBarView(
+                          children: [
+                            _buildCards(),
+                            _buildRanks(),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -344,30 +351,227 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
     );
   }
 
+  Container _buildTab() {
+    return Container(
+      height: 52,
+      margin: const EdgeInsets.only(
+        top: 32,
+        left: 24,
+        right: 24,
+        bottom: 12,
+      ),
+      decoration: ShapeDecoration(
+        color: const Color(0xFFCDE5FF),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(100),
+        ),
+        shadows: const [
+          BoxShadow(
+            color: Color(0x0C000000),
+            blurRadius: 20,
+            offset: Offset(0, 4),
+            spreadRadius: 2,
+          )
+        ],
+      ),
+      child: LayoutBuilder(builder: (context, constraints) {
+        return Stack(
+          children: [
+            AnimatedPositioned(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+              top: 4,
+              bottom: 4,
+              left: _selectedTab == 0 ? 4 : constraints.maxWidth / 2 + 4,
+              width: constraints.maxWidth / 2 - 4,
+              child: Container(
+                width: 172,
+                height: 34,
+                decoration: ShapeDecoration(
+                  color: const Color(0xFF006398),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                ),
+              ),
+            ),
+            Positioned.fill(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        // get tab controller
+
+                        DefaultTabController.of(context).animateTo(0);
+                        setState(() {
+                          _selectedTab = 0;
+                        });
+                      },
+                      child: Text(
+                        'Riwayat',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: _selectedTab == 0
+                              ? Theme.of(context).colorScheme.onPrimary
+                              : Theme.of(context).colorScheme.onBackground,
+                          fontSize: 14,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        DefaultTabController.of(context).animateTo(1);
+
+                        setState(() {
+                          _selectedTab = 1;
+                        });
+                      },
+                      child: Text(
+                        'Perangkingan',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: _selectedTab == 1
+                              ? Theme.of(context).colorScheme.onPrimary
+                              : Theme.of(context).colorScheme.onBackground,
+                          fontSize: 14,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        );
+      }),
+    );
+  }
+
+  Widget _buildCards() {
+    return Consumer(
+      builder: (context, ref, _) {
+        final identityCards = ref.watch(identityCardNotifierProvider);
+
+        return identityCards.when(
+            data: (documents) => documents.isEmpty
+                ? _buildEmptyDocuments(context)
+                : _buildDocuments(documents),
+            loading: () => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+            error: (error, _) => Center(
+                  child: Text(error.toString()),
+                ));
+      },
+    );
+  }
+
+  Widget _buildRanks() {
+    return Consumer(
+      builder: (context, ref, _) {
+        final ranksState = ref.watch(ranksProvider);
+
+        return ranksState.when(
+          data: (ranks) => ranks.isEmpty
+              ? _buildEmptyDocuments(context)
+              : _buildRankList(ranks),
+          loading: () => const Center(
+            child: CircularProgressIndicator(),
+          ),
+          error: (error, _) => Center(
+            child: Text(error.toString()),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildRankList(List<DssResultModel> ranks) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return RefreshIndicator(
+      onRefresh: () async => ref.invalidate(ranksProvider),
+      child: ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+        itemCount: ranks.length,
+        itemBuilder: (context, index) {
+          final rank = ranks[index];
+          final card = ref.read(identityCardProvider(rank.id));
+
+          return Container(
+            margin: const EdgeInsets.symmetric(vertical: 12),
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 3,
+                  blurRadius: 5,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                Text(
+                  '${index + 1}',
+                  style: textTheme.labelLarge!.apply(fontWeightDelta: 2),
+                ),
+                const SizedBox(width: 16),
+                // Image on the left
+                CircleAvatar(
+                  backgroundImage: NetworkImage(card?.cardPhotoUrl ?? ''),
+                  radius: 18,
+                ),
+                const SizedBox(width: 16),
+                // Name with dynamic width
+                Expanded(
+                  child: Text(
+                    card?.name ?? '-',
+                    style: textTheme.bodyMedium,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                // Score on the far right
+                Text(
+                  '${rank.score}',
+                  style: textTheme.bodyMedium,
+                ),
+              ],
+            ),
+          );
+
+          return Text(
+            '${index + 1}. ${rank.name} => ${rank.score}',
+            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+          );
+        },
+      ),
+    );
+  }
+
   Widget _buildDocuments(List<IdentityCardModel> documents) {
     return RefreshIndicator(
       onRefresh: () async =>
           ref.read(identityCardNotifierProvider.notifier).refresh(),
       child: ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 5.0),
-        itemCount: documents.length + 1,
+        itemCount: documents.length,
         itemBuilder: (context, index) {
-          if (index == 0) {
-            return const Padding(
-              padding: EdgeInsets.only(
-                left: 30.0,
-                top: 24,
-                bottom: 8.0,
-              ),
-              child: Text(
-                'Riwayat',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            );
-          }
-
-          index -= 1;
-
           final document = documents[index];
 
           return Dismissible(

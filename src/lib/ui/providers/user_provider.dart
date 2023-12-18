@@ -7,7 +7,7 @@ import '../../domain/repositories/user_repository.dart';
 
 part 'user_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class UserNotifier extends _$UserNotifier {
   @override
   FutureOr<UserModel?> build() async =>
