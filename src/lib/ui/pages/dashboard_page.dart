@@ -383,8 +383,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
               curve: Curves.easeInOut,
               top: 4,
               bottom: 4,
-              left: _selectedTab == 0 ? 4 : null,
-              right: _selectedTab == 1 ? 4 : null,
+              left: _selectedTab == 0 ? 4 : constraints.maxWidth / 2.05 + 4,
               width: constraints.maxWidth / 2 - 4,
               child: Container(
                 width: 172,
