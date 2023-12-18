@@ -14,7 +14,6 @@ import 'ui/pages/detail_page.dart';
 import 'ui/pages/edit_profile_page.dart';
 import 'ui/pages/ocr_method_page.dart';
 import 'ui/pages/profile_page.dart';
-import 'ui/pages/rank_page.dart';
 import 'ui/pages/scan/camera_page.dart';
 import 'ui/pages/scan/result_page.dart';
 import 'ui/pages/scan/success_page.dart';
@@ -60,7 +59,7 @@ class MainApp extends ConsumerWidget {
       ),
       debugShowCheckedModeBanner: false,
       themeMode: themeMode,
-      initialRoute: '/',
+      initialRoute: '/dashboard',
       routes: {
         '/': (_) => const SplashScreenPage(),
         '/login': (_) => const LoginPage(),
@@ -76,7 +75,6 @@ class MainApp extends ConsumerWidget {
         '/about': (_) => const AboutPage(),
         '/profile/edit': (_) => const EditProfilePage(),
         '/cv': (_) => const InputCvPage(),
-        '/rank': (_) => const RankPage(),
       },
     );
   }

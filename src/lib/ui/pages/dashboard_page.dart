@@ -383,7 +383,8 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
               curve: Curves.easeInOut,
               top: 4,
               bottom: 4,
-              left: _selectedTab == 0 ? 4 : constraints.maxWidth / 2 + 4,
+              left: _selectedTab == 0 ? 4 : null,
+              right: _selectedTab == 1 ? 4 : null,
               width: constraints.maxWidth / 2 - 4,
               child: Container(
                 width: 172,
@@ -482,7 +483,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
 
         return ranksState.when(
           data: (ranks) => ranks.isEmpty
-              ? _buildEmptyDocuments(context)
+              ? _buildEmptyRank(context)
               : _buildRankList(ranks),
           loading: () => const Center(
             child: CircularProgressIndicator(),
@@ -663,6 +664,47 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),
+                ),
+              ],
+            ),
+          ),
+        )
+      ],
+    );
+  }
+  Column _buildEmptyRank(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.only(
+            left: 30.0,
+            right: 30.0,
+            top: 24,
+          ),
+          child: Text(
+            'Rangking',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+        ),
+        Expanded(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/images/empty.gif',
+                  width: 120,
+                  height: 120,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Belum ada data CV yang ditambahkan',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ],
             ),
