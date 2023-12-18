@@ -486,11 +486,12 @@ class _CameraPageState extends ConsumerState<CameraPage>
   }
 
   Future<void> _scanResult(File image) async {
-    final OCRMethod? method =
-        await Navigator.of(context).pushNamed('/ocr-method');
+    final method = await Navigator.of(context).pushNamed('/ocr-method');
 
     if (method == null) return;
 
-    await ref.read(scannerControllerProvider.notifier).scan(image, method);
+    await ref
+        .read(scannerControllerProvider.notifier)
+        .scan(image, method as OCRMethod);
   }
 }
