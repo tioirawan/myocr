@@ -25,7 +25,7 @@ abstract class IdentityCardRepository {
   Future<List<IdentityCardModel>> getAll(String userId);
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 IdentityCardRepository identityCardRepository(IdentityCardRepositoryRef ref) {
   final firestore = ref.watch(firebaseFirestoreProvider);
   final storage = ref.watch(firebaseStorageProvider);

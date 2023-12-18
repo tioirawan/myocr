@@ -10,6 +10,7 @@ class CvDataModel with _$CvDataModel {
 
   @JsonSerializable(explicitToJson: true)
   factory CvDataModel({
+    @JsonKey(name: 'identity_card_id') String? identityCardId,
     int? workExperience,
     int? skills,
     int? location,
@@ -22,6 +23,7 @@ class CvDataModel with _$CvDataModel {
       _$CvDataModelFromJson(json);
 
   Map<String, dynamic> toDocument() => toJson()
+    ..remove('identity_card_id')
     ..update(
       'created_at',
       (_) => Timestamp.now(),

@@ -20,6 +20,8 @@ CvDataModel _$CvDataModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CvDataModel {
+  @JsonKey(name: 'identity_card_id')
+  String? get identityCardId => throw _privateConstructorUsedError;
   int? get workExperience => throw _privateConstructorUsedError;
   int? get skills => throw _privateConstructorUsedError;
   int? get location => throw _privateConstructorUsedError;
@@ -40,7 +42,8 @@ abstract class $CvDataModelCopyWith<$Res> {
       _$CvDataModelCopyWithImpl<$Res, CvDataModel>;
   @useResult
   $Res call(
-      {int? workExperience,
+      {@JsonKey(name: 'identity_card_id') String? identityCardId,
+      int? workExperience,
       int? skills,
       int? location,
       int? organization,
@@ -61,6 +64,7 @@ class _$CvDataModelCopyWithImpl<$Res, $Val extends CvDataModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? identityCardId = freezed,
     Object? workExperience = freezed,
     Object? skills = freezed,
     Object? location = freezed,
@@ -69,6 +73,10 @@ class _$CvDataModelCopyWithImpl<$Res, $Val extends CvDataModel>
     Object? gpa = freezed,
   }) {
     return _then(_value.copyWith(
+      identityCardId: freezed == identityCardId
+          ? _value.identityCardId
+          : identityCardId // ignore: cast_nullable_to_non_nullable
+              as String?,
       workExperience: freezed == workExperience
           ? _value.workExperience
           : workExperience // ignore: cast_nullable_to_non_nullable
@@ -106,7 +114,8 @@ abstract class _$$CvDataModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int? workExperience,
+      {@JsonKey(name: 'identity_card_id') String? identityCardId,
+      int? workExperience,
       int? skills,
       int? location,
       int? organization,
@@ -125,6 +134,7 @@ class __$$CvDataModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? identityCardId = freezed,
     Object? workExperience = freezed,
     Object? skills = freezed,
     Object? location = freezed,
@@ -133,6 +143,10 @@ class __$$CvDataModelImplCopyWithImpl<$Res>
     Object? gpa = freezed,
   }) {
     return _then(_$CvDataModelImpl(
+      identityCardId: freezed == identityCardId
+          ? _value.identityCardId
+          : identityCardId // ignore: cast_nullable_to_non_nullable
+              as String?,
       workExperience: freezed == workExperience
           ? _value.workExperience
           : workExperience // ignore: cast_nullable_to_non_nullable
@@ -166,7 +180,8 @@ class __$$CvDataModelImplCopyWithImpl<$Res>
 @JsonSerializable(explicitToJson: true)
 class _$CvDataModelImpl extends _CvDataModel {
   _$CvDataModelImpl(
-      {this.workExperience,
+      {@JsonKey(name: 'identity_card_id') this.identityCardId,
+      this.workExperience,
       this.skills,
       this.location,
       this.organization,
@@ -177,6 +192,9 @@ class _$CvDataModelImpl extends _CvDataModel {
   factory _$CvDataModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$CvDataModelImplFromJson(json);
 
+  @override
+  @JsonKey(name: 'identity_card_id')
+  final String? identityCardId;
   @override
   final int? workExperience;
   @override
@@ -192,7 +210,7 @@ class _$CvDataModelImpl extends _CvDataModel {
 
   @override
   String toString() {
-    return 'CvDataModel(workExperience: $workExperience, skills: $skills, location: $location, organization: $organization, age: $age, gpa: $gpa)';
+    return 'CvDataModel(identityCardId: $identityCardId, workExperience: $workExperience, skills: $skills, location: $location, organization: $organization, age: $age, gpa: $gpa)';
   }
 
   @override
@@ -200,6 +218,8 @@ class _$CvDataModelImpl extends _CvDataModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CvDataModelImpl &&
+            (identical(other.identityCardId, identityCardId) ||
+                other.identityCardId == identityCardId) &&
             (identical(other.workExperience, workExperience) ||
                 other.workExperience == workExperience) &&
             (identical(other.skills, skills) || other.skills == skills) &&
@@ -213,8 +233,8 @@ class _$CvDataModelImpl extends _CvDataModel {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, workExperience, skills, location, organization, age, gpa);
+  int get hashCode => Object.hash(runtimeType, identityCardId, workExperience,
+      skills, location, organization, age, gpa);
 
   @JsonKey(ignore: true)
   @override
@@ -232,7 +252,8 @@ class _$CvDataModelImpl extends _CvDataModel {
 
 abstract class _CvDataModel extends CvDataModel {
   factory _CvDataModel(
-      {final int? workExperience,
+      {@JsonKey(name: 'identity_card_id') final String? identityCardId,
+      final int? workExperience,
       final int? skills,
       final int? location,
       final int? organization,
@@ -243,6 +264,9 @@ abstract class _CvDataModel extends CvDataModel {
   factory _CvDataModel.fromJson(Map<String, dynamic> json) =
       _$CvDataModelImpl.fromJson;
 
+  @override
+  @JsonKey(name: 'identity_card_id')
+  String? get identityCardId;
   @override
   int? get workExperience;
   @override

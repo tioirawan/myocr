@@ -1,27 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'identity_card_repository.dart';
+part of 'dss_repository.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$identityCardRepositoryHash() =>
-    r'1f92046dd3957f4e8b79f398eff3ca445ef540f5';
+String _$dssRepositoryHash() => r'b6afca23436d89dae8aae4f6bb4ddfd12ac60feb';
 
-/// See also [identityCardRepository].
-@ProviderFor(identityCardRepository)
-final identityCardRepositoryProvider =
-    Provider<IdentityCardRepository>.internal(
-  identityCardRepository,
-  name: r'identityCardRepositoryProvider',
+/// See also [dssRepository].
+@ProviderFor(dssRepository)
+final dssRepositoryProvider = Provider<DssRepositoryImpl>.internal(
+  dssRepository,
+  name: r'dssRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$identityCardRepositoryHash,
+      : _$dssRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef IdentityCardRepositoryRef = ProviderRef<IdentityCardRepository>;
+typedef DssRepositoryRef = ProviderRef<DssRepositoryImpl>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

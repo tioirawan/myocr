@@ -6,11 +6,11 @@ part of 'firebase_services.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$firebaseAuthHash() => r'7791bf70ce0f01bf991a53a76abc915478673c0b';
+String _$firebaseAuthHash() => r'46c40b7c5cf8ab936c0daa96a6af106bd2ae5d51';
 
 /// See also [firebaseAuth].
 @ProviderFor(firebaseAuth)
-final firebaseAuthProvider = AutoDisposeProvider<FirebaseAuth>.internal(
+final firebaseAuthProvider = Provider<FirebaseAuth>.internal(
   firebaseAuth,
   name: r'firebaseAuthProvider',
   debugGetCreateSourceHash:
@@ -19,13 +19,12 @@ final firebaseAuthProvider = AutoDisposeProvider<FirebaseAuth>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef FirebaseAuthRef = AutoDisposeProviderRef<FirebaseAuth>;
-String _$firebaseFirestoreHash() => r'230b9276da2e44bb1aa6b300e1ddbb2f93c422da';
+typedef FirebaseAuthRef = ProviderRef<FirebaseAuth>;
+String _$firebaseFirestoreHash() => r'2e7f8bd195d91c027c5155f34b719187867bc113';
 
 /// See also [firebaseFirestore].
 @ProviderFor(firebaseFirestore)
-final firebaseFirestoreProvider =
-    AutoDisposeProvider<FirebaseFirestore>.internal(
+final firebaseFirestoreProvider = Provider<FirebaseFirestore>.internal(
   firebaseFirestore,
   name: r'firebaseFirestoreProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -35,12 +34,12 @@ final firebaseFirestoreProvider =
   allTransitiveDependencies: null,
 );
 
-typedef FirebaseFirestoreRef = AutoDisposeProviderRef<FirebaseFirestore>;
-String _$firebaseStorageHash() => r'9ece783a064077980d64000c5d6f0b1846ff5c4c';
+typedef FirebaseFirestoreRef = ProviderRef<FirebaseFirestore>;
+String _$firebaseStorageHash() => r'ddec157566e3f96dac39d44de2cd99f9d71f9b54';
 
 /// See also [firebaseStorage].
 @ProviderFor(firebaseStorage)
-final firebaseStorageProvider = AutoDisposeProvider<FirebaseStorage>.internal(
+final firebaseStorageProvider = Provider<FirebaseStorage>.internal(
   firebaseStorage,
   name: r'firebaseStorageProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -50,6 +49,6 @@ final firebaseStorageProvider = AutoDisposeProvider<FirebaseStorage>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef FirebaseStorageRef = AutoDisposeProviderRef<FirebaseStorage>;
+typedef FirebaseStorageRef = ProviderRef<FirebaseStorage>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
