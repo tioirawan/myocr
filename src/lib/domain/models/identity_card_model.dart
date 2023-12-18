@@ -1,13 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'cv_data_model.dart';
+
 part 'identity_card_model.freezed.dart';
 part 'identity_card_model.g.dart';
 
 @freezed
 class IdentityCardModel with _$IdentityCardModel {
   const IdentityCardModel._();
-
+  @JsonSerializable(explicitToJson: true)
   factory IdentityCardModel({
     final String? id,
     final String? cardImageUrl,
@@ -33,6 +35,7 @@ class IdentityCardModel with _$IdentityCardModel {
     final String? job,
     final String? nationality,
     final String? validUntil,
+    @JsonKey(name: 'cv_data') final CvDataModel? cvData,
     @JsonKey(
       name: 'created_at',
       fromJson: IdentityCardModel._dateTimeFromTimestamp,

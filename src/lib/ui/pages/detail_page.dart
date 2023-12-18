@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../domain/models/cv_data_model.dart';
 import '../../domain/models/identity_card_model.dart';
+import '../providers/identity_card_provider.dart';
 import '../widgets/custom_scaffold.dart';
 
 final ktp = {
@@ -33,8 +35,7 @@ class DetailPage extends ConsumerStatefulWidget {
 class _DetailPageState extends ConsumerState<DetailPage> {
   @override
   Widget build(BuildContext context) {
-    final data =
-        ModalRoute.of(context)!.settings.arguments as IdentityCardModel?;
+    var data = ModalRoute.of(context)!.settings.arguments as IdentityCardModel?;
 
     return CustomScaffold(
       body: Center(
@@ -89,10 +90,36 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                   foregroundColor: Theme.of(context).colorScheme.onSecondary,
                   backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/cv');
+                onPressed: () async {
+                  final result = await Navigator.pushNamed(
+                    context,
+                    '/cv',
+                    arguments: data?.cvData,
+                  );
+
+                  if (result == null || !context.mounted || data == null) {
+                    return;
+                  }
+
+                  data = data!.copyWith(
+                    cvData: result as CvDataModel,
+                  );
+
+                  await ref
+                      .read(identityCardNotifierProvider.notifier)
+                      .save(data!);
+
+                  if (!context.mounted) return;
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Data CV berhasil ditambahkan'),
+                    ),
+                  );
                 },
-                child: const Text('Tambah Data CV'),
+                child: data?.cvData != null
+                    ? const Text('Edit Data CV')
+                    : const Text('Tambah Data CV'),
               ),
             ),
           ],

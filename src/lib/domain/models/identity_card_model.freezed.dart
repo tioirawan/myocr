@@ -42,6 +42,8 @@ mixin _$IdentityCardModel {
   String? get job => throw _privateConstructorUsedError;
   String? get nationality => throw _privateConstructorUsedError;
   String? get validUntil => throw _privateConstructorUsedError;
+  @JsonKey(name: 'cv_data')
+  CvDataModel? get cvData => throw _privateConstructorUsedError;
   @JsonKey(
       name: 'created_at', fromJson: IdentityCardModel._dateTimeFromTimestamp)
   DateTime? get createdAt => throw _privateConstructorUsedError;
@@ -79,10 +81,13 @@ abstract class $IdentityCardModelCopyWith<$Res> {
       String? job,
       String? nationality,
       String? validUntil,
+      @JsonKey(name: 'cv_data') CvDataModel? cvData,
       @JsonKey(
           name: 'created_at',
           fromJson: IdentityCardModel._dateTimeFromTimestamp)
       DateTime? createdAt});
+
+  $CvDataModelCopyWith<$Res>? get cvData;
 }
 
 /// @nodoc
@@ -118,6 +123,7 @@ class _$IdentityCardModelCopyWithImpl<$Res, $Val extends IdentityCardModel>
     Object? job = freezed,
     Object? nationality = freezed,
     Object? validUntil = freezed,
+    Object? cvData = freezed,
     Object? createdAt = freezed,
   }) {
     return _then(_value.copyWith(
@@ -201,11 +207,27 @@ class _$IdentityCardModelCopyWithImpl<$Res, $Val extends IdentityCardModel>
           ? _value.validUntil
           : validUntil // ignore: cast_nullable_to_non_nullable
               as String?,
+      cvData: freezed == cvData
+          ? _value.cvData
+          : cvData // ignore: cast_nullable_to_non_nullable
+              as CvDataModel?,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $CvDataModelCopyWith<$Res>? get cvData {
+    if (_value.cvData == null) {
+      return null;
+    }
+
+    return $CvDataModelCopyWith<$Res>(_value.cvData!, (value) {
+      return _then(_value.copyWith(cvData: value) as $Val);
+    });
   }
 }
 
@@ -238,10 +260,14 @@ abstract class _$$IdentityCardModelImplCopyWith<$Res>
       String? job,
       String? nationality,
       String? validUntil,
+      @JsonKey(name: 'cv_data') CvDataModel? cvData,
       @JsonKey(
           name: 'created_at',
           fromJson: IdentityCardModel._dateTimeFromTimestamp)
       DateTime? createdAt});
+
+  @override
+  $CvDataModelCopyWith<$Res>? get cvData;
 }
 
 /// @nodoc
@@ -275,6 +301,7 @@ class __$$IdentityCardModelImplCopyWithImpl<$Res>
     Object? job = freezed,
     Object? nationality = freezed,
     Object? validUntil = freezed,
+    Object? cvData = freezed,
     Object? createdAt = freezed,
   }) {
     return _then(_$IdentityCardModelImpl(
@@ -358,6 +385,10 @@ class __$$IdentityCardModelImplCopyWithImpl<$Res>
           ? _value.validUntil
           : validUntil // ignore: cast_nullable_to_non_nullable
               as String?,
+      cvData: freezed == cvData
+          ? _value.cvData
+          : cvData // ignore: cast_nullable_to_non_nullable
+              as CvDataModel?,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -367,7 +398,8 @@ class __$$IdentityCardModelImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(explicitToJson: true)
 class _$IdentityCardModelImpl extends _IdentityCardModel {
   _$IdentityCardModelImpl(
       {this.id,
@@ -390,6 +422,7 @@ class _$IdentityCardModelImpl extends _IdentityCardModel {
       this.job,
       this.nationality,
       this.validUntil,
+      @JsonKey(name: 'cv_data') this.cvData,
       @JsonKey(
           name: 'created_at',
           fromJson: IdentityCardModel._dateTimeFromTimestamp)
@@ -444,13 +477,16 @@ class _$IdentityCardModelImpl extends _IdentityCardModel {
   @override
   final String? validUntil;
   @override
+  @JsonKey(name: 'cv_data')
+  final CvDataModel? cvData;
+  @override
   @JsonKey(
       name: 'created_at', fromJson: IdentityCardModel._dateTimeFromTimestamp)
   final DateTime? createdAt;
 
   @override
   String toString() {
-    return 'IdentityCardModel(id: $id, cardImageUrl: $cardImageUrl, cardPhotoUrl: $cardPhotoUrl, nik: $nik, name: $name, birthPlace: $birthPlace, birthDate: $birthDate, gender: $gender, bloodType: $bloodType, streetAdress: $streetAdress, rtNumber: $rtNumber, rwNumber: $rwNumber, village: $village, subDistrict: $subDistrict, district: $district, religion: $religion, maritalStatus: $maritalStatus, job: $job, nationality: $nationality, validUntil: $validUntil, createdAt: $createdAt)';
+    return 'IdentityCardModel(id: $id, cardImageUrl: $cardImageUrl, cardPhotoUrl: $cardPhotoUrl, nik: $nik, name: $name, birthPlace: $birthPlace, birthDate: $birthDate, gender: $gender, bloodType: $bloodType, streetAdress: $streetAdress, rtNumber: $rtNumber, rwNumber: $rwNumber, village: $village, subDistrict: $subDistrict, district: $district, religion: $religion, maritalStatus: $maritalStatus, job: $job, nationality: $nationality, validUntil: $validUntil, cvData: $cvData, createdAt: $createdAt)';
   }
 
   @override
@@ -492,6 +528,7 @@ class _$IdentityCardModelImpl extends _IdentityCardModel {
                 other.nationality == nationality) &&
             (identical(other.validUntil, validUntil) ||
                 other.validUntil == validUntil) &&
+            (identical(other.cvData, cvData) || other.cvData == cvData) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt));
   }
@@ -520,6 +557,7 @@ class _$IdentityCardModelImpl extends _IdentityCardModel {
         job,
         nationality,
         validUntil,
+        cvData,
         createdAt
       ]);
 
@@ -560,6 +598,7 @@ abstract class _IdentityCardModel extends IdentityCardModel {
       final String? job,
       final String? nationality,
       final String? validUntil,
+      @JsonKey(name: 'cv_data') final CvDataModel? cvData,
       @JsonKey(
           name: 'created_at',
           fromJson: IdentityCardModel._dateTimeFromTimestamp)
@@ -609,6 +648,9 @@ abstract class _IdentityCardModel extends IdentityCardModel {
   String? get nationality;
   @override
   String? get validUntil;
+  @override
+  @JsonKey(name: 'cv_data')
+  CvDataModel? get cvData;
   @override
   @JsonKey(
       name: 'created_at', fromJson: IdentityCardModel._dateTimeFromTimestamp)

@@ -12,12 +12,14 @@ part 'card_scanner_result_model.g.dart';
 class CardScannerResultModel with _$CardScannerResultModel {
   factory CardScannerResultModel({
     @JsonKey(
-        fromJson: CardScannerResultModel._bytesFromJson,
-        toJson: CardScannerResultModel._bytesToJson)
+      fromJson: CardScannerResultModel._bytesFromJson,
+      toJson: CardScannerResultModel._bytesToJson,
+    )
     Uint8List? croppedImage,
     @JsonKey(
-        fromJson: CardScannerResultModel._bytesFromJson,
-        toJson: CardScannerResultModel._bytesToJson)
+      fromJson: CardScannerResultModel._bytesFromJson,
+      toJson: CardScannerResultModel._bytesToJson,
+    )
     Uint8List? photoImage,
     IdentityCardModel? identityCard,
   }) = _CardScannerResultModel;

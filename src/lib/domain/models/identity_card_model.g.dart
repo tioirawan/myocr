@@ -29,6 +29,9 @@ _$IdentityCardModelImpl _$$IdentityCardModelImplFromJson(
       job: json['job'] as String?,
       nationality: json['nationality'] as String?,
       validUntil: json['validUntil'] as String?,
+      cvData: json['cv_data'] == null
+          ? null
+          : CvDataModel.fromJson(json['cv_data'] as Map<String, dynamic>),
       createdAt: IdentityCardModel._dateTimeFromTimestamp(
           json['created_at'] as Timestamp?),
     );
@@ -56,5 +59,6 @@ Map<String, dynamic> _$$IdentityCardModelImplToJson(
       'job': instance.job,
       'nationality': instance.nationality,
       'validUntil': instance.validUntil,
+      'cv_data': instance.cvData?.toJson(),
       'created_at': instance.createdAt?.toIso8601String(),
     };

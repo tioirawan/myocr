@@ -1,7 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
+import '../../domain/models/cv_data_model.dart';
 import '../widgets/custom_scaffold.dart';
 
 class InputCvPage extends StatefulWidget {
@@ -13,26 +12,60 @@ class InputCvPage extends StatefulWidget {
 
 class _InputCVPageState extends State<InputCvPage> {
   String? selectedWorkExperiences;
+
+  int getBenefitScore(val, List values) {
+    if (val == null) {
+      return 0;
+    }
+    return values.indexOf(val) + 1;
+  }
+
+  int getCostScore(val, List values) {
+    if (val == null) {
+      return 0;
+    }
+    return values.length - values.indexOf(val);
+  }
+
   final List<String> workExperiences = [
-    "< 6 bulan",
-    "6 bulan - 1  tahun",
-    "> 1 tahun"
+    '< 6 bulan',
+    '6 bulan - 1  tahun',
+    '> 1 tahun'
   ];
 
   String? selectedSkills;
-  final List<String> skills = ["< 3", "3 - 5", "> 5"];
+  final List<String> skills = ['< 3', '3 - 5', '> 5'];
 
   String? selectedLocation;
-  final List<String> locations = ["Luar Malang", "Dalam Malang"];
+  final List<String> locations = ['Luar Malang', 'Dalam Malang'];
 
   String? selectedOrganizationExperiences;
-  final List<String> orgExperiences = ["Tidak Ada", "Ada"];
+  final List<String> orgExperiences = ['Tidak Ada', 'Ada'];
 
   String? selectedAge;
-  final List<String> ages = ["< 25 Tahun", "25 - 30", "> 30 Tahun"];
+  final List<String> ages = ['< 25 Tahun', '25 - 30', '> 30 Tahun'];
 
   String? selectedGPA;
-  final List<String> gpa = ["< 3.0", ">= 3.0"];
+  final List<String> gpa = ['< 3.0', '>= 3.0'];
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final CvDataModel? cvData =
+        ModalRoute.of(context)!.settings.arguments as CvDataModel?;
+
+    if (cvData != null) {
+      selectedWorkExperiences = workExperiences[cvData.workExperience! - 1];
+      selectedSkills = skills[cvData.skills! - 1];
+      selectedLocation = locations[cvData.location!];
+      selectedOrganizationExperiences = orgExperiences[cvData.organization!];
+      selectedAge = ages[ages.length - cvData.age!];
+      selectedGPA = gpa[cvData.gpa!];
+    }
+
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -330,10 +363,7 @@ class _InputCVPageState extends State<InputCvPage> {
                       minimumSize: const Size(double.infinity, 48),
                       backgroundColor: Theme.of(context).colorScheme.primary,
                     ),
-                    onPressed: () {
-                      // Implement your save logic here
-                      // You can use the selectedName variable
-                    },
+                    onPressed: _onSave,
                     child: Text(
                       'Simpan',
                       style: Theme.of(context).textTheme.labelLarge!.apply(
@@ -349,5 +379,19 @@ class _InputCVPageState extends State<InputCvPage> {
         ],
       ),
     );
+  }
+
+  Future<void> _onSave() async {
+    final cvData = CvDataModel(
+      workExperience: getBenefitScore(selectedWorkExperiences, workExperiences),
+      skills: getBenefitScore(selectedSkills, skills),
+      location: getBenefitScore(selectedLocation, locations) - 1,
+      organization:
+          getBenefitScore(selectedOrganizationExperiences, orgExperiences) - 1,
+      age: getCostScore(selectedAge, ages),
+      gpa: getBenefitScore(selectedGPA, gpa) - 1,
+    );
+
+    Navigator.pop(context, cvData);
   }
 }
