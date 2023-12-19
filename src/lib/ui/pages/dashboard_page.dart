@@ -29,8 +29,12 @@ class DashboardPage extends ConsumerStatefulWidget {
   ConsumerState<DashboardPage> createState() => _DashboardPageState();
 }
 
-class _DashboardPageState extends ConsumerState<DashboardPage> {
-  int _selectedTab = 0;
+class _DashboardPageState extends ConsumerState<DashboardPage>
+    with SingleTickerProviderStateMixin {
+  late final TabController _controller = TabController(
+    length: 2,
+    vsync: this,
+  );
 
   Future getImage(BuildContext context) async {
     final colorScheme = Theme.of(context).colorScheme;
@@ -331,21 +335,19 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(top: 92 / 2),
-                child: DefaultTabController(
-                  length: 2,
-                  child: Column(
-                    children: [
-                      _buildTab(),
-                      Expanded(
-                        child: TabBarView(
-                          children: [
-                            _buildCards(),
-                            _buildRanks(),
-                          ],
-                        ),
+                child: Column(
+                  children: [
+                    _buildTab(),
+                    Expanded(
+                      child: TabBarView(
+                        controller: _controller,
+                        children: [
+                          _buildCards(),
+                          _buildRanks(),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -378,84 +380,89 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
           )
         ],
       ),
-      child: LayoutBuilder(builder: (context, constraints) {
-        return Stack(
-          children: [
-            AnimatedPositioned(
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-              top: 4,
-              bottom: 4,
-              left: _selectedTab == 0 ? 4 : constraints.maxWidth / 2 + 4,
-              width: constraints.maxWidth / 2 - 8,
-              child: Container(
-                width: 172,
-                height: 34,
-                decoration: ShapeDecoration(
-                  color: const Color(0xFF006398),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(100),
+      child: LayoutBuilder(
+        builder: (context, constraints) => AnimatedBuilder(
+          animation: _controller.animation!,
+          builder: (context, child) => Stack(
+            children: [
+              Positioned(
+                top: 4,
+                bottom: 4,
+                left: 4 +
+                    (constraints.maxWidth / 2 * _controller.animation!.value),
+                width: constraints.maxWidth / 2 - 8,
+                child: Container(
+                  width: 172,
+                  height: 34,
+                  decoration: ShapeDecoration(
+                    color: const Color(0xFF006398),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100),
+                    ),
                   ),
                 ),
               ),
-            ),
-            Positioned.fill(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        // get tab controller
+              Positioned.fill(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          _controller.animateTo(0);
 
-                        DefaultTabController.of(context).animateTo(0);
-                        setState(() {
-                          _selectedTab = 0;
-                        });
-                      },
-                      child: Text(
-                        'Riwayat',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: _selectedTab == 0
-                              ? Theme.of(context).colorScheme.onPrimary
-                              : Theme.of(context).colorScheme.onBackground,
-                          fontSize: 14,
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.w600,
+                          setState(() {
+                            _selectedTab = 0;
+                          });
+                        },
+                        child: Text(
+                          'Riwayat',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Color.lerp(
+                              Theme.of(context).colorScheme.onPrimary,
+                              Theme.of(context).colorScheme.onBackground,
+                              _controller.animation!.value,
+                            ),
+                            fontSize: 14,
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        DefaultTabController.of(context).animateTo(1);
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          _controller.animateTo(1);
 
-                        setState(() {
-                          _selectedTab = 1;
-                        });
-                      },
-                      child: Text(
-                        'Perangkingan',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: _selectedTab == 1
-                              ? Theme.of(context).colorScheme.onPrimary
-                              : Theme.of(context).colorScheme.onBackground,
-                          fontSize: 14,
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.w600,
+                          setState(() {
+                            _selectedTab = 1;
+                          });
+                        },
+                        child: Text(
+                          'Perangkingan',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Color.lerp(
+                              Theme.of(context).colorScheme.onPrimary,
+                              Theme.of(context).colorScheme.onBackground,
+                              1 - _controller.animation!.value,
+                            ),
+                            fontSize: 14,
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        );
-      }),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 
