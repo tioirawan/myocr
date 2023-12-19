@@ -70,23 +70,6 @@ class _OcrMethodPageState extends ConsumerState<OcrMethodScreenPage> {
                     Navigator.of(context).pop(OCRMethod.google);
                   },
                   child: Text(
-                    'Google ML Kit',
-                    style: Theme.of(context).textTheme.labelLarge!.apply(
-                          fontWeightDelta: 2,
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 48),
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop(OCRMethod.myktp);
-                  },
-                  child: Text(
                     'myKTP OCR',
                     style: Theme.of(context).textTheme.labelLarge!.apply(
                           fontWeightDelta: 2,
