@@ -408,13 +408,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage>
                   children: [
                     Expanded(
                       child: InkWell(
-                        onTap: () {
-                          _controller.animateTo(0);
-
-                          setState(() {
-                            _selectedTab = 0;
-                          });
-                        },
+                        onTap: () => _controller.animateTo(0),
                         child: Text(
                           'Riwayat',
                           textAlign: TextAlign.center,
@@ -433,13 +427,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage>
                     ),
                     Expanded(
                       child: InkWell(
-                        onTap: () {
-                          _controller.animateTo(1);
-
-                          setState(() {
-                            _selectedTab = 1;
-                          });
-                        },
+                        onTap: () => _controller.animateTo(1),
                         child: Text(
                           'Perangkingan',
                           textAlign: TextAlign.center,
