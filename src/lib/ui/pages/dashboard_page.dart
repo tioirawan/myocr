@@ -465,15 +465,16 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
         final identityCards = ref.watch(identityCardNotifierProvider);
 
         return identityCards.when(
-            data: (documents) => documents.isEmpty
-                ? _buildEmptyDocuments(context)
-                : _buildDocuments(documents),
-            loading: () => const Center(
-                  child: CircularProgressIndicator(),
-                ),
-            error: (error, _) => Center(
-                  child: Text(error.toString()),
-                ));
+          data: (documents) => documents.isEmpty
+              ? _buildEmptyDocuments(context)
+              : _buildDocuments(documents),
+          loading: () => const Center(
+            child: CircularProgressIndicator(),
+          ),
+          error: (error, _) => Center(
+            child: Text(error.toString()),
+          ),
+        );
       },
     );
   }

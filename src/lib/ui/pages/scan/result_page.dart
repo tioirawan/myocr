@@ -114,12 +114,7 @@ class _ResultPageState extends ConsumerState<ResultPage> {
         ref.read(audioServiceProvider).stop();
       } else if (state is ScannerStateError) {
         ref.read(audioServiceProvider).stop();
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(state.error),
-          ),
-        );
+        ref.read(audioServiceProvider).play(AudioType.failed);
       } else if (state is ScannerStateNoImage) {
         Navigator.popAndPushNamed(context, '/scan');
       } else if (state is ScannerStateScanning) {
@@ -162,9 +157,25 @@ class _ResultPageState extends ConsumerState<ResultPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.error),
-                  const SizedBox(height: 16),
-                  Text(e),
+                  Image.asset(
+                    'assets/images/failed.gif',
+                    width: 150,
+                  ),
+                  const SizedBox(height: 28),
+                  Text(
+                    'Gagal memindai KTP',
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 22,
+                        ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    e.toString(),
+                    style: Theme.of(context).textTheme.bodyLarge,
+                    textAlign: TextAlign.center,
+                  ),
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () {

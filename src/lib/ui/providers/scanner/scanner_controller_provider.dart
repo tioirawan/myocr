@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../domain/repositories/card_scanner_repository.dart';
@@ -40,6 +41,11 @@ class ScannerController extends _$ScannerController {
           image: image,
         );
       }
+    } on DioException catch (e, _) {
+      state = ScannerStateError(
+        error: e.response?.data['detail'] ?? e.toString(),
+        image: image,
+      );
     } on Exception catch (e, _) {
       state = ScannerStateError(
         error: e.toString().replaceAll('Exception: ', ''),

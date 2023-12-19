@@ -3,11 +3,12 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'audio_service.g.dart';
 
-enum AudioType { success, scan }
+enum AudioType { success, scan, failed }
 
 final audioFiles = {
   AudioType.success: 'audio/success.mp3',
   AudioType.scan: 'audio/scan.mp3',
+  AudioType.failed: 'audio/failed.mp3',
 };
 
 class AudioService {
@@ -17,8 +18,6 @@ class AudioService {
 
   Future<void> play(AudioType type) async {
     final file = audioFiles[type]!;
-
-    print('Playing audio file: $file');
 
     await _audioPlayer.play(
       AssetSource(file),
