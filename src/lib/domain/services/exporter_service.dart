@@ -34,9 +34,15 @@ class ExporterService {
             child: pw.Column(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
-                pw.Image(cardImage),
-                pw.SizedBox(height: 16),
-                pw.Image(photoImage, width: 200),
+                pw.Row(children: [
+                  pw.Expanded(
+                    flex: 2,
+                    child: pw.Image(cardImage),
+                  ),
+                  pw.Expanded(
+                    child: pw.Image(photoImage),
+                  ),
+                ]),
                 pw.Divider(height: 38),
                 pw.Row(children: [
                   pw.Expanded(
