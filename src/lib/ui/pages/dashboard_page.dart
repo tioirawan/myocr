@@ -51,10 +51,15 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
     // crop image
     final CroppedFile? croppedImage = await cropper.cropImage(
       sourcePath: image.path,
-      aspectRatio: const CropAspectRatio(ratioX: 85.6, ratioY: 53.98),
+      // aspectRatio: const CropAspectRatio(ratioX: 85.6, ratioY: 53.98),
+      aspectRatioPresets: [
+        CropAspectRatioPreset.original,
+        CropAspectRatioPreset.square,
+        CropAspectRatioPreset.ratio3x2,
+        CropAspectRatioPreset.ratio4x3,
+        CropAspectRatioPreset.ratio16x9,
+      ],
       compressQuality: 100,
-      maxWidth: 700,
-      maxHeight: 700,
       compressFormat: ImageCompressFormat.jpg,
       uiSettings: [
         AndroidUiSettings(
@@ -62,10 +67,8 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
           toolbarColor: colorScheme.primary,
           toolbarWidgetColor: colorScheme.onPrimary,
           initAspectRatio: CropAspectRatioPreset.original,
-          lockAspectRatio: true,
           statusBarColor: colorScheme.primary,
           activeControlsWidgetColor: colorScheme.primary,
-          hideBottomControls: true,
         ),
       ],
     );
@@ -383,8 +386,8 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
               curve: Curves.easeInOut,
               top: 4,
               bottom: 4,
-              left: _selectedTab == 0 ? 4 : constraints.maxWidth / 2.05 + 4,
-              width: constraints.maxWidth / 2 - 4,
+              left: _selectedTab == 0 ? 4 : constraints.maxWidth / 2 + 4,
+              width: constraints.maxWidth / 2 - 8,
               child: Container(
                 width: 172,
                 height: 34,
@@ -481,9 +484,8 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
         final ranksState = ref.watch(ranksProvider);
 
         return ranksState.when(
-          data: (ranks) => ranks.isEmpty
-              ? _buildEmptyRank(context)
-              : _buildRankList(ranks),
+          data: (ranks) =>
+              ranks.isEmpty ? _buildEmptyRank(context) : _buildRankList(ranks),
           loading: () => const Center(
             child: CircularProgressIndicator(),
           ),
@@ -671,6 +673,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
       ],
     );
   }
+
   Column _buildEmptyRank(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -701,9 +704,9 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                   'Belum ada data CV yang ditambahkan',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
                 ),
               ],
             ),
